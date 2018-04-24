@@ -1,0 +1,104 @@
+#User Story 02 - Cadastro de Caronas
+
+zerarSistema
+
+#US02 - Cadastro de caronas. Permitir o cadastro de caronas no perfil do usu�rio. 
+#Deve-se informar o local de origem, o local de destino, data, hora de sa�da e quantidade de vagas dispon�veis.
+#Busca de caronas. Permitir que o usu�rio procure por caronas.
+#Deve-se informar o local de origem e o local de destino.
+#A busca s� retorna caronas que ainda ir� acontecer.
+
+#Entradas V�lidas
+criarUsuario login="mark" senha="m@rk" nome="Mark Zuckerberg" endereco="Palo Alto, California" email="mark@facebook.com" telefone="98888-0000"
+sessaoMark=abrirSessao login="mark" senha="m@rk"
+
+#Localizar carona, sem carona cadastrada.
+expect {} localizarCarona idSessao=${sessaoMark} origem="Campina Grande" destino="João Pessoa"
+expect {} localizarCarona idSessao=${sessaoMark} origem="São Francisco" destino="Palo Alto"
+expect {} localizarCarona idSessao=${sessaoMark} origem="Rio de Janeiro" destino="São Paulo"
+
+#o m�todo cadastrar carona retorna id
+
+carona1ID=cadastrarCarona idSessao=${sessaoMark} origem="Campina Grande" destino="João Pessoa" data="23/06/2013" hora="16:00" vagas=3
+expect "Campina Grande" getAtributoCarona idCarona=${carona1ID} atributo="origem"
+expect "João Pessoa" getAtributoCarona idCarona=${carona1ID} atributo="destino"
+expect "Campina Grande - João Pessoa" getTrajeto idCarona=${carona1ID}
+
+carona2ID=cadastrarCarona idSessao=${sessaoMark} origem="Rio de Janeiro" destino="São Paulo" data="31/05/2013" hora="08:00" vagas=2
+expect "31/05/2013" getAtributoCarona idCarona=${carona2ID} atributo="data"
+expect "2" getAtributoCarona idCarona=${carona2ID} atributo="vagas"
+
+carona3ID=cadastrarCarona idSessao=${sessaoMark} origem="João Pessoa" destino="Campina Grande" data="25/11/2026" hora="06:59" vagas=4
+expect "João Pessoa para Campina Grande, no dia 25/11/2026, as 06:59" getCarona idCarona=${carona3ID}
+
+carona4ID=cadastrarCarona idSessao=${sessaoMark} origem="João Pessoa" destino="Lagoa Seca" data="25/11/2016" hora="05:00" vagas=4
+expect "João Pessoa para Lagoa Seca, no dia 25/11/2016, as 05:00" getCarona idCarona=${carona4ID}
+
+carona5ID=cadastrarCarona idSessao=${sessaoMark} origem="João Pessoa" destino="Lagoa Seca" data="25/11/2017" hora="05:00" vagas=4
+expect "João Pessoa para Lagoa Seca, no dia 25/11/2017, as 05:00" getCarona idCarona=${carona5ID}
+
+#Localizar carona.
+expect {} localizarCarona idSessao=${sessaoMark} origem="São Francisco" destino="Palo Alto"
+expect {${carona2ID}} localizarCarona idSessao=${sessaoMark} origem="Rio de Janeiro" destino="São Paulo"
+expect {${carona3ID}} localizarCarona idSessao=${sessaoMark} origem="João Pessoa" destino="Campina Grande"
+
+#Todas as caronas que ir� acontecer e que tem como origem João pessoa.
+expect {${carona3ID},${carona4ID},${carona5ID}} localizarCarona idSessao=${sessaoMark} origem="João Pessoa" destino=""
+
+#Todas as caronas que ir� acontecer e que tem como destino S�o Paulo.
+expect {${carona2ID}} localizarCarona idSessao=${sessaoMark} origem="" destino="São Paulo"
+
+#Todas as caronas que ir� acontecer.
+expect {${carona1ID},${carona2ID},${carona3ID},${carona4ID},${carona5ID}} localizarCarona idSessao=${sessaoMark} origem="" destino=""
+
+#Cadastro de carona com entradas inv�lidas, Nenhuma carona aqui deve ser cadastrada.
+expectError "Data invalida" cadastrarCarona idSessao=${sessaoMark} origem="Campina Grande" destino="Jo�o Pessoa" data="30/02/2012" hora="16:00" vagas=3
+expectError "Sessao invalida" cadastrarCarona idSessao= origem="Campina Grande" destino="Jo�o Pessoa" data="23/06/2013" hora="16:00" vagas=3
+expectError "Sessao invalida" cadastrarCarona idSessao="" origem="Campina Grande" destino="Jo�o Pessoa" data="23/06/2013" hora="16:00" vagas=3
+expectError "Sessao inexistente" cadastrarCarona idSessao="teste" origem="Jo�o Pessoa" destino="Campina Grande" data="25/11/2026" hora="06:59" vagas=4
+
+expectError "Origem invalida" cadastrarCarona idSessao=${sessaoMark} origem= destino="Jo�o Pessoa" data="23/06/2013" hora="16:00" vagas=3
+expectError "Origem invalida" cadastrarCarona idSessao=${sessaoMark} origem="" destino="S�o Paulo" data="31/05/2013" hora="08:00" vagas=2
+
+expectError "Destino invalido" cadastrarCarona idSessao=${sessaoMark} origem="Campina Grande" destino= data="23/06/2013" hora="16:00" vagas=3
+expectError "Destino invalido" cadastrarCarona idSessao=${sessaoMark} origem="Patos" destino="" data="31/05/2013" hora="08:00" vagas=2
+
+expectError "Data invalida" cadastrarCarona idSessao=${sessaoMark} origem="Campina Grande" destino="Jo�o Pessoa" data= hora="16:00" vagas=3
+expectError "Data invalida" cadastrarCarona idSessao=${sessaoMark} origem="Patos" destino="Jo�o Pessoa" data="" hora="08:00" vagas=2
+
+expectError "Data invalida" cadastrarCarona idSessao=${sessaoMark} origem="Campina Grande" destino="Jo�o Pessoa" data="31/04/2012" hora="16:00" vagas=3
+expectError "Data invalida" cadastrarCarona idSessao=${sessaoMark} origem="Campina Grande" destino="Jo�o Pessoa" data="32/12/2012" hora="16:00" vagas=3
+expectError "Data invalida" cadastrarCarona idSessao=${sessaoMark} origem="Campina Grande" destino="Jo�o Pessoa" data="30/02/2011" hora="16:00" vagas=3
+
+
+expectError "Hora invalida" cadastrarCarona idSessao=${sessaoMark} origem="Campina Grande" destino="Jo�o Pessoa" data="23/06/2013" hora= vagas=3
+expectError "Hora invalida" cadastrarCarona idSessao=${sessaoMark} origem="Patos" destino="Jo�o Pessoa" data="31/05/2013" hora="" vagas=2
+expectError "Hora invalida" cadastrarCarona idSessao=${sessaoMark} origem="Patos" destino="Jo�o Pessoa" data="31/05/2013" hora="seis" vagas=2
+
+expectError "Vaga invalida" cadastrarCarona idSessao=${sessaoMark} origem="Campina Grande" destino="Jo�o Pessoa" data="23/06/2013" hora="16:00" vagas=
+expectError "Vaga invalida" cadastrarCarona idSessao=${sessaoMark} origem="Patos" destino="Jo�o Pessoa" data="31/05/2013" hora="08:00" vagas="duas"
+
+expectError "Carona Invalido" getAtributoCarona idCarona=0 atributo="origem"
+expectError "Carona Invalido" getAtributoCarona idCarona=-1 atributo="origem"
+expectError "Carona Inexistente" getAtributoCarona idCarona=100 atributo="destino"
+expectError "Atributo invalido" getAtributoCarona idCarona=${carona3ID} atributo=
+expectError "Atributo invalido" getAtributoCarona idCarona=${carona2ID} atributo=""
+expectError "Atributo inexistente" getAtributoCarona idCarona=${carona1ID} atributo="xpto"
+expectError "Carona Invalido" getCarona idCarona=-1
+expectError "Carona Invalido" getCarona idCarona=0
+expectError "Carona Inexistente" getCarona idCarona=100
+expectError "Trajeto Invalido" getTrajeto idCarona=0
+expectError "Trajeto Invalido" getTrajeto idCarona=-1
+expectError "Trajeto Inexistente" getTrajeto idCarona=100
+
+#Localizar carona com entrada inv�lida
+expectError "Origem invalida" localizarCarona idSessao=${sessaoMark} origem="-" destino="João Pessoa"
+expectError "Origem invalida" localizarCarona idSessao=${sessaoMark} origem="()" destino="João Pessoa"
+expectError "Origem invalida" localizarCarona idSessao=${sessaoMark} origem="!" destino="João Pessoa"
+expectError "Origem invalida" localizarCarona idSessao=${sessaoMark} origem="!?" destino="João Pessoa"
+expectError "Destino invalido" localizarCarona idSessao=${sessaoMark} origem="Campina Grande" destino="."
+expectError "Destino invalido" localizarCarona idSessao=${sessaoMark} origem="Campina Grande" destino="()"
+expectError "Destino invalido" localizarCarona idSessao=${sessaoMark} origem="Campina Grande" destino="!?"
+
+encerrarSistema
+quit
