@@ -1,9 +1,10 @@
 package com.dominio;
 
 /**
- * @author Bruno Miranda e Thassio Lucena. Classe Carona nela estão presentes os
- *         atributos e os métodos getts, setts. O usuario só podera cadastra uma
- *         carona quando estive com um perfil ativo.
+ * Classe Carona nela estão presentes os atributos e os métodos getts, setts. O
+ * usuario só podera cadastra uma carona quando estive com um perfil ativo.
+ * 
+ * @author Bruno Miranda / Thassio Lucena.
  *
  */
 public class Carona {
@@ -17,19 +18,26 @@ public class Carona {
 	private String data;
 	private String hora;
 	private int perfil_IdPerfil;
-	
+
 	public Carona() {
-		
-	}	
+
+	}
 
 	/**
 	 * Método construtor da classe Carona recebe com parametro os atributos abaixo.
+	 * 
 	 * @param idSessao
+	 *            Identificador da sessão do usuário
 	 * @param origemCarona
+	 *            Local de partida de uma carona
 	 * @param destinoCarona
+	 *            Local da chegada de uma carona
 	 * @param data
+	 *            arona quando vai acontecer
 	 * @param hora
+	 *            O horario da carona
 	 * @param vagas
+	 *            Quantidade de pessoas que podem solicitar uma carona
 	 */
 	public Carona(String idSessao, String origemCarona, String destinoCarona, String data, String hora, String vagas) {
 		this.setOrigemCarona(origemCarona);
@@ -38,7 +46,7 @@ public class Carona {
 		this.setData(data);
 		this.setHora(hora);
 		this.setIdSessao(idSessao);
-	
+
 	}
 
 	public int getIdCaronas() {
@@ -112,7 +120,5 @@ public class Carona {
 	public void setDonoCarona(String donoCarona) {
 		this.donoCarona = donoCarona;
 	}
-	
-	
-}	
-	
+
+}

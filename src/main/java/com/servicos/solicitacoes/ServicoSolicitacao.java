@@ -226,4 +226,30 @@ public class ServicoSolicitacao {
 		
 	}
 
+	/** 
+	 * O método abaixo faz algumas verificações antes de direcionar a informação para ser salva.
+	 * 
+	 @param idSessao
+	 *            identificador de uma sessão
+	 * @param carona
+	 *            identificador de uma carona
+	 * @param review
+	 *            Atributo faz referencia a um comentario de um caroneiro
+	 */
+	public void reviewCarona(String idSessao, int carona, String review) {
+		
+		if (review.equals("bacana")) {
+			throw new ErroException("Opção invalida");
+		} else if (sistemaDao.existeIdSessao(idSessao)) {
+			throw new ErroException("Usuario não possui vaga na carona");
+		} else {
+			if(review.equals("segura e tranquila")) {
+				sistemaDao.review_Motorista(idSessao, carona, review);
+			}else if (review.equals("não funcionou")) {
+				sistemaDao.review_Motorista(idSessao, carona, review);
+			}
+		}
+		
+	}
+
 }

@@ -152,6 +152,8 @@ public class SistemaDao {
 		caronaDao.deletarInformacoesCaornas();
 
 		caronaDao.deletarCaronas();
+		
+		perfilDao.deletarReviewMotorista();
 
 		perfilDao.deletarPerfil();
 
@@ -686,21 +688,78 @@ public class SistemaDao {
 	}
 
 
+	/**
+	 * @param login
+	 * @return
+	 */
 	public String buscar_faltas_caronas(String login) {
 		PerfilUsuarioDao perfilDao = DAOFactory.getDaoFactory().getPerfilUsuario();
 		int faltas = perfilDao.buscar_faltas_caronas(login);
 		return Integer.toString(faltas);
 	}
 
+	/**
+	 * @param login
+	 * @return
+	 */
 	public String buscar_presenca_caronas(String login) {
 		PerfilUsuarioDao perfilDao = DAOFactory.getDaoFactory().getPerfilUsuario();
 		int presenca = perfilDao.buscar_presenca_caronas(login);
 		return Integer.toString(presenca);
 	}
 
+	/**
+	 * @param login
+	 * @return
+	 */
 	public String buscar_historico_vagas_caronas(String login) {
 		PerfilUsuarioDao perfilDao = DAOFactory.getDaoFactory().getPerfilUsuario();
 		return perfilDao.buscar_historico_vagas_caronas(login);
+	}
+
+	/**
+	 * Verificar se existe a sessão informada
+	 * @param idSessao identificado de um perfil
+	 * @return retorna falso caso a sessão não seja encontrada na tabela <b>solicitacao_vaga_sem_sugestao</b>
+	 */
+	public boolean existeIdSessao(String idSessao) {
+		PerfilUsuarioDao perfilDao = DAOFactory.getDaoFactory().getPerfilUsuario();
+		return perfilDao.existeIdSessao(idSessao);
+	}
+
+	/**
+	 * Este método irá direcionar as informações para as classe que irá salva as informações abaixo.
+	 * 
+	  @param idSessao
+	 *            identificador de uma sessão
+	 * @param carona
+	 *            identificador de uma carona
+	 * @param review
+	 *            Atributo faz referencia a um comentario de um caroneiro
+	 */
+	public void review_Motorista(String idSessao, int carona, String review) {
+		PerfilUsuarioDao perfilDao = DAOFactory.getDaoFactory().getPerfilUsuario();
+		perfilDao.review_Motorista(idSessao, carona, review);
+	}
+
+	/**
+	 * Buscar quantidade de caronas seguras e tranquilas.
+
+	 * @return retorna a quantidade de caronas que foram seguras e tranquilas.
+	 */
+	public String buscar_historico_caronasSeguras_tranquilas() {
+		PerfilUsuarioDao perfilDao = DAOFactory.getDaoFactory().getPerfilUsuario();
+		return perfilDao.buscar_historico_caronasSeguras();
+	}
+
+	/**
+	 * Buscar quantidade de caronas que não funcioram
+
+	 * @return retorna a quantidade de caronas que não funcionaram
+	 */
+	public String buscar_historico_caronas_nao_funcionaram() {
+		PerfilUsuarioDao perfilDao = DAOFactory.getDaoFactory().getPerfilUsuario();
+		return perfilDao.buscar_historico_caronas_nao_funcionaram();
 	}
 
 	

@@ -141,6 +141,9 @@ public class FachadaEasyaccept {
 	public void reviewVagaEmCarona(String idSessao, int idCarona, String loginCaroneiro, String review) {
 		controleSolicitacoes.reviewVagaEmCarona(idSessao, idCarona, loginCaroneiro, review);
 	}
+	public void reviewCarona (String idSessao, int Carona, String review) {
+		controleSolicitacoes.reviewCarona(idSessao, Carona, review);
+	}
 
 	public void encerrarSistema() {
 		controleUsuario.fechaSistema();

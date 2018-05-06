@@ -14,9 +14,10 @@ import com.dominio.dao.DAOException;
 import com.dominio.dao.PerfilUsuarioDao;
 
 /**
- * @author Bruno Miranda Thassio Lucena Classe responsavel por implementa os
- *         métodos da interface PerfilUsuarioDao() referente a persistencia de
- *         dados.
+ * Classe responsavel por implementa os métodos da interface PerfilUsuarioDao()
+ * referente a persistencia de dados.
+ * 
+ * @author Bruno Miranda Thassio Lucena
  */
 public class JdbcPerfilUsuarioDao implements PerfilUsuarioDao {
 
@@ -285,6 +286,12 @@ public class JdbcPerfilUsuarioDao implements PerfilUsuarioDao {
 		}
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.dominio.dao.PerfilUsuarioDao#visualizarPeril(java.lang.String,
+	 * java.lang.String)
+	 */
 	@Override
 	public int visualizarPeril(String idSessao, String login) {
 		int id = 0;
@@ -309,6 +316,11 @@ public class JdbcPerfilUsuarioDao implements PerfilUsuarioDao {
 		return id;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.dominio.dao.PerfilUsuarioDao#buscarLogin(java.lang.String)
+	 */
 	@Override
 	public String buscarLogin(String idSessao) {
 		String login = "";
@@ -332,6 +344,11 @@ public class JdbcPerfilUsuarioDao implements PerfilUsuarioDao {
 		return login;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.dominio.dao.PerfilUsuarioDao#historico_Caronas(java.lang.String)
+	 */
 	@Override
 	public String historico_Caronas(String login) {
 		String id = "";
@@ -348,10 +365,15 @@ public class JdbcPerfilUsuarioDao implements PerfilUsuarioDao {
 		} catch (SQLException e) {
 			throw new DAOException("Erro ao recuperar id carona ", e);
 		}
-		
+
 		return id;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.dominio.dao.PerfilUsuarioDao#reiniciarSistema()
+	 */
 	@Override
 	public void reiniciarSistema() {
 		try {
@@ -365,6 +387,11 @@ public class JdbcPerfilUsuarioDao implements PerfilUsuarioDao {
 
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.dominio.dao.PerfilUsuarioDao#buscar_faltas_caronas(java.lang.String)
+	 */
 	@Override
 	public int buscar_faltas_caronas(String login) {
 		int faltas = 0;
@@ -382,6 +409,12 @@ public class JdbcPerfilUsuarioDao implements PerfilUsuarioDao {
 		return faltas;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.dominio.dao.PerfilUsuarioDao#buscar_presenca_caronas(java.lang.String)
+	 */
 	@Override
 	public int buscar_presenca_caronas(String login) {
 		int presenca = 0;
@@ -399,12 +432,19 @@ public class JdbcPerfilUsuarioDao implements PerfilUsuarioDao {
 		return presenca;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.dominio.dao.PerfilUsuarioDao#buscar_historico_vagas_caronas(java.lang.
+	 * String)
+	 */
 	@Override
 	public String buscar_historico_vagas_caronas(String login) {
 		String id = "[";
 		try {
-			String sql = String.format("(select idCarona from solicitacao_vaga_sem_sugestao where idSessao =\r\n" + 
-					"(select idSessao from perfil where login = '%s'))", login);
+			String sql = String.format("(select idCarona from solicitacao_vaga_sem_sugestao where idSessao =\r\n"
+					+ "(select idSessao from perfil where login = '%s'))", login);
 
 			PreparedStatement ps = this.connection.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();
@@ -418,7 +458,116 @@ public class JdbcPerfilUsuarioDao implements PerfilUsuarioDao {
 		if (!id.equals("[")) {
 			id = id.substring(0, id.length() - 1);
 		}
-		id+= "]";
+		id += "]";
 		return id;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.dominio.dao.PerfilUsuarioDao#existeIdSessao(java.lang.String)
+	 */
+	@Override
+	public boolean existeIdSessao(String idSessao) {
+		boolean sessaoExistente = false;
+		try {
+			String sql = String.format(
+					"SELECT NOT EXISTS (SELECT idSessao FROM solicitacao_vaga_sem_sugestao where idSessao = '%s')",
+					idSessao);
+			PreparedStatement ps = this.connection.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+
+			while (rs.next()) {
+				sessaoExistente = rs.getBoolean(1);
+			}
+
+		} catch (SQLException e) {
+			throw new DAOException("Erro ao encontra usuario na tabela solicitacao_vaga_sem_sugestao ", e);
+		} finally {
+			try {
+				this.connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
+		return sessaoExistente;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.dominio.dao.PerfilUsuarioDao#review_Motorista(java.lang.String, int,
+	 * java.lang.String)
+	 */
+	@Override
+	public void review_Motorista(String idSessao, int carona, String review) {
+		try {
+			String sql = String.format(
+					"insert into review_Motorista (idSessao, idcarona, informacao) values ('%s', %d, '%s')", idSessao,
+					carona, review);
+			PreparedStatement ps = this.connection.prepareStatement(sql);
+			ps.executeUpdate();
+
+		} catch (SQLException e) {
+			throw new DAOException("Erro a salva informações na base de dados review_Motorista", e);
+		} finally {
+			try {
+				this.connection.close();
+			} catch (SQLException e) {
+				System.err.println(e.getLocalizedMessage());
+				e.printStackTrace();
+			}
+		}
+	}
+
+	/* (non-Javadoc)
+	 * @see com.dominio.dao.PerfilUsuarioDao#buscar_historico_caronasSeguras(java.lang.String)
+	 */
+	@Override
+	public String buscar_historico_caronasSeguras() {
+		String informacao = "";
+		try {
+			String sql = "select count(*) from review_Motorista where informacao = 'segura e tranquila'";
+			PreparedStatement ps = this.connection.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				informacao = rs.getString(1);
+			}
+		} catch (SQLException e) {
+			throw new DAOException("Erro na contagem das caronas seguras e tranquilas ", e);
+		}
+		return informacao;
+	}
+
+	/* (non-Javadoc)
+	 * @see com.dominio.dao.PerfilUsuarioDao#buscar_historico_caronas_nao_funcionaram(java.lang.String)
+	 */
+	@Override
+	public String buscar_historico_caronas_nao_funcionaram() {
+		String informacao = "";
+		try {
+			String sql = "select count(*) from review_Motorista where informacao = 'não funcionou'";
+			PreparedStatement ps = this.connection.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				informacao = rs.getString(1);
+			}
+		} catch (SQLException e) {
+			throw new DAOException("Erro na contagem das caronas que não funcionaram ", e);
+		}
+		return informacao;
+	}
+
+	@Override
+	public void deletarReviewMotorista() {
+		try {
+			String sql = "delete from review_motorista where id_review_Motorista <> 0";
+			PreparedStatement ps = this.connection.prepareStatement(sql);
+			ps.executeUpdate();
+		} catch (SQLException e) {
+			throw new DAOException("Erro ao excluir review_motorista ", e);
+		} 
+		
 	}
 }
