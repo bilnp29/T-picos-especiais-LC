@@ -1,9 +1,10 @@
 package com.dominio;
 
 /**
- * @author Bruno Miranda e Thassio Lucena. Classe PerfilUsuario nela estão
- *         presentes os atributos e os métodos getts, setts. Será requisitada
- *         toda vez que o usuario fizer login.
+ * Classe PerfilUsuario nela estão presentes os atributos e os métodos getts,
+ * setts. Será requisitada toda vez que o usuario fizer login.
+ * 
+ * @author Bruno Miranda / Thassio Lucena.
  *
  */
 public class PerfilUsuario {
@@ -13,18 +14,28 @@ public class PerfilUsuario {
 	private boolean estadoSessao;
 	private int idUsuairo;
 	private String login;
-	
-	
+
 	public PerfilUsuario() {
-		
+
 	}
 
 	/**
-	 * Método construtor da classe PerfilUsuario recebe com parametro os atributos abaixo.
+	 * Método construtor da classe PerfilUsuario recebe com parametro os atributos
+	 * abaixo.
 	 * 
 	 * @param identificadorSessao
+	 *            Este atributo identifica o usuário que esta logado no momento.
 	 *
-	 */
+	 * @param estadoSessao
+	 *            Guarda o valor do estado atual da sessão podendo ser verdadeiro ou
+	 *            falso.
+	 * @param idUsuario
+	 *            Identificador do usuario
+	 * 
+	 * @param login
+	 *            Login de um usuario.
+	 * 
+	 * */
 	public PerfilUsuario(String identificadorSessao, boolean estadoSessao, int idUsuario, String login) {
 
 		this.identificadorSessao = identificadorSessao;
@@ -33,7 +44,6 @@ public class PerfilUsuario {
 		this.login = login;
 
 	}
-
 
 	public String getIdentificadorSessao() {
 		return identificadorSessao;
@@ -66,9 +76,9 @@ public class PerfilUsuario {
 	public void setIdUsuairo(int idUsuairo) {
 		this.idUsuairo = idUsuairo;
 	}
+
 	public String getLogin() {
 		return login;
 	}
-
 
 }

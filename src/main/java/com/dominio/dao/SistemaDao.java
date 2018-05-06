@@ -9,9 +9,10 @@ import com.dominio.Usuario;
 import com.tratamento.erro.ErroException;
 
 /**
- * @author Bruno Miranda Thassio Lucena Classe responsaval por realizar tarefas
- *         relacionadas a persistencia de dados. Das classe Usuario(), Carona(),
- *         PerfilUsuario().
+ * Classe responsaval por realizar tarefas relacionadas a persistencia de dados.
+ * Das classe Usuario(), Carona(), PerfilUsuario().
+ * 
+ * @author Bruno Miranda Thassio Lucena
  *
  */
 public class SistemaDao {
@@ -21,7 +22,9 @@ public class SistemaDao {
 	 * banco de dados shared_carpool.
 	 * 
 	 * @param usuario
+	 *            ele é um objeto Usuário, veja detalhes na classe Usuario
 	 * @throws Exception
+	 * @see Usuario
 	 */
 	public void guardaUsuario(Usuario usuario) throws Exception {
 		try {
@@ -38,6 +41,8 @@ public class SistemaDao {
 	 * banco de dados shared_carpool.
 	 * 
 	 * @param perfilUsuario
+	 *            este parametro é um objeto da classe PerdfilUsuario
+	 * @see PerfilUsuario
 	 */
 	public void salvarPefil(PerfilUsuario perfilUsuario) {
 		try {
@@ -56,7 +61,9 @@ public class SistemaDao {
 	 * Carona.
 	 * 
 	 * @param carona
+	 *            este parametro é um objeto da classe Carona
 	 * @throws Exception
+	 * @see Carona
 	 */
 	public void salvarDadosCarona(Carona carona, int id) throws Exception {
 		try {
@@ -70,24 +77,14 @@ public class SistemaDao {
 	}
 
 	/**
-	 * @param idCarona
-	 * @param idSessao
-	 * @param carona
-	 * 
-	 *            public void salvaCaronaInfoAdicional(String idCarona, String
-	 *            idSessao, Carona carona) { CaronaDao caronaDao =
-	 *            DAOFactory.getDaoFactory().getCaronaDao();
-	 *            caronaDao.salvaInfoAdicionaCarona(idCarona, idSessao, carona);
-	 * 
-	 *            }
-	 * 
-	 *            /** O método realizar busca no banco de acordo com os dados
-	 *            passados abaixo. Onde serão recuparados nome e o endereco do
-	 *            usuario.
+	 * O método realizar busca no banco de acordo com os dados passados abaixo. Onde
+	 * serão recuparados nome e o endereco do usuario.
 	 * 
 	 * @param login
+	 *            atributo login,utilizado para logar no sistema.
 	 * @param atributo
-	 * @return
+	 *            Este parametro informa o será pesquisado.
+	 * @return Pode retorna o nome ou endereco do usuário.
 	 * @throws Exception
 	 */
 	public String buscarPeloAtributo(String login, String atributo) throws Exception {
@@ -120,7 +117,9 @@ public class SistemaDao {
 	}
 
 	/**
-	 * @return Busca todos os usuarios cadastrado no sistema
+	 * Busca todos os usuarios cadastrado no sistema
+	 * 
+	 * @return retorna uma lista.
 	 */
 	public Map<String, Usuario> bustaTodos() {
 		UsuarioDao usuarioDao = DAOFactory.getDaoFactory().getUsuarioDao();
@@ -146,12 +145,14 @@ public class SistemaDao {
 		caronaDao.deletarRegistroSolicitacaoVadas();
 
 		caronaDao.deletarRegistroSolicitacaoSemSugestao();
-		
+
 		caronaDao.deletarReview();
 
 		caronaDao.deletarInformacoesCaornas();
 
 		caronaDao.deletarCaronas();
+
+		perfilDao.deletarReviewMotorista();
 
 		perfilDao.deletarPerfil();
 
@@ -160,8 +161,11 @@ public class SistemaDao {
 	}
 
 	/**
+	 * Faz busca de um idSessao valido
+	 * 
 	 * @param idSessao
-	 * @return Faz busca de um idSessao valido
+	 *            identificar uma sessão do perfil do usuario.
+	 * @return retorna o idSessao.
 	 */
 	public String buscarIdsessao(String idSessao) {
 		PerfilUsuarioDao perfilDao = DAOFactory.getDaoFactory().getPerfilUsuario();
@@ -169,6 +173,8 @@ public class SistemaDao {
 	}
 
 	/**
+	 * Pesquisa caronas cadastradas
+	 * 
 	 * @return retorna uma lista das caronas cadastradas que possui vagas no
 	 *         sistema.
 	 */
@@ -179,8 +185,11 @@ public class SistemaDao {
 	}
 
 	/**
+	 * Verificar se existe o id especificado.
+	 * 
 	 * @param idcarona
-	 * @return Verificar se existe o id especificado.
+	 *            identificador de uma carona
+	 * @return retorna um valor booleano.
 	 * 
 	 */
 	public boolean isIdCarona(int idcarona) {
@@ -189,10 +198,14 @@ public class SistemaDao {
 	}
 
 	/**
+	 * Faz busca em uma carona especifica, diacordo com o id da carona, retornando a
+	 * origem ou destino ou vaga ou data da mesma
+	 * 
 	 * @param idcarona
+	 *            identificador de uma carona
 	 * @param atributo
-	 * @return Faz busca em uma carona especifica, diacordo com o id da carona,
-	 *         retornando a origem ou destino ou vaga ou data da mesma
+	 *            Este parametro fornece informações para realizar uma busca.
+	 * @return
 	 */
 	public String buscarAtributoCarona(int idcarona, String atributo) {
 		String atributoCarona = "";
@@ -305,8 +318,7 @@ public class SistemaDao {
 	 * @param pontos
 	 * @param solicitante
 	 * @param id_perfil
-	 * @return 
-	 * As informações serão salvas na tabela <b>solicitacoes</b>.
+	 * @return As informações serão salvas na tabela <b>solicitacoes</b>.
 	 */
 	public int salvaPontoEncontro(String idSessao, int idCarona, String pontos, String solicitante, int id_perfil) {
 		CaronaDao caronaDao = DAOFactory.getDaoFactory().getCaronaDao();
@@ -626,8 +638,7 @@ public class SistemaDao {
 
 	/**
 	 * @param idSessao
-	 * @return
-	 * Retorna todas as caronas para um perfil
+	 * @return Retorna todas as caronas para um perfil
 	 */
 	public String getTodasCaronasUsuario(String idSessao) {
 		CaronaDao caronaDao = DAOFactory.getDaoFactory().getCaronaDao();
@@ -637,8 +648,7 @@ public class SistemaDao {
 	/**
 	 * @param idSessao
 	 * @param idCarona
-	 * @return
-	 * Retorna o id das solicitações confirmadas.
+	 * @return Retorna o id das solicitações confirmadas.
 	 */
 	public String getSolicitacoesConfirmadas(String idSessao, int idCarona) {
 		CaronaDao caronaDao = DAOFactory.getDaoFactory().getCaronaDao();
@@ -685,24 +695,82 @@ public class SistemaDao {
 		caronaDao.reviewCaronaPresenca(idSessao, idCarona, loginCaroneiro, review);
 	}
 
-
+	/**
+	 * @param login
+	 * @return
+	 */
 	public String buscar_faltas_caronas(String login) {
 		PerfilUsuarioDao perfilDao = DAOFactory.getDaoFactory().getPerfilUsuario();
 		int faltas = perfilDao.buscar_faltas_caronas(login);
 		return Integer.toString(faltas);
 	}
 
+	/**
+	 * @param login
+	 * @return
+	 */
 	public String buscar_presenca_caronas(String login) {
 		PerfilUsuarioDao perfilDao = DAOFactory.getDaoFactory().getPerfilUsuario();
 		int presenca = perfilDao.buscar_presenca_caronas(login);
 		return Integer.toString(presenca);
 	}
 
+	/**
+	 * @param login
+	 * @return
+	 */
 	public String buscar_historico_vagas_caronas(String login) {
 		PerfilUsuarioDao perfilDao = DAOFactory.getDaoFactory().getPerfilUsuario();
 		return perfilDao.buscar_historico_vagas_caronas(login);
 	}
 
-	
+	/**
+	 * Verificar se existe a sessão informada
+	 * 
+	 * @param idSessao
+	 *            identificado de um perfil
+	 * @return retorna falso caso a sessão não seja encontrada na tabela
+	 *         <b>solicitacao_vaga_sem_sugestao</b>
+	 */
+	public boolean existeIdSessao(String idSessao) {
+		PerfilUsuarioDao perfilDao = DAOFactory.getDaoFactory().getPerfilUsuario();
+		return perfilDao.existeIdSessao(idSessao);
+	}
+
+	/**
+	 * Este método irá direcionar as informações para as classe que irá salva as
+	 * informações abaixo.
+	 * 
+	 * @param idSessao
+	 *            identificador de uma sessão
+	 * @param carona
+	 *            identificador de uma carona
+	 * @param review
+	 *            Atributo faz referencia a um comentario de um caroneiro
+	 */
+	public void review_Motorista(String idSessao, int carona, String review) {
+		PerfilUsuarioDao perfilDao = DAOFactory.getDaoFactory().getPerfilUsuario();
+		perfilDao.review_Motorista(idSessao, carona, review);
+	}
+
+	/**
+	 * Buscar quantidade de caronas seguras e tranquilas.
+	 * 
+	 * @return retorna a quantidade de caronas que foram seguras e tranquilas.
+	 */
+	public String buscar_historico_caronasSeguras_tranquilas() {
+		PerfilUsuarioDao perfilDao = DAOFactory.getDaoFactory().getPerfilUsuario();
+		return perfilDao.buscar_historico_caronasSeguras();
+	}
+
+	/**
+	 * Buscar quantidade de caronas que não funcioram
+	 * 
+	 * @return retorna a quantidade de caronas que não funcionaram
+	 */
+	public String buscar_historico_caronas_nao_funcionaram() {
+		PerfilUsuarioDao perfilDao = DAOFactory.getDaoFactory().getPerfilUsuario();
+		return perfilDao.buscar_historico_caronas_nao_funcionaram();
+	}
 
 }

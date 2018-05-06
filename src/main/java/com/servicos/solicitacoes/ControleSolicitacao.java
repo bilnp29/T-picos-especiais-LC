@@ -145,4 +145,19 @@ public class ControleSolicitacao {
 		servicosSolicitacoes.reviewVagaEmCarona(idSessao, idCarona, loginCaroneiro, review);
 	}
 
+	/**
+	 * Método ira direcionar a informação para classe {@link ServicoSolicitacao}
+	 * 
+	 * @param idSessao
+	 *            identificador de uma sessão
+	 * @param carona
+	 *            identificador de uma carona
+	 * @param review
+	 *            Atributo faz referencia a um comentario de um caroneiro
+	 */
+	public void reviewCarona(String idSessao, int carona, String review) {
+		servicosSolicitacoes.reviewCarona(idSessao, carona, review);
+
+	}
+
 }

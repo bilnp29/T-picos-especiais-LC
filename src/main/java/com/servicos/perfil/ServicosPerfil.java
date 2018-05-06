@@ -13,8 +13,12 @@ public class ServicosPerfil {
 	}
 
 	/**
+	 * visualizar dados do perfil de um usuário cadastrado
+	 * 
 	 * @param idSessao
+	 *            identificador de uma sessão
 	 * @param login
+	 *            Atributo utilizado para acessar uma conta cadastrada.
 	 * @return Retorna o id do perfil. Visualizar o perfil do usuario.
 	 */
 	public int visualizarPerfil(String idSessao, String login) {
@@ -27,14 +31,19 @@ public class ServicosPerfil {
 	}
 
 	/**
-	 * @param login
-	 * @param atributo
-	 * @return Os atributos pesquisados nome, endereço, email, historico de caronas,
-	 *         historico de vagas em caronas,caronas seguras e tranquilas,caronas
-	 *         que não funcionaram,faltas em vagas de caronas,presença em vagas de
-	 *         caronas
+	 * Pesquisa informações do perfil de um usuário
 	 * 
-	 *         Método de pesquisa que retorna os valores acima.
+	 * @param login
+	 *            Atributo utilizado para acessar uma conta cadastrada.
+	 * @param atributo
+	 *            Este parametro pode receber as seguintes informações: nome,
+	 *            endereço, email, historico de caronas, historico de vagas em
+	 *            caronas,caronas seguras e tranquilas,caronas que não
+	 *            funcionaram,faltas em vagas de caronas,presença em vagas de
+	 *            caronas. Beseado nesta informação ele irá realizar uma busca no
+	 *            banco de dados.
+	 * @return Os valore retornados irá depeder da entrada de dados.
+	 * 
 	 */
 	public String gerAtributoPerfil(String login, String atributo) {
 		String dados = "";
@@ -55,19 +64,27 @@ public class ServicosPerfil {
 
 			} else if (atributo.equals("endereco")) {
 				dados = usuario.getEndereco();
+				
 			} else if (atributo.equals("email")) {
 				dados = usuario.getEmail();
+				
 			} else if (atributo.equals("historico de caronas")) {
+				
 				dados = "[" + sistemaDao.buscar_historico_Caronas(login) + "]";
 			} else if (atributo.equals("historico de vagas em caronas")) {
+				
 				dados = sistemaDao.buscar_historico_vagas_caronas(login);
 			} else if (atributo.equals("caronas seguras e tranquilas")) {
-				dados = "0";
+				
+				dados = sistemaDao.buscar_historico_caronasSeguras_tranquilas();
 			} else if (atributo.equals("caronas que não funcionaram")) {
-				dados = "0";
+				
+				dados = sistemaDao.buscar_historico_caronas_nao_funcionaram();
 			} else if (atributo.equals("faltas em vagas de caronas")) {
+				
 				dados = sistemaDao.buscar_faltas_caronas(login);
 			} else {
+				
 				dados = sistemaDao.buscar_presenca_caronas(login);
 			}
 		}
