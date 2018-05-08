@@ -87,6 +87,48 @@ public class ControleCarona {
 		return servicosCarona.getTodasCaronasUsuario(idSessao);
 	}
 
-	
+	/**
+	 * @param idSessao
+	 * @param origem
+	 * @param destino
+	 * @param cidade
+	 * @param data
+	 * @param hora
+	 * @param vagas
+	 * @param tipo
+	 * @return
+	 * @throws Exception
+	 */
+	public String cadastraCaronaMunicipal(String idSessao, String origem, String destino, String cidade, String data,
+			String hora, String vagas) throws Exception {
+		carona = new Carona(idSessao, origem, destino, cidade, data, hora, vagas);
+		return servicosCarona.validaCaronaMunicipal(idSessao, carona);
+	}
+
+	public boolean getAtributoCaronaMunicipal(int idCarona, String atributo) {
+		return servicosCarona.getAtributoCaronaMunicipal(idCarona, atributo);
+	}
+
+	/**
+	 * localizarCaronaMunicipal-> Este vai direcinar os parametro informados para a
+	 * o método de mesmo nome na classe <b>servicosCarona</b>
+	 * 
+	 * @param idSessao
+	 *            Identificador de uma sessão ativa de um usuário
+	 * @param cidade
+	 *            Local onde a carona vai acontecer <b>(parametro obrigatorio)</b>
+	 * @param origem
+	 *            partida da carona
+	 * @param destino
+	 *            chegada da carona
+	 * @return O retorno será uma lista de caronas do tipo municipal cadastrada para
+	 *         a pesquisa.
+	 * @see
+	 * ServicoCarona        
+	 */
+	public String localizarCaronaMunicipal(String idSessao, String cidade, String origem, String destino) {
+
+		return servicosCarona.localizarCaronaMunicipal(idSessao, cidade, origem, destino);
+	}
 
 }

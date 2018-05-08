@@ -148,7 +148,7 @@ public class SistemaDao {
 
 		caronaDao.deletarReview();
 
-		caronaDao.deletarInformacoesCaornas();
+		//caronaDao.deletarInformacoesCaornas();
 
 		caronaDao.deletarCaronas();
 
@@ -771,6 +771,48 @@ public class SistemaDao {
 	public String buscar_historico_caronas_nao_funcionaram() {
 		PerfilUsuarioDao perfilDao = DAOFactory.getDaoFactory().getPerfilUsuario();
 		return perfilDao.buscar_historico_caronas_nao_funcionaram();
+	}
+
+	/**
+	 * @param idCarona
+	 * @param atributo
+	 * @return
+	 */
+	public boolean getAtributoCaronaMunicipal(int idCarona, String atributo) {
+		CaronaDao caronaDao = DAOFactory.getDaoFactory().getCaronaDao();
+		return caronaDao.getAtributoCaronaMunicipal(idCarona, atributo);
+	}
+
+	/**
+	 * O método irá buscar o id da carona com base com base nos parametros abaixo.
+	 * 
+	 * @param idSessao Identificador de uma sessão ativa de um usuário
+	 * @param cidade Local onde a carona vai acontecer <b>(parametro obrigatorio)</b>
+	 * @return O retorno será uma lista de caronas do tipo municipal cadastrada para
+	 *         a pesquisa.
+	 */
+	public String buscarCaronaMunicipio(String idSessao, String cidade) {
+		CaronaDao caronaDao = DAOFactory.getDaoFactory().getCaronaDao();
+		return caronaDao.buscarCaronaMunicipio(idSessao, cidade);
+	}
+
+	/**
+	 * 
+	 * 
+	@param idSessao
+	 *            Identificador de uma sessão ativa de um usuário
+	 * @param cidade
+	 *            Local onde a carona vai acontecer <b>(parametro obrigatorio)</b>
+	 * @param origem
+	 *            partida da carona
+	 * @param destino
+	 *            chegada da carona
+	 * @return O retorno será uma lista de caronas do tipo municipal cadastrada para
+	 *         a pesquisa.
+	 */
+	public String buscarCarona_Municipio_id(String idSessao, String cidade, String origem, String destino) {
+		CaronaDao caronaDao = DAOFactory.getDaoFactory().getCaronaDao();
+		return caronaDao.buscarCarona_Municipio_id(idSessao, cidade, origem,destino);
 	}
 
 }

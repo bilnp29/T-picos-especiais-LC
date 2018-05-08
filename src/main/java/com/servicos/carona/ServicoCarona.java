@@ -105,6 +105,7 @@ public class ServicoCarona {
 	}
 
 	/**
+	 * 
 	 * @param carona
 	 * @throws Exception
 	 *             Verifica se o atributo Origem é válido. Trata-se do local de
@@ -146,40 +147,57 @@ public class ServicoCarona {
 	}
 
 	/**
+	 * Método que irá verificar se a carona apresenta dados válidos. Caso sim irá
+	 * salva os dados no banco de dados e retorna um idCarona.
+	 * 
 	 * @param idSessao
 	 * @param carona
 	 * @return
 	 * @throws Exception
 	 * 
-	 *             Método que irá veridica se a carona apresenta dados válidos. Caso
-	 *             sim irá salva os dados no banco de dados e retorna um idCarona.
+	 * 
 	 */
 	public String validaCarona(String idSessao, Carona carona) throws Exception {
 
+		String idCarona;
 		validarIdSessao(idSessao);
 		validaCaronaOrigem(carona);
 		validaCaronaDestino(carona);
 		dataValida(carona);
 		horaValida(carona);
 		vagasValidas(carona);
+		carona.setTipoCarona("Intermunicipal");
 		
 		int idPerfil = sistemaDao.buscaIdPerfil(idSessao);
-		sistemaDao.salvarDadosCarona(carona,idPerfil);
+		sistemaDao.salvarDadosCarona(carona, idPerfil);
 
-		String idCarona = Integer.toString(carona.getIdCaronas());
-		
+		idCarona = Integer.toString(carona.getIdCaronas());
+
+		return idCarona;
+	}
+	
+
+	public String validaCaronaMunicipal(String idSessao, Carona carona) throws Exception {
+		String idCarona;
+		validarIdSessao(idSessao);
+		validaCaronaOrigem(carona);
+		validaCaronaDestino(carona);
+		dataValida(carona);
+		horaValida(carona);
+		vagasValidas(carona);
+
+		carona.setTipoCarona("Municipal");
+		int idPerfil = sistemaDao.buscaIdPerfil(idSessao);
+		sistemaDao.salvarDadosCarona(carona, idPerfil);
+
+		idCarona = Integer.toString(carona.getIdCaronas());
 
 		return idCarona;
 	}
 
 	public String localizarCarona(String idSessao, String origem, String destino) throws Exception {
 
-		if (!origem.matches("^[ a-zA-Z ã á â é ê i í ó õ ô ú]*$")) {
-			throw new ErroException("Origem invalida");
-		}
-		if (!destino.matches("^[ a-zA-Z ã á â é ê i í ó õ ô ú]*$")) {
-			throw new ErroException("Destino invalido");
-		}
+		verificar_Origem_Destino(origem, destino);
 
 		String texto = "{";
 		List<Carona> carona = sistemaDao.buscarCarona();
@@ -187,7 +205,7 @@ public class ServicoCarona {
 			return texto + "}";
 		}
 		for (Carona cr : carona) {
-			if (cr.getIdSessao().equals(idSessao)) {
+			if (cr.getIdSessao().equals(idSessao) || !cr.getIdSessao().equals(idSessao)) {
 				if (origem.equals("")) {
 					if (destino.equals("")) {
 						texto += cr.getIdCaronas() + ",";
@@ -215,6 +233,15 @@ public class ServicoCarona {
 		}
 		texto += "}";
 		return texto;
+	}
+
+	private void verificar_Origem_Destino(String origem, String destino) {
+		if (!origem.matches("^[ a-zA-Z ã á â é ê i í ó õ ô ú]*$")) {
+			throw new ErroException("Origem invalida");
+		}
+		if (!destino.matches("^[ a-zA-Z ã á â é ê i í ó õ ô ú]*$")) {
+			throw new ErroException("Destino invalido");
+		}
 	}
 
 	public String pesquisaCarona(int idCarona, String atributo) {
@@ -289,6 +316,51 @@ public class ServicoCarona {
 		return sistemaDao.getTodasCaronasUsuario(idSessao);
 	}
 
-	
-	
+	/**
+	 * @param idCarona
+	 * @param atributo
+	 * @return
+	 */
+	public boolean getAtributoCaronaMunicipal(int idCarona, String atributo) {
+		
+		return sistemaDao.getAtributoCaronaMunicipal(idCarona, atributo);
+	}
+
+	/**
+	 * localizarCaronaMunicipal-> Este método faz um pesquisa no sistema com base no
+	 * parametro abaixo. Obs.: O paramentro <b>cidade</b> é obrigatorio. O mesmo irá
+	 * retorna uma ou varias carona do tipo municipal.
+	 * 
+	 * @param idSessao
+	 *            Identificador de uma sessão ativa de um usuário
+	 * @param cidade
+	 *            Local onde a carona vai acontecer <b>(parametro obrigatorio)</b>
+	 * @param origem
+	 *            partida da carona
+	 * @param destino
+	 *            chegada da carona
+	 * @return O retorno será uma lista de caronas do tipo municipal cadastrada para
+	 *         a pesquisa.
+	 */
+	public String localizarCaronaMunicipal(String idSessao, String cidade, String origem, String destino) {
+		//verificar_Origem_Destino(origem, destino);
+		
+		if(cidade == null || cidade.equals("")) {
+			throw new ErroException("Cidade inexistente");
+		}
+		String listaIdCarona = "";
+		
+		if(!idSessao.equals("") && !cidade.equals("")) {
+			if(origem.equals("") && destino.equals("")) {
+				listaIdCarona = sistemaDao.buscarCaronaMunicipio(idSessao, cidade);
+			}else {
+				listaIdCarona = sistemaDao.buscarCarona_Municipio_id(idSessao, cidade, origem, destino);
+			}
+		}
+		
+		
+		return listaIdCarona;
+	}
+
+
 }

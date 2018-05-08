@@ -1,0 +1,46 @@
+#User Story 10 - Caronas intermunicipais vs. dentro da cidade
+
+#US10 - Caronas intermunicipais vs. dentro da cidade: o sistema diferencia nas publica��es e buscas entre caronas intermunicipais e caronas numa mesma cidade. 
+#No caso de o usu�rio querer buscar por caronas em uma cidade espec�fica, ele deve informar qual a cidade.
+
+
+#Limpar os dados do sistema.
+zerarSistema
+
+#Criar usu�rio.
+criarUsuario login="mark" senha="m@rk" nome="Mark Zuckerberg" endereco="Palo Alto, California" email="mark@facebook.com" telefone="98888-0000"
+criarUsuario login="bill" senha="bilz@o" nome="William Henry Gates III" endereco="Medina, Washington" email="billzin@gmail.com" telefone="98888-0000"
+criarUsuario login="vader" senha="d4rth" nome="Anakin Skywalker" endereco="Death Star I" email="darthvader@empire.com" telefone="98888-0000"
+
+#Iniciar sess�o.
+sessaoMark=abrirSessao login="mark" senha="m@rk"
+
+#Cadastrar caronas.
+carona1ID=cadastrarCarona idSessao=${sessaoMark} origem="Campina Grande" destino="João Pessoa" data="02/06/2013" hora="12:00" vagas=3
+carona2ID=cadastrarCarona idSessao=${sessaoMark} origem="Souza" destino="João Pessoa" data="08/06/2013" hora="14:00" vagas=2
+carona3ID=cadastrarCarona idSessao=${sessaoMark} origem="Campina Grande" destino="Patos" data="25/06/2013" hora="8:00" vagas=1
+carona4ID=cadastrarCaronaMunicipal idSessao=${sessaoMark} origem="Açude Velho" destino="Shopping Boulevard" cidade="Campina Grande" data="04/06/2013" hora="20:00" vagas=2
+carona5ID=cadastrarCaronaMunicipal idSessao=${sessaoMark} origem="Praia do Caju" destino="Villa São Paulo" cidade="João Pessoa" data="04/06/2013" hora="22:00" vagas=2
+carona6ID=cadastrarCaronaMunicipal idSessao=${sessaoMark} origem="Manaira Shopping" destino="Parque Solon de Lucena" cidade="João Pessoa" data="04/06/2013" hora="14:00" vagas=2
+
+expect false getAtributoCaronaMunicipal idCarona=${carona1ID} atributo="ehMunicipal"
+expect false getAtributoCaronaMunicipal idCarona=${carona2ID} atributo="ehMunicipal"
+expect false getAtributoCaronaMunicipal idCarona=${carona3ID} atributo="ehMunicipal"
+expect true  getAtributoCaronaMunicipal idCarona=${carona4ID} atributo="ehMunicipal"
+expect true  getAtributoCaronaMunicipal idCarona=${carona5ID} atributo="ehMunicipal"
+expect true  getAtributoCaronaMunicipal idCarona=${carona6ID} atributo="ehMunicipal"
+
+#Iniciar sess�o com outro usu�rio.
+sessaoBill=abrirSessao login="bill" senha="bilz@o"
+
+expect {${carona1ID}} localizarCarona idSessao=${sessaoBill} origem="Campina Grande" destino="João Pessoa"
+expect {${carona4ID}} localizarCaronaMunicipal idSessao=${sessaoBill} cidade="Campina Grande" origem="Açude Velho" destino="Shopping Boulevard"
+expect {${carona5ID},${carona6ID}} localizarCaronaMunicipal idSessao=${sessaoMark} cidade="João Pessoa" origem="" destino=""
+
+#Testa possiveis erros no sistema.
+expectError "Cidade inexistente" localizarCaronaMunicipal idSessao=${sessaoBill} cidade= origem="Açude Velho" destino="Shopping Boulevard"
+expectError "Cidade inexistente" localizarCaronaMunicipal idSessao=${sessaoBill} cidade="" origem="Açude Velho" destino="Shopping Boulevard"
+
+encerrarSistema
+quit
+

@@ -37,10 +37,10 @@ public class JdbcCaronaDao implements CaronaDao {
 	public void salva(Carona carona, int id) {
 		try {
 			String sql = String.format(
-					"insert into caronas(localOrigem, localDestino, data, hora, vagas, idSessao,perfil_idPerfil)"
-							+ "values('%s','%s','%s','%s','%s','%s',%d)",
-					carona.getOrigemCarona(), carona.getDestinoCarona(), carona.getData(), carona.getHora(),
-					carona.getVagas(), carona.getIdSessao(), id);
+					"insert into caronas(localOrigem, localDestino, data, cidade, hora, vagas, idSessao, tipoCarona, perfil_idPerfil)"
+							+ "values('%s','%s','%s','%s','%s','%s','%s','%s',%d)",
+					carona.getOrigemCarona(), carona.getDestinoCarona(), carona.getData(), carona.getCidade(),
+					carona.getHora(), carona.getVagas(), carona.getIdSessao(), carona.getTipoCarona(), id);
 			PreparedStatement ps = this.connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 			ps.executeUpdate();
 
@@ -379,9 +379,12 @@ public class JdbcCaronaDao implements CaronaDao {
 	public String buscaDonoCarona(int idSolicitacao) {
 		String donoCarona = "";
 		try {
-			String sql = String.format("(select usuario.nome from usuario where idUsuario = \r\n"
-					+ "(select caronas.perfil_idPerfil from caronas where idCaronas = \r\n"
-					+ "(select idCarona from solicitacaovagas where idsolicitacaovagas = %d)))", idSolicitacao);
+			String sql = String.format(
+					"(select nome from usuario where idUsuario =\r\n"
+							+ "(select usuario_idUsuario from perfil where idPerfil =\r\n"
+							+ "(select caronas.perfil_idPerfil from caronas where idCaronas = \r\n"
+							+ "(select idCarona from solicitacaovagas where idsolicitacaovagas = %d))))",
+					idSolicitacao);
 			PreparedStatement ps = this.connection.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();
 
@@ -1020,7 +1023,9 @@ public class JdbcCaronaDao implements CaronaDao {
 	@Override
 	public void reviewCaronaPresenca(String idSessao, int idCarona, String loginCaroneiro, String review) {
 		try {
-			String sql = String.format("insert into review (idSessao, idCarona, login, presenca)values('%s',%d,'%s','%s') ", idSessao, idCarona, loginCaroneiro, review);
+			String sql = String.format(
+					"insert into review (idSessao, idCarona, login, presenca)values('%s',%d,'%s','%s') ", idSessao,
+					idCarona, loginCaroneiro, review);
 			PreparedStatement ps = this.connection.prepareStatement(sql);
 			ps.executeUpdate();
 		} catch (SQLException e) {
@@ -1044,8 +1049,104 @@ public class JdbcCaronaDao implements CaronaDao {
 		} catch (SQLException e) {
 			throw new DAOException("Erro ao excluir informações da tabela review ", e);
 		}
-		
+
 	}
 
+	@Override
+	public boolean getAtributoCaronaMunicipal(int idCarona, String atributo) {
+		String tipo = "";
+		boolean valor = false;
+
+		try {
+			String sql = String.format("select tipoCarona from caronas where idCaronas = %d", idCarona);
+			PreparedStatement ps = this.connection.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+
+			while (rs.next()) {
+				tipo = rs.getString(1);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				this.connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
+		if (atributo.equals("ehMunicipal")) {
+			if (tipo.equals("Municipal")) {
+				valor = true;
+			}
+		}
+
+		return valor;
+	}
+
+	@Override
+	public String buscarCaronaMunicipio(String idSessao, String cidade) {
+		String idCarona = "{";
+
+		try {
+			String sql = String.format("select idCaronas from caronas where idSessao = '%s' and cidade = '%s'",
+					idSessao, cidade);
+			PreparedStatement ps = this.connection.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+
+			while (rs.next()) {
+				idCarona += rs.getString(1) + ",";
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				this.connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
+		if (!idCarona.equals("{")) {
+			idCarona = idCarona.substring(0, idCarona.length() - 1);
+		}
+		idCarona += "}";
+
+		return idCarona;
+	}
+
+	@Override
+	public String buscarCarona_Municipio_id(String idSessao, String cidade, String origem, String destino) {
+		String idCarona = "{";
+
+		try {
+			String sql = String.format("select idCaronas from caronas where cidade = '%s' and localOrigem = '%s' and localDestino = '%s'",
+					 cidade, origem, destino);
+			PreparedStatement ps = this.connection.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+
+			while (rs.next()) {
+				idCarona += rs.getString(1) + ",";
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				this.connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
+		if (!idCarona.equals("{")) {
+			idCarona = idCarona.substring(0, idCarona.length() - 1);
+		}
+		idCarona += "}";
+
+		return idCarona;
+	}
 
 }

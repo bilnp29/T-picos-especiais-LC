@@ -39,7 +39,11 @@ public class FachadaEasyaccept {
 
 	public String cadastrarCarona(String idSessao, String origem, String destino, String data, String hora,
 			String vagas) throws Exception {
-		return controleCarona.cadastroCarona(idSessao, origem, destino, data, hora, vagas);
+		return controleCarona.cadastroCarona(idSessao, origem, destino,data, hora, vagas);
+	}
+	public String cadastrarCaronaMunicipal(String idSessao, String origem, String destino, String cidade ,String data, String hora,
+			String vagas) throws Exception {
+		return controleCarona.cadastraCaronaMunicipal(idSessao, origem, destino,cidade ,data, hora, vagas);
 	}
 
 	public String localizarCarona(String idSessao, String origem, String destino) throws Exception {
@@ -54,6 +58,13 @@ public class FachadaEasyaccept {
 
 	public String getAtributoCarona(int idCarona, String atributo) {
 		return controleCarona.localizarCarona(idCarona, atributo);
+	}
+	public boolean getAtributoCaronaMunicipal(int idCarona, String atributo) {
+		return controleCarona.getAtributoCaronaMunicipal(idCarona, atributo);
+	}
+	
+	public String localizarCaronaMunicipal(String idSessao, String cidade, String origem, String destino) {
+		return controleCarona.localizarCaronaMunicipal(idSessao, cidade, origem, destino);
 	}
 
 	public String getCarona(int idcarona) {

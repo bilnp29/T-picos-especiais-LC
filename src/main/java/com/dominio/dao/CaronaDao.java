@@ -401,4 +401,42 @@ public interface CaronaDao {
 	 */
 	public void deletarReview();
 
+	/**
+	 * Método verificar se uma determinada carona é do tipo municipal.
+	 * 
+	 * @param idCarona
+	 *            identificador de uma carona
+	 * @param atributo
+	 *            parametro que será utilizado com referencia para pesquisa.
+	 * @return retorna um valor booleano verdade quando a carona forma municipal e
+	 *         falso para intermunicipal.
+	 */
+	public boolean getAtributoCaronaMunicipal(int idCarona, String atributo);
+
+	/**
+	 * O método irá buscar o id da carona com base com base nos parametros abaixo.
+	 * 
+	 * @param idSessao
+	 *            Identificador de uma sessão ativa de um usuário
+	 * @param cidade
+	 *            Local onde a carona vai acontecer <b>(parametro obrigatorio)</b>
+	 * @return O retorno será uma lista de caronas do tipo municipal cadastrada para
+	 *         a pesquisa.
+	 */
+	public String buscarCaronaMunicipio(String idSessao, String cidade);
+
+	/**
+	 @param idSessao
+	 *            Identificador de uma sessão ativa de um usuário
+	 * @param cidade
+	 *            Local onde a carona vai acontecer <b>(parametro obrigatorio)</b>
+	 * @param origem
+	 *            partida da carona
+	 * @param destino
+	 *            chegada da carona
+	 * @return O retorno será uma lista de caronas do tipo municipal cadastrada para
+	 *         a pesquisa.
+	 */
+	public String buscarCarona_Municipio_id(String idSessao, String cidade, String origem, String destino);
+
 }
