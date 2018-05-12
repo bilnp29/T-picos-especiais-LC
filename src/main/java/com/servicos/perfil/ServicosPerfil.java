@@ -4,6 +4,12 @@ import com.dominio.Usuario;
 import com.dominio.dao.SistemaDao;
 import com.tratamento.erro.ErroException;
 
+
+/**
+ * Esta classe irá realizar alguns servicos para um perfil de usuário
+ * @author Bruno Mirnada / Thassio Lucena
+ *
+ */
 public class ServicosPerfil {
 
 	private SistemaDao sistemaDao;

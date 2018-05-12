@@ -305,29 +305,23 @@ public interface CaronaDao {
 	public void AterarSituacao_SemSugestaoPonto(int idSolicitacao);
 
 	/**
-	 * @param idSolicitacao
-	 *            identificador de uma solicitação
-	 * @return capturar o valor da celular situacaoVagaSolicitada na tabela
+	 * capturar o valor da celular situacaoVagaSolicitada na tabela
 	 *         solicitacao_vaga_sem_sugestao e retorna o valor da celular para o
 	 *         método chamdor
+	 * @param idSolicitacao
+	 *            identificador de uma solicitação
+	 * @return 
 	 */
 	public String verificar_Solicitacao_Vaga(int idSolicitacao);
 
 	/**
-	 * @param idSolicitacao
-	 *            identificador de uma solicitação Alterar a situação da carona
+	 *  identificador de uma solicitação Alterar a situação da carona
 	 *            solicitada para "REJEITADA".
+	 * @param idSolicitacao identificador de uma solicitação
+	 *           
 	 */
 	public void alterar_Sicituacao_Solicitacao(int idSolicitacao);
 
-	/**
-	 * @param idSessao
-	 *            identificador de uma sessão
-	 * @param indexCarona
-	 *            id de uma carona.
-	 * @return
-	 */
-	public int getCaronaUsuario(String idSessao, int indexCarona);
 
 	/**
 	 * Pesquisa as caronas cadastrada pela sessão de um usuario.
@@ -337,11 +331,6 @@ public interface CaronaDao {
 	 * @return retorna um lista de caronas cadastrada pelo idSessao.
 	 */
 	public String getTodasCaronasUsuario(String idSessao);
-
-	/**
-	 * Apaga as informações da tabela informacaocarona
-	 */
-	public void deletarInformacoesCaornas();
 
 	/**
 	 * Pesquisa as solicitações de uma carona.
@@ -367,6 +356,7 @@ public interface CaronaDao {
 	public String getSolicitacoesPendentes(String idSessao, int idCarona);
 
 	/**
+	 * buscar pontos de encotro cadastrado
 	 * @param idSessao
 	 *            identificador da sessão
 	 * @param idCarona
@@ -376,6 +366,7 @@ public interface CaronaDao {
 	public String getPontosEncontro(String idSessao, int idCarona);
 
 	/**
+	 * buscar pontos sugeridos
 	 * @param idSessao
 	 *            identificador da sessão
 	 * @param idCarona
@@ -400,5 +391,43 @@ public interface CaronaDao {
 	 * Apaga os registro da tabela review.
 	 */
 	public void deletarReview();
+
+	/**
+	 * Método verificar se uma determinada carona é do tipo municipal.
+	 * 
+	 * @param idCarona
+	 *            identificador de uma carona
+	 * @param atributo
+	 *            parametro que será utilizado com referencia para pesquisa.
+	 * @return retorna um valor booleano verdade quando a carona forma municipal e
+	 *         falso para intermunicipal.
+	 */
+	public boolean getAtributoCaronaMunicipal(int idCarona, String atributo);
+
+	/**
+	 * O método irá buscar o id da carona com base com base nos parametros abaixo.
+	 * 
+	 * @param idSessao
+	 *            Identificador de uma sessão ativa de um usuário
+	 * @param cidade
+	 *            Local onde a carona vai acontecer <b>(parametro obrigatorio)</b>
+	 * @return O retorno será uma lista de caronas do tipo municipal cadastrada para
+	 *         a pesquisa.
+	 */
+	public String buscarCaronaMunicipio(String idSessao, String cidade);
+
+	/**
+	 @param idSessao
+	 *            Identificador de uma sessão ativa de um usuário
+	 * @param cidade
+	 *            Local onde a carona vai acontecer <b>(parametro obrigatorio)</b>
+	 * @param origem
+	 *            partida da carona
+	 * @param destino
+	 *            chegada da carona
+	 * @return O retorno será uma lista de caronas do tipo municipal cadastrada para
+	 *         a pesquisa.
+	 */
+	public String buscarCarona_Municipio_id(String idSessao, String cidade, String origem, String destino);
 
 }

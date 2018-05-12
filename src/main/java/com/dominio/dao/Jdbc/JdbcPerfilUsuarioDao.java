@@ -9,8 +9,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import org.apache.log4j.Logger;
+
 import com.dominio.PerfilUsuario;
-import com.dominio.dao.DAOException;
 import com.dominio.dao.PerfilUsuarioDao;
 
 /**
@@ -21,7 +22,13 @@ import com.dominio.dao.PerfilUsuarioDao;
  */
 public class JdbcPerfilUsuarioDao implements PerfilUsuarioDao {
 
+	/**
+	 * Inicializando logs da classe <b> SistemaDao </b>
+	 */
+	final static Logger logger = Logger.getLogger(JdbcPerfilUsuarioDao.class);
+
 	private Connection connection;
+	private static String MSG_INCIAL = "Iniciando o método";
 
 	public JdbcPerfilUsuarioDao(Connection connection) {
 		this.connection = connection;
@@ -35,6 +42,7 @@ public class JdbcPerfilUsuarioDao implements PerfilUsuarioDao {
 	 */
 	@Override
 	public void salva(PerfilUsuario perfil) {
+		logger.info(MSG_INCIAL);
 		try {
 			String sql = String.format(
 					"insert into perfil (IdSessao,estadoSessao,usuario_idUsuario, login) values ('%s',%b, %d, '%s')",
@@ -47,13 +55,12 @@ public class JdbcPerfilUsuarioDao implements PerfilUsuarioDao {
 			perfil.setIdPerfil(idperfil);
 
 		} catch (SQLException e) {
-			throw new DAOException("Erro ao salva dados do Perfl", e);
+			logger.info("Erro ao salvar dados do Perfil", e);
 		} finally {
 			try {
 				this.connection.close();
 			} catch (SQLException e) {
-				System.err.println(e.getLocalizedMessage());
-				e.printStackTrace();
+				logger.error("Erro ao encerra conexão", e);
 			}
 		}
 	}
@@ -65,6 +72,7 @@ public class JdbcPerfilUsuarioDao implements PerfilUsuarioDao {
 	 */
 	@Override
 	public String buscarid(String idSessao) {
+		logger.info(MSG_INCIAL);
 		String id_Sessao = "";
 		try {
 			String sql = String.format("select idSessao from perfil where idSessao = '%s'", idSessao);
@@ -75,7 +83,7 @@ public class JdbcPerfilUsuarioDao implements PerfilUsuarioDao {
 				id_Sessao = rs.getString(1);
 			}
 		} catch (SQLException e) {
-			throw new DAOException("Erro ao verificar se existe sessao ativa", e);
+			logger.info("Erro ao verificar se existe sessao ativa", e);
 		}
 		return id_Sessao;
 	}
@@ -87,14 +95,14 @@ public class JdbcPerfilUsuarioDao implements PerfilUsuarioDao {
 	 */
 	@Override
 	public void encerraSessaoTodas() {
-
+		logger.info(MSG_INCIAL);
 		try {
 			String sql = "update perfil set estadoSessao = false where perfil.idPerfil <> 0";
 			PreparedStatement ps = this.connection.prepareStatement(sql);
 			ps.executeUpdate();
 
 		} catch (Exception e) {
-			throw new DAOException("Erro ao encerra sessão", e);
+			logger.error("Erro ao encerrar sessão", e);
 		}
 
 	}
@@ -106,18 +114,18 @@ public class JdbcPerfilUsuarioDao implements PerfilUsuarioDao {
 	 */
 	@Override
 	public void deletarPerfil() {
+		logger.info(MSG_INCIAL);
 		try {
 			String sql = "delete from perfil where idPerfil <> 0";
 			PreparedStatement ps = this.connection.prepareStatement(sql);
 			ps.executeUpdate();
 		} catch (SQLException e) {
-			throw new DAOException("Erro ao excluir perfil ", e);
+			logger.error("Erro ao excluir perfil", e);
 		} finally {
 			try {
 				this.connection.close();
 			} catch (SQLException e) {
-				System.err.println(e.getLocalizedMessage());
-				e.printStackTrace();
+				logger.error("Erro ao encerra conexão", e);
 			}
 
 		}
@@ -131,19 +139,19 @@ public class JdbcPerfilUsuarioDao implements PerfilUsuarioDao {
 	 */
 	@Override
 	public void encerrarSessao(int id) {
+		logger.info(MSG_INCIAL);
 		try {
 			String sql = String.format("update perfil set estadoSessao = false where perfil.idPerfil = %d", id);
 			PreparedStatement ps = this.connection.prepareStatement(sql);
 			ps.executeUpdate();
 
 		} catch (SQLException e) {
-			throw new DAOException("Erro ao encerra sessão", e);
+			logger.error("Erro ao encerrar sessão", e);
 		} finally {
 			try {
 				this.connection.close();
 			} catch (SQLException e) {
-				System.err.println(e.getLocalizedMessage());
-				e.printStackTrace();
+				logger.error("Erro ao encerra conexão", e);
 			}
 		}
 	}
@@ -155,6 +163,7 @@ public class JdbcPerfilUsuarioDao implements PerfilUsuarioDao {
 	 */
 	@Override
 	public int recuperarIdPerfil(String login) {
+		logger.info(MSG_INCIAL);
 		int id = 0;
 		try {
 			String sql = String.format("select idPerfil from perfil where login = '%s'", login);
@@ -165,7 +174,7 @@ public class JdbcPerfilUsuarioDao implements PerfilUsuarioDao {
 				id = rs.getInt(1);
 			}
 		} catch (SQLException e) {
-			throw new DAOException("Erro ao recuperar usuario ", e);
+			logger.info("Erro ao recuperar usuario ", e);
 		}
 		return id;
 	}
@@ -177,6 +186,7 @@ public class JdbcPerfilUsuarioDao implements PerfilUsuarioDao {
 	 */
 	@Override
 	public String buscaNomeSolicitante(String idSessao) {
+		logger.info(MSG_INCIAL);
 		String nome = "";
 
 		try {
@@ -190,12 +200,12 @@ public class JdbcPerfilUsuarioDao implements PerfilUsuarioDao {
 			}
 
 		} catch (SQLException e) {
-			throw new DAOException("Erro ao buscar nome do solicitante ", e);
+			logger.info("Erro ao buscar nome do solicitante ", e);
 		} finally {
 			try {
 				this.connection.close();
 			} catch (SQLException e) {
-				e.printStackTrace();
+				logger.error("Erro ao encerra conexão", e);
 			}
 		}
 
@@ -209,6 +219,7 @@ public class JdbcPerfilUsuarioDao implements PerfilUsuarioDao {
 	 */
 	@Override
 	public int buscaridPerfil(String idSessao) {
+		logger.info(MSG_INCIAL);
 		int id = 0;
 		try {
 			String sql = String.format("select idPerfil from perfil where idSessao = '%s'", idSessao);
@@ -219,12 +230,12 @@ public class JdbcPerfilUsuarioDao implements PerfilUsuarioDao {
 				id = rs.getInt(1);
 			}
 		} catch (SQLException e) {
-			throw new DAOException("Erro ao recuperar identificador perfil ", e);
+			logger.warn("Erro ao recuperar identificador perfil ", e);
 		} finally {
 			try {
 				this.connection.close();
 			} catch (SQLException e) {
-				e.printStackTrace();
+				logger.error("Erro ao encerra conexão", e);
 			}
 		}
 		return id;
@@ -237,6 +248,7 @@ public class JdbcPerfilUsuarioDao implements PerfilUsuarioDao {
 	 */
 	@Override
 	public PerfilUsuario buscaDadosPerfil(String login) {
+		logger.info(MSG_INCIAL);
 		PerfilUsuario perfil = null;
 		try {
 			String sql = String
@@ -250,12 +262,12 @@ public class JdbcPerfilUsuarioDao implements PerfilUsuarioDao {
 				perfil.setEstadoSessao(rs.getBoolean(2));
 			}
 		} catch (SQLException e) {
-			throw new DAOException("Erro ao recuperar idSessao e estado do perfil ", e);
+			logger.warn("Erro ao recuperar idSessao e estado do perfil ", e);
 		} finally {
 			try {
 				this.connection.close();
 			} catch (SQLException e) {
-				e.printStackTrace();
+				logger.error("Erro ao encerra conexão", e);
 			}
 		}
 		return perfil;
@@ -269,19 +281,20 @@ public class JdbcPerfilUsuarioDao implements PerfilUsuarioDao {
 	 */
 	@Override
 	public void atualizarSessao(int id_perfil) {
+		logger.info(MSG_INCIAL);
 		try {
 			String sql = String.format("update perfil set estadoSessao = true where perfil.idPerfil = %d", id_perfil);
 			PreparedStatement ps = this.connection.prepareStatement(sql);
 			ps.executeUpdate();
 
 		} catch (SQLException e) {
-			throw new DAOException("Erro a atualizar estado da sessão", e);
+			logger.error("Erro a atualizar estado da sessão", e);
 		} finally {
 			try {
 				this.connection.close();
 			} catch (SQLException e) {
 				System.err.println(e.getLocalizedMessage());
-				e.printStackTrace();
+				logger.error("Erro ao encerra conexão", e);
 			}
 		}
 	}
@@ -294,6 +307,7 @@ public class JdbcPerfilUsuarioDao implements PerfilUsuarioDao {
 	 */
 	@Override
 	public int visualizarPeril(String idSessao, String login) {
+		logger.info(MSG_INCIAL);
 		int id = 0;
 		try {
 			String sql = String.format("select idPerfil from perfil where idSessao = '%s' and login = '%s'", idSessao,
@@ -305,12 +319,12 @@ public class JdbcPerfilUsuarioDao implements PerfilUsuarioDao {
 				id = rs.getInt(1);
 			}
 		} catch (SQLException e) {
-			throw new DAOException("Erro ao recuperar identificador perfil ", e);
+			logger.error("Erro ao recuperar identificador perfil ", e);
 		} finally {
 			try {
 				this.connection.close();
 			} catch (SQLException e) {
-				e.printStackTrace();
+				logger.error("Erro ao encerra conexão", e);
 			}
 		}
 		return id;
@@ -323,6 +337,7 @@ public class JdbcPerfilUsuarioDao implements PerfilUsuarioDao {
 	 */
 	@Override
 	public String buscarLogin(String idSessao) {
+		logger.info(MSG_INCIAL);
 		String login = "";
 		try {
 			String sql = String.format("select login from perfil where idSessao = '%s'", idSessao);
@@ -333,12 +348,12 @@ public class JdbcPerfilUsuarioDao implements PerfilUsuarioDao {
 				login = rs.getString(1);
 			}
 		} catch (SQLException e) {
-			throw new DAOException("Erro ao recuperar login usuario ", e);
+			logger.info("Erro ao recuperar login usuario ", e);
 		} finally {
 			try {
 				this.connection.close();
 			} catch (SQLException e) {
-				e.printStackTrace();
+				logger.error("Erro ao encerra conexão", e);
 			}
 		}
 		return login;
@@ -351,6 +366,7 @@ public class JdbcPerfilUsuarioDao implements PerfilUsuarioDao {
 	 */
 	@Override
 	public String historico_Caronas(String login) {
+		logger.info(MSG_INCIAL);
 		String id = "";
 		try {
 			String sql = String.format("select idCaronas from caronas where perfil_idPerfil =\r\n"
@@ -363,7 +379,7 @@ public class JdbcPerfilUsuarioDao implements PerfilUsuarioDao {
 				id += rs.getString(1);
 			}
 		} catch (SQLException e) {
-			throw new DAOException("Erro ao recuperar id carona ", e);
+			logger.info("Erro ao recuperar id carona ", e);
 		}
 
 		return id;
@@ -376,13 +392,14 @@ public class JdbcPerfilUsuarioDao implements PerfilUsuarioDao {
 	 */
 	@Override
 	public void reiniciarSistema() {
+		logger.info(MSG_INCIAL);
 		try {
 			String sql = "update perfil set estadoSessao = true where perfil.idPerfil <> 0";
 			PreparedStatement ps = this.connection.prepareStatement(sql);
 			ps.executeUpdate();
 
 		} catch (SQLException e) {
-			throw new DAOException("Erro ao reiniciar sessão", e);
+			logger.info("Erro ao reiniciar sessão ", e);
 		}
 
 	}
@@ -394,6 +411,7 @@ public class JdbcPerfilUsuarioDao implements PerfilUsuarioDao {
 	 */
 	@Override
 	public int buscar_faltas_caronas(String login) {
+		logger.info(MSG_INCIAL);
 		int faltas = 0;
 		try {
 			String sql = String.format("select count(*) from review where login = '%s' and presenca = 'faltou' ",
@@ -404,7 +422,7 @@ public class JdbcPerfilUsuarioDao implements PerfilUsuarioDao {
 				faltas = rs.getInt(1);
 			}
 		} catch (SQLException e) {
-			throw new DAOException("Erro na contagem de faltas ", e);
+			logger.info("Erro ao informa o número de faltas ", e);
 		}
 		return faltas;
 	}
@@ -417,6 +435,7 @@ public class JdbcPerfilUsuarioDao implements PerfilUsuarioDao {
 	 */
 	@Override
 	public int buscar_presenca_caronas(String login) {
+		logger.info(MSG_INCIAL);
 		int presenca = 0;
 		try {
 			String sql = String.format("select count(*) from review where login = '%s' and presenca = 'nao faltou' ",
@@ -427,7 +446,7 @@ public class JdbcPerfilUsuarioDao implements PerfilUsuarioDao {
 				presenca = rs.getInt(1);
 			}
 		} catch (SQLException e) {
-			throw new DAOException("Erro na contagem de presenca ", e);
+			logger.info("Erro ao informa o número de presença em caronas ", e);
 		}
 		return presenca;
 	}
@@ -441,6 +460,7 @@ public class JdbcPerfilUsuarioDao implements PerfilUsuarioDao {
 	 */
 	@Override
 	public String buscar_historico_vagas_caronas(String login) {
+		logger.info(MSG_INCIAL);
 		String id = "[";
 		try {
 			String sql = String.format("(select idCarona from solicitacao_vaga_sem_sugestao where idSessao =\r\n"
@@ -453,7 +473,7 @@ public class JdbcPerfilUsuarioDao implements PerfilUsuarioDao {
 				id += rs.getString(1) + ",";
 			}
 		} catch (SQLException e) {
-			throw new DAOException("Erro ao recuperar id carona ", e);
+			logger.info("Erro ao informa o historico de vagas ", e);
 		}
 		if (!id.equals("[")) {
 			id = id.substring(0, id.length() - 1);
@@ -469,6 +489,7 @@ public class JdbcPerfilUsuarioDao implements PerfilUsuarioDao {
 	 */
 	@Override
 	public boolean existeIdSessao(String idSessao) {
+		logger.info(MSG_INCIAL);
 		boolean sessaoExistente = false;
 		try {
 			String sql = String.format(
@@ -482,12 +503,12 @@ public class JdbcPerfilUsuarioDao implements PerfilUsuarioDao {
 			}
 
 		} catch (SQLException e) {
-			throw new DAOException("Erro ao encontra usuario na tabela solicitacao_vaga_sem_sugestao ", e);
+			logger.info("Erro ao encontra usuario na tabela solicitacao_vaga_sem_sugestao", e);
 		} finally {
 			try {
 				this.connection.close();
 			} catch (SQLException e) {
-				e.printStackTrace();
+				logger.error("Erro ao encerra conexão", e);
 			}
 		}
 
@@ -502,6 +523,7 @@ public class JdbcPerfilUsuarioDao implements PerfilUsuarioDao {
 	 */
 	@Override
 	public void review_Motorista(String idSessao, int carona, String review) {
+		logger.info(MSG_INCIAL);
 		try {
 			String sql = String.format(
 					"insert into review_Motorista (idSessao, idcarona, informacao) values ('%s', %d, '%s')", idSessao,
@@ -510,22 +532,26 @@ public class JdbcPerfilUsuarioDao implements PerfilUsuarioDao {
 			ps.executeUpdate();
 
 		} catch (SQLException e) {
-			throw new DAOException("Erro a salva informações na base de dados review_Motorista", e);
+			logger.info("Erro a salva informações na base de dados review_Motorista", e);
 		} finally {
 			try {
 				this.connection.close();
 			} catch (SQLException e) {
-				System.err.println(e.getLocalizedMessage());
-				e.printStackTrace();
+				logger.error("Erro ao encerra conexão", e);
 			}
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see com.dominio.dao.PerfilUsuarioDao#buscar_historico_caronasSeguras(java.lang.String)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.dominio.dao.PerfilUsuarioDao#buscar_historico_caronasSeguras(java.lang.
+	 * String)
 	 */
 	@Override
 	public String buscar_historico_caronasSeguras() {
+		logger.info(MSG_INCIAL);
 		String informacao = "";
 		try {
 			String sql = "select count(*) from review_Motorista where informacao = 'segura e tranquila'";
@@ -535,16 +561,21 @@ public class JdbcPerfilUsuarioDao implements PerfilUsuarioDao {
 				informacao = rs.getString(1);
 			}
 		} catch (SQLException e) {
-			throw new DAOException("Erro na contagem das caronas seguras e tranquilas ", e);
+			logger.info("Erro na contagem das caronas seguras e tranquilas ", e);
 		}
 		return informacao;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.dominio.dao.PerfilUsuarioDao#buscar_historico_caronas_nao_funcionaram(java.lang.String)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.dominio.dao.PerfilUsuarioDao#buscar_historico_caronas_nao_funcionaram(
+	 * java.lang.String)
 	 */
 	@Override
 	public String buscar_historico_caronas_nao_funcionaram() {
+		logger.info(MSG_INCIAL);
 		String informacao = "";
 		try {
 			String sql = "select count(*) from review_Motorista where informacao = 'não funcionou'";
@@ -554,20 +585,21 @@ public class JdbcPerfilUsuarioDao implements PerfilUsuarioDao {
 				informacao = rs.getString(1);
 			}
 		} catch (SQLException e) {
-			throw new DAOException("Erro na contagem das caronas que não funcionaram ", e);
+			logger.info("Erro na contagem das caronas que não funcionaram ", e);
 		}
 		return informacao;
 	}
 
 	@Override
 	public void deletarReviewMotorista() {
+		logger.info(MSG_INCIAL);
 		try {
 			String sql = "delete from review_motorista where id_review_Motorista <> 0";
 			PreparedStatement ps = this.connection.prepareStatement(sql);
 			ps.executeUpdate();
 		} catch (SQLException e) {
-			throw new DAOException("Erro ao excluir review_motorista ", e);
-		} 
-		
+			logger.error("Erro ao excluir review_motorista  ", e);
+		}
+
 	}
 }

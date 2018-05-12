@@ -17,6 +17,8 @@ public class Carona {
 	private String vagas;
 	private String data;
 	private String hora;
+	private String cidade;
+	private String TipoCarona;
 	private int perfil_IdPerfil;
 
 	public Carona() {
@@ -24,7 +26,7 @@ public class Carona {
 	}
 
 	/**
-	 * Método construtor da classe Carona recebe com parametro os atributos abaixo.
+	 * Método construtor da classe Carona para uma carona intermunicipal recebe com parametro os atributos abaixo.
 	 * 
 	 * @param idSessao
 	 *            Identificador da sessão do usuário
@@ -32,6 +34,9 @@ public class Carona {
 	 *            Local de partida de uma carona
 	 * @param destinoCarona
 	 *            Local da chegada de uma carona
+	 * @param cidede
+	 *            Atributo informa a cidade onde a carona será execultada. O mesmo
+	 *            só será setado se for em uma carona do tipo municipal.
 	 * @param data
 	 *            arona quando vai acontecer
 	 * @param hora
@@ -39,14 +44,47 @@ public class Carona {
 	 * @param vagas
 	 *            Quantidade de pessoas que podem solicitar uma carona
 	 */
-	public Carona(String idSessao, String origemCarona, String destinoCarona, String data, String hora, String vagas) {
+	public Carona(String idSessao, String origemCarona, String destinoCarona,String data, String hora,
+			String vagas) {
 		this.setOrigemCarona(origemCarona);
 		this.setDestinoCarona(destinoCarona);
+		this.setCidade(cidade);
 		this.setVagas(vagas);
 		this.setData(data);
 		this.setHora(hora);
 		this.setIdSessao(idSessao);
+		
 
+	}
+
+	/**
+	 * Método construtor da classe Carona para uma carona municipal recebe com parametro os atributos abaixo.
+	 * 
+	 * @param idSessao
+	 *            Identificador da sessão do usuário
+	 * @param origemCarona
+	 *            Local de partida de uma carona
+	 * @param destinoCarona
+	 *            Local da chegada de uma carona
+	 * @param cidede
+	 *            Atributo informa a cidade onde a carona será execultada. O mesmo
+	 *            só será setado se for em uma carona do tipo municipal.
+	 * @param data
+	 *            arona quando vai acontecer
+	 * @param hora
+	 *            O horario da carona
+	 * @param vagas
+	 *            Quantidade de pessoas que podem solicitar uma carona
+	 */
+	public Carona(String idSessao2, String origem, String destino, String cidade2, String data2, String hora2,
+			String vagas2) {
+		this.idSessao = idSessao2;
+		this.origemCarona = origem;
+		this.destinoCarona = destino;
+		this.cidade =cidade2;
+		this.data = data2;
+		this.hora = hora2;
+		this.vagas = vagas2;
 	}
 
 	public int getIdCaronas() {
@@ -119,6 +157,22 @@ public class Carona {
 
 	public void setDonoCarona(String donoCarona) {
 		this.donoCarona = donoCarona;
+	}
+
+	public String getCidade() {
+		return cidade;
+	}
+
+	public void setCidade(String cidade) {
+		this.cidade = cidade;
+	}
+
+	public String getTipoCarona() {
+		return TipoCarona;
+	}
+
+	public void setTipoCarona(String tipoCarona) {
+		TipoCarona = tipoCarona;
 	}
 
 }
