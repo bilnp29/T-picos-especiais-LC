@@ -70,14 +70,6 @@ public class ControleCarona {
 		return servicosCarona.descreverTrajeto(idcarona);
 	}
 
-	/**
-	 * @param idSessao
-	 * @param indexCarona
-	 * @return
-	 */
-	public int getCaronaUsuario(String idSessao, int indexCarona) {
-		return servicosCarona.getCaronaUsuario(idSessao, indexCarona);
-	}
 
 	/**
 	 * @param idSessao
@@ -129,6 +121,19 @@ public class ControleCarona {
 	public String localizarCaronaMunicipal(String idSessao, String cidade, String origem, String destino) {
 
 		return servicosCarona.localizarCaronaMunicipal(idSessao, cidade, origem, destino);
+	}
+
+	/**
+	 * localizarCaronaMunicipal-> Este vai direcinar os parametro informados para a
+	 * o método de mesmo nome na classe <b>servicosCarona</b>
+	 * 
+	 * @param idSessao
+	 *            Identificador de uma sessão ativa de um usuário
+	 * @param cidade
+	 *            Local onde a carona vai acontecer <b>(parametro obrigatorio)</b> 
+	 **/
+	public String localizarCaronaMunicipal(String idSessao, String cidade) {
+		return servicosCarona.localizarCaronaMunicipal(idSessao, cidade);
 	}
 
 }

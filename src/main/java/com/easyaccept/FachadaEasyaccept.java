@@ -63,8 +63,12 @@ public class FachadaEasyaccept {
 		return controleCarona.getAtributoCaronaMunicipal(idCarona, atributo);
 	}
 	
-	public String localizarCaronaMunicipal(String idSessao, String cidade, String origem, String destino) {
+	public String localizarCaronaMunicipal(String idSessao, String cidade, String origem, String destino) { 
 		return controleCarona.localizarCaronaMunicipal(idSessao, cidade, origem, destino);
+	}
+	public String localizarCaronaMunicipal(String idSessao, String cidade) {
+		return controleCarona.localizarCaronaMunicipal(idSessao,cidade);
+		
 	}
 
 	public String getCarona(int idcarona) {
@@ -122,11 +126,6 @@ public class FachadaEasyaccept {
 
 	public String getAtributoPerfil(String login, String atributo) {
 		return controlePerfil.getAtributoPerfil(login, atributo);
-	}
-
-	public int getCaronaUsuario(String idSessao, int indexCarona) {
-		return controleCarona.getCaronaUsuario(idSessao, indexCarona);
-
 	}
 
 	public String getTodasCaronasUsuario(String idSessao) {

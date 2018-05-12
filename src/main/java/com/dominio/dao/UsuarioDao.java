@@ -8,30 +8,35 @@ import java.util.Map;
 import com.dominio.Usuario;
 
 /**
- * @author Bruno Miranda, Thassio Lucena Interface irá auxiliar no servico de
+ * Lucena Interface irá auxiliar no servico de
  *         persistencia de dados.
+ * @author Bruno Miranda, Thassio 
  *
  */
 public interface UsuarioDao {
 
 	/**
 	 * O método ira salva um usuario valido.
-	 * @param usuario
+	 * @param usuario o atributo em questão é um objeto do tipo usuário
+	 * @see
+	 * Usuario
 	 */
 	public void salvar(Usuario usuario);
 
 	/**
-	 * @param login
-	 * @param atributo
-	 * @return
+	 *  Busca o nome do usuario ou endereco do mesmo diacordo com o seu login.
+	 * @param login atributo utilizado para fazer login
+	 * @param atributo este atributo recebe dois valor nome ou endereco
+	 * @return retorna o valor informado.
 	 * 
-	 * Busca o nome do usuario ou endereco do mesmo diacordo com o seu login.
+	 *
 	 */
 	public Usuario buscarAtributo(String login,String atributo);
 
 	/**
-	 * @return
-	 * Busca todos os registro da tabela usuario.
+	 * Buscar dados de um usuário
+	 * @return retorna uma hasrMap.
+	 * 
 	 */
 	public Map<String, Usuario> buscarTodosUsuarios();
 
@@ -40,10 +45,6 @@ public interface UsuarioDao {
 	 */
 	public void deletarRegistro();
 
-	/**
-	 * @param login
-	 * @return
-	 */
-	public String retornaDados(String login);
+	
 	
 }

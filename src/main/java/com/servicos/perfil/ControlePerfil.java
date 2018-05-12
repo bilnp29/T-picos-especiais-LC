@@ -1,7 +1,7 @@
 package com.servicos.perfil;
 
 /**
- * 
+ * Esta classe irá receber informações e repassa-las para a classe serviçosPerfil.
  * @author Bruno Miranda / Thassio Lucena
  *
  */
