@@ -10,24 +10,30 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+
 import com.dominio.Usuario;
-import com.dominio.dao.DAOException;
 import com.dominio.dao.UsuarioDao;
 import com.mysql.jdbc.Statement;
 
 /**
- * @author Bruno Miranda, Thassio Lucena Classe reponsalve por implementar os
- *         métodos da interface UsuarioDao.
+ * Classe reponsalve por implementar os métodos da interface UsuarioDao.
+ * 
+ * @author Bruno Miranda, Thassio Lucena
  *
  */
 public class JdbcUsuarioDao implements UsuarioDao {
 
+	final static Logger logger = Logger.getLogger(JdbcUsuarioDao.class);
+
 	private Connection connection;
+
+	private static String MSG_INCIAL = "Iniciando o método";
 
 	public JdbcUsuarioDao(Connection connection) {
 		this.connection = connection;
 
-	} 
+	}
 
 	/*
 	 * (non-Javadoc)
@@ -36,6 +42,7 @@ public class JdbcUsuarioDao implements UsuarioDao {
 	 */
 	@Override
 	public void salvar(Usuario usuario) {
+		logger.info(MSG_INCIAL);
 		try {
 			String sql = String.format(
 					"insert into usuario (nome,login,email,endereco,telefone,senha) "
@@ -51,13 +58,12 @@ public class JdbcUsuarioDao implements UsuarioDao {
 				usuario.setIdUsuario(idUsuario);
 			}
 		} catch (SQLException e) {
-			throw new DAOException("Erro ao salva cliente", e);
+			logger.info("Erro ao salvar cliente", e);
 		} finally {
 			try {
 				this.connection.close();
 			} catch (SQLException e) {
-				System.err.println(e.getLocalizedMessage());
-				e.printStackTrace();
+				logger.error("Erro ao encerra conexão", e);
 			}
 		}
 	}
@@ -70,6 +76,7 @@ public class JdbcUsuarioDao implements UsuarioDao {
 	 */
 	@Override
 	public Usuario buscarAtributo(String login, String atributo) {
+		logger.info(MSG_INCIAL);
 		Usuario usuario = null;
 		try {
 			String sql = String.format("select * from usuario where login = %s", "'" + login + "'");
@@ -85,15 +92,12 @@ public class JdbcUsuarioDao implements UsuarioDao {
 			}
 
 		} catch (SQLException e) {
-			throw new DAOException("Erro ao busca usuario ", e);
-		} catch (Exception e) {
-			e.printStackTrace();
+			logger.info("Erro ao buscar usuario", e);
 		} finally {
 			try {
 				this.connection.close();
 			} catch (SQLException e) {
-				System.err.println(e.getLocalizedMessage());
-				e.printStackTrace();
+				logger.error("Erro ao encerra conexão", e);
 			}
 		}
 
@@ -107,6 +111,7 @@ public class JdbcUsuarioDao implements UsuarioDao {
 	 */
 	@Override
 	public Map<String, Usuario> buscarTodosUsuarios() {
+		logger.info(MSG_INCIAL);
 		Map<String, Usuario> dados = new HashMap<>();
 		try {
 			String sql = "select * from usuario";
@@ -116,7 +121,7 @@ public class JdbcUsuarioDao implements UsuarioDao {
 			while (rs.next()) {
 				Usuario usuario = new Usuario();
 				String login = rs.getString("login");
-				
+
 				usuario.setLogin(rs.getString("login"));
 				usuario.setSenha(rs.getString("senha"));
 				usuario.setEmail(rs.getString("email"));
@@ -126,48 +131,43 @@ public class JdbcUsuarioDao implements UsuarioDao {
 			}
 
 		} catch (SQLException e) {
-			throw new DAOException("Erro ao busca usuario ", e);
+			logger.info("Erro ao buscar usuario", e);
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			try {
 				this.connection.close();
 			} catch (SQLException e) {
-				System.err.println(e.getLocalizedMessage());
-				e.printStackTrace();
+				logger.error("Erro ao encerra conexão", e);
 			}
 		}
 
 		return dados;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.dominio.dao.UsuarioDao#deletarRegistro()
 	 */
 	@Override
 	public void deletarRegistro() {
+		logger.info(MSG_INCIAL);
 		try {
 			String sql = "delete from usuario where idUsuario <> 0";
 			PreparedStatement ps = this.connection.prepareStatement(sql);
 			ps.executeUpdate();
 		} catch (SQLException e) {
-			throw new DAOException("Erro ao excluir usuario ", e);
+			logger.info("Erro ao excluir usuario", e);
 		} finally {
 			try {
 				this.connection.close();
 			} catch (SQLException e) {
-				System.err.println(e.getLocalizedMessage());
-				e.printStackTrace();
+				logger.error("Erro ao encerra conexão", e);
 			}
 
 		}
 
-	}
-
-	@Override
-	public String retornaDados(String login) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 }
