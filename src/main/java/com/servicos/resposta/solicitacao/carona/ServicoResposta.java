@@ -1,5 +1,7 @@
 package com.servicos.resposta.solicitacao.carona;
 
+import org.apache.log4j.Logger;
+
 import com.dominio.dao.SistemaDao;
 import com.tratamento.erro.ErroException;
 
@@ -11,6 +13,7 @@ import com.tratamento.erro.ErroException;
  */
 public class ServicoResposta {
 	private SistemaDao sistemaDao;
+	final static Logger logger = Logger.getLogger(ServicoResposta.class);
 
 	public ServicoResposta() {
 		sistemaDao = new SistemaDao();
@@ -25,11 +28,14 @@ public class ServicoResposta {
 	 * @param pontos pontos de encontro cadastrados.
 	 */
 	public void responderPontoEncotro(String idSessao, int idCarona, int idSolicitacoes, String pontos) {
+		logger.info("Iniciando o método");
 		if (pontos == null || pontos.equals("")) {
+			logger.error("ponto invalido");
 			throw new ErroException("ponto invalido");
 		}
 		int id = sistemaDao.buscaIdPerfil(idSessao);
 		sistemaDao.salvaResposta(idSessao,idCarona, idSolicitacoes,pontos,id);
+		logger.info("Fim do método");
 	}
 	/**
 	 * Retorna os pontos de encontro cadastrado.
@@ -39,7 +45,7 @@ public class ServicoResposta {
 	 * @return Retonar a resposta do ponto de encontro sugerido.
 	 */
 	public String getPontosEncontro(String idSessao, int idCarona) {
-		
+		logger.info("Iniciando o método");
 		return sistemaDao.getPontosEncontro(idSessao, idCarona);
 	}
 	

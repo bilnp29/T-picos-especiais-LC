@@ -3,6 +3,7 @@
  */
 package com.dominio.dao;
 
+import com.dominio.InteresseCarona;
 import com.dominio.PerfilUsuario;
 
 /**
@@ -199,5 +200,10 @@ public interface PerfilUsuarioDao {
 	 * Apaga os registro da tabela review_motorista
 	 */
 	public void deletarReviewMotorista();
+
+	/**
+	 * @return retorna os interesse de carona cadastrdas.
+	 */
+	public InteresseCarona buscarIntersseCarona(String idSessao);
 
 }

@@ -11,6 +11,7 @@ import java.sql.Statement;
 
 import org.apache.log4j.Logger;
 
+import com.dominio.InteresseCarona;
 import com.dominio.PerfilUsuario;
 import com.dominio.dao.PerfilUsuarioDao;
 
@@ -601,5 +602,33 @@ public class JdbcPerfilUsuarioDao implements PerfilUsuarioDao {
 			logger.error("Erro ao excluir review_motorista  ", e);
 		}
 
+	}
+
+	@Override
+	public InteresseCarona buscarIntersseCarona(String idSessao) {
+		logger.info(MSG_INCIAL);
+		InteresseCarona informacao = null; 
+		try {
+			String sql =  String.format("select * from interessecaronas where idSessao = '%s'", idSessao);
+			PreparedStatement ps = this.connection.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				informacao = new InteresseCarona();
+				
+				informacao.setOrigem(rs.getString("origem"));
+				informacao.setDestino(rs.getString("destino"));
+				informacao.setData(rs.getString("data"));
+			}
+			
+		}catch (SQLException e) {
+			logger.info("Erro ao recuperar dados de Interesse em caronas", e);
+		} finally {
+			try {
+				this.connection.close();
+			} catch (SQLException e) {
+				logger.error("Erro ao encerra conexão", e);
+			}
+		}
+		return informacao;
 	}
 }

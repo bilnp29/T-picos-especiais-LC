@@ -3,6 +3,8 @@ package com.dominio.dao;
 import java.util.List;
 
 import com.dominio.Carona;
+import com.dominio.InteresseCarona;
+import com.dominio.dao.Jdbc.JdbcCaronaDao;
 
 /**
  * Interface irá auxiliar no servico de persistencia de dados.
@@ -306,22 +308,24 @@ public interface CaronaDao {
 
 	/**
 	 * capturar o valor da celular situacaoVagaSolicitada na tabela
-	 *         solicitacao_vaga_sem_sugestao e retorna o valor da celular para o
-	 *         método chamdor
+	 * solicitacao_vaga_sem_sugestao e retorna o valor da celular para o método
+	 * chamdor
+	 * 
 	 * @param idSolicitacao
 	 *            identificador de uma solicitação
-	 * @return 
+	 * @return
 	 */
 	public String verificar_Solicitacao_Vaga(int idSolicitacao);
 
 	/**
-	 *  identificador de uma solicitação Alterar a situação da carona
-	 *            solicitada para "REJEITADA".
-	 * @param idSolicitacao identificador de uma solicitação
-	 *           
+	 * identificador de uma solicitação Alterar a situação da carona solicitada para
+	 * "REJEITADA".
+	 * 
+	 * @param idSolicitacao
+	 *            identificador de uma solicitação
+	 * 
 	 */
 	public void alterar_Sicituacao_Solicitacao(int idSolicitacao);
-
 
 	/**
 	 * Pesquisa as caronas cadastrada pela sessão de um usuario.
@@ -357,6 +361,7 @@ public interface CaronaDao {
 
 	/**
 	 * buscar pontos de encotro cadastrado
+	 * 
 	 * @param idSessao
 	 *            identificador da sessão
 	 * @param idCarona
@@ -367,6 +372,7 @@ public interface CaronaDao {
 
 	/**
 	 * buscar pontos sugeridos
+	 * 
 	 * @param idSessao
 	 *            identificador da sessão
 	 * @param idCarona
@@ -417,7 +423,9 @@ public interface CaronaDao {
 	public String buscarCaronaMunicipio(String idSessao, String cidade);
 
 	/**
-	 @param idSessao
+	 * O método irá buscar o id da carona com base com base nos parametros abaixo.
+	 * 
+	 * @param idSessao
 	 *            Identificador de uma sessão ativa de um usuário
 	 * @param cidade
 	 *            Local onde a carona vai acontecer <b>(parametro obrigatorio)</b>
@@ -429,5 +437,36 @@ public interface CaronaDao {
 	 *         a pesquisa.
 	 */
 	public String buscarCarona_Municipio_id(String idSessao, String cidade, String origem, String destino);
+
+	/**
+	 * Salvando informações de interesse em uma carona.
+	 * 
+	 * @param idSessao
+	 *            identificador de uma sessao
+	 * @param origem
+	 *            partida de uma carona
+	 * @param destino
+	 *            chegada da carona
+	 * @param data
+	 *            data de saída
+	 * @param horaInicio
+	 *            hora da saída
+	 * @param horaFim
+	 *            hora da chegada
+	 * @return retorna o identificador da carona interessada.
+	 * @see JdbcCaronaDao
+	 */
+	public int cadastrarInteresse(String idSessao, String origem, String destino, String data, String horaInicio,
+			String horaFim);
+
+	/**
+	 * 
+	 * Buscar informações de um carona
+	 * 
+	 * @param interesseCaronas
+	 *            objeto caronas interessadas
+	 * @return retorna o id de uma carona a data e hora da mesma.
+	 */
+	public Carona buscar_dadosCarona(InteresseCarona interesseCaronas);
 
 }

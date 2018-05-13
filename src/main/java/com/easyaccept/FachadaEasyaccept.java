@@ -154,6 +154,12 @@ public class FachadaEasyaccept {
 	public void reviewCarona (String idSessao, int Carona, String review) {
 		controleSolicitacoes.reviewCarona(idSessao, Carona, review);
 	}
+	public int cadastrarInteresse(String idSessao, String origem, String destino, String data, String horaInicio, String horaFim) {
+		return controleCarona.cadastrarInteresse(idSessao, origem, destino, data, horaInicio, horaFim);
+	}
+	public String verificarMensagensPerfil(String idSessao) {
+		return controlePerfil.verificarMensagensPerfil(idSessao);
+	}
 
 	public void encerrarSistema() {
 		controleUsuario.fechaSistema();

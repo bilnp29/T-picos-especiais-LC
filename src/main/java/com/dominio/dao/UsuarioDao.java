@@ -5,6 +5,7 @@ package com.dominio.dao;
 
 import java.util.Map;
 
+import com.dominio.Carona;
 import com.dominio.Usuario;
 
 /**
@@ -44,6 +45,8 @@ public interface UsuarioDao {
 	 * Deletar todos os registros na base de dados.
 	 */
 	public void deletarRegistro();
+
+	public String buscarEmailUsuario(Carona carona);
 
 	
 	

@@ -1,7 +1,9 @@
 package com.servicos.perfil;
 
 /**
- * Esta classe irá receber informações e repassa-las para a classe serviçosPerfil.
+ * Esta classe irá receber informações e repassa-las para a classe
+ * serviçosPerfil.
+ * 
  * @author Bruno Miranda / Thassio Lucena
  *
  */
@@ -44,6 +46,19 @@ public class ControlePerfil {
 
 	public String getAtributoPerfil(String login, String atributo) {
 		return servicosPerfil.gerAtributoPerfil(login, atributo);
+	}
+
+	/**
+	 * Este método vai chama o método de mesmo nome para informa se existe caronas
+	 * cadastrada no sistema que satisfaz os interesse do caroneiro.
+	 * 
+	 * @param idSessao
+	 *            identificador de uma sessão, usuário ativo no sistema
+	 * @return retorna as informações sobre uma carona que esta para acontecer
+	 */
+	public String verificarMensagensPerfil(String idSessao) {
+
+		return servicosPerfil.verificarMensagensPerfil(idSessao);
 	}
 
 }
