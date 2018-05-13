@@ -4,12 +4,15 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
 
 import com.dominio.Carona;
+import com.dominio.InteresseCarona;
 import com.dominio.dao.CaronaDao;
 import com.dominio.dao.DAOException;
 import com.mysql.jdbc.Statement;
@@ -1298,6 +1301,119 @@ public class JdbcCaronaDao implements CaronaDao {
 		idCarona += "}";
 
 		return idCarona;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.dominio.dao.CaronaDao#cadastrarInteresse(java.lang.String,
+	 * java.lang.String, java.lang.String, java.lang.String, java.lang.String,
+	 * java.lang.String)
+	 */
+	@Override
+	public int cadastrarInteresse(String idSessao, String origem, String destino, String data, String horaInicio,
+			String horaFim) {
+		int id = 0;
+		try {
+			logger.info("Inicializando o método");
+			String sql = String.format(
+					"insert into interessecaronas(idSessao, origem,destino,data,horaInicial, horaFinal)"
+							+ "values('%s','%s','%s','%s','%s' ,'%s')",
+					idSessao, origem, destino, data, horaInicio, horaFim);
+			PreparedStatement ps = this.connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			ps.executeUpdate();
+
+			ResultSet rs = ps.getGeneratedKeys();
+
+			while (rs.next()) {
+				id = rs.getInt(1);
+			}
+
+		} catch (SQLException e) {
+			logger.info("Erro ao salva dados de interesse de uma carona", e);
+
+		} finally {
+			try {
+
+				this.connection.close();
+			} catch (SQLException e) {
+				logger.info("Erro ao fechar connection", e);
+			}
+		}
+		logger.info("Fim do método");
+		return id;
+	}
+
+	@Override
+	public Carona buscar_dadosCarona(InteresseCarona interesseCaronas) {
+		logger.info("Inicializando método");
+		Carona carona = null;
+		String data = "";
+		if (interesseCaronas.getData().equals("")) {
+			Date hoje = new Date();
+			SimpleDateFormat df;
+			df = new SimpleDateFormat("dd/MM/yyyy");
+			data = df.format(hoje);
+			
+			try {
+				String sql = String.format(
+						"select idCaronas, data, hora, localOrigem, localDestino from caronas where caronas.localOrigem = '%s' "
+								+ "and caronas.localDestino = '%s' and caronas.data >= '%s'",
+						interesseCaronas.getOrigem(), interesseCaronas.getDestino(), data);
+				PreparedStatement ps = this.connection.prepareStatement(sql);
+				ResultSet rs = ps.executeQuery();
+				while (rs.next()) {
+					carona = new Carona();
+					carona.setIdCaronas(rs.getInt(1));
+					carona.setData(rs.getString(2));
+					carona.setHora(rs.getString(3));
+					carona.setOrigemCarona(rs.getString(4));
+					carona.setDestinoCarona(rs.getString(5));
+				}
+
+			} catch (SQLException e) {
+				logger.info("Erro ao salva dados de interesse de uma carona", e);
+
+			} finally {
+				try {
+
+					this.connection.close();
+				} catch (SQLException e) {
+					logger.info("Erro ao fechar connection", e);
+				}
+			}
+		} else {
+			try {
+				String sql = String.format(
+						"select idCaronas, data, hora, localOrigem, localDestino from caronas where caronas.localOrigem = '%s' "
+								+ "and caronas.localDestino = '%s' and caronas.data = '%s'",
+						interesseCaronas.getOrigem(), interesseCaronas.getDestino(), interesseCaronas.getData());
+				PreparedStatement ps = this.connection.prepareStatement(sql);
+				ResultSet rs = ps.executeQuery();
+				while (rs.next()) {
+					carona = new Carona();
+					carona.setIdCaronas(rs.getInt(1));
+					carona.setData(rs.getString(2));
+					carona.setHora(rs.getString(3));
+					carona.setOrigemCarona(rs.getString(4));
+					carona.setDestinoCarona(rs.getString(5));
+				}
+
+			} catch (SQLException e) {
+				logger.info("Erro ao capturar dados de uma carona", e);
+
+			} finally {
+				try {
+
+					this.connection.close();
+				} catch (SQLException e) {
+					logger.info("Erro ao fechar connection", e);
+				}
+			}
+		}
+
+		logger.info("Fim do método");
+		return carona;
 	}
 
 }

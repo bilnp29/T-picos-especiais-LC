@@ -12,6 +12,7 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
+import com.dominio.Carona;
 import com.dominio.Usuario;
 import com.dominio.dao.UsuarioDao;
 import com.mysql.jdbc.Statement;
@@ -168,6 +169,33 @@ public class JdbcUsuarioDao implements UsuarioDao {
 
 		}
 
+	}
+
+	@Override
+	public String buscarEmailUsuario(Carona carona) {
+		logger.info(MSG_INCIAL);
+		String email = "";
+		try {
+			String sql = String.format("(select email from usuario where idUsuario =\r\n" + 
+					"(select usuario_idUsuario from perfil where idPerfil =\r\n" + 
+					"(select perfil_idPerfil from caronas where idCaronas = %d)))", carona.getIdCaronas());
+			PreparedStatement ps = this.connection.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			
+			while(rs.next()) {
+				email = rs.getString(1);
+			}
+		} catch (SQLException e) {
+			logger.info("Erro ao captura o email", e);
+		} finally {
+			try {
+				this.connection.close();
+			} catch (SQLException e) {
+				logger.error("Erro ao encerra conexão", e);
+			}
+
+		}
+		return email;
 	}
 
 }

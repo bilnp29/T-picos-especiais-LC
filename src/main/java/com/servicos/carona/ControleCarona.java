@@ -136,4 +136,20 @@ public class ControleCarona {
 		return servicosCarona.localizarCaronaMunicipal(idSessao, cidade);
 	}
 
+	/**
+	 * Método chama o método cadastrarInteresse na classe servicosCarona, direcinando os atributos informados.
+	 * @param idSessao identificador de uma sessao
+	 * @param origem partida de uma carona
+	 * @param destino chegada da carona
+	 * @param data data de saída
+	 * @param horaInicio hora da saída
+	 * @param horaFim hora da chegada
+	 * @return retorna o identificador da carona interessada.
+	 */
+	public int cadastrarInteresse(String idSessao, String origem, String destino, String data, String horaInicio,
+			String horaFim) {
+		
+		return servicosCarona.cadastrarInteresse(idSessao, origem, destino, data, horaInicio, horaFim);
+	}
+
 }

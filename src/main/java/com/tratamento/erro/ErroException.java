@@ -1,5 +1,11 @@
 package com.tratamento.erro;
 
+/**
+ * Esta classe captura as menssagem de erro quando chamda.
+ * 
+ * @author Bruno Miranda / Thassio Lucena
+ *
+ */
 public class ErroException extends RuntimeException {
 
 	/**
@@ -10,6 +16,5 @@ public class ErroException extends RuntimeException {
 	public ErroException(String msg) {
 		super(msg);
 	}
-
 
 }

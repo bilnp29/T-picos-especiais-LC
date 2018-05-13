@@ -6,6 +6,7 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 
 import com.dominio.Carona;
+import com.dominio.InteresseCarona;
 import com.dominio.PerfilUsuario;
 import com.dominio.Usuario;
 import com.tratamento.erro.ErroException;
@@ -1051,6 +1052,64 @@ public class SistemaDao {
 		CaronaDao caronaDao = DAOFactory.getDaoFactory().getCaronaDao();
 		logger.info("Fim do método");
 		return caronaDao.buscarCarona_Municipio_id(idSessao, cidade, origem, destino);
+	}
+
+	/**
+	 * Repassa os atributos para o método cadastrarInteresse da interface CaronaDao
+	 * onde serão direcioando para a classe que implementa o método.
+	 * 
+	 * @param idSessao
+	 *            identificador de uma sessao
+	 * @param origem
+	 *            partida de uma carona
+	 * @param destino
+	 *            chegada da carona
+	 * @param data
+	 *            data de saída
+	 * @param horaInicio
+	 *            hora da saída
+	 * @param horaFim
+	 *            hora da chegada
+	 * @return retorna o identificador da carona interessada.
+	 * @see CaronaDao
+	 */
+	public int cadastrarInteresse(String idSessao, String origem, String destino, String data, String horaInicio,
+			String horaFim) {
+		logger.info("Iniciando método");
+		CaronaDao caronaDao = DAOFactory.getDaoFactory().getCaronaDao();
+		return caronaDao.cadastrarInteresse(idSessao, origem, destino, data, horaInicio, horaFim);
+	}
+
+	/**
+	 * @param idSessao identificador de uma sessão
+	 * @return retorna um objeto da classe InteresseCarona
+	 */
+	public InteresseCarona buscarCaronasInteressadas(String idSessao) {
+		logger.info("Iniciando método");
+		PerfilUsuarioDao perfilDao = DAOFactory.getDaoFactory().getPerfilUsuario();
+		return perfilDao.buscarIntersseCarona(idSessao);
+	}
+
+	/**
+	 * 
+	 * Buscar informações de um carona
+	 * @param interesseCaronas objeto caronas interessadas
+	 * @return retorna o id de uma carona a data e hora da mesma.
+	 */
+	public Carona buscar_dadosCarona(InteresseCarona interesseCaronas) {
+		logger.info("Iniciando método");
+		CaronaDao caronaDao = DAOFactory.getDaoFactory().getCaronaDao();
+		return caronaDao.buscar_dadosCarona(interesseCaronas);
+	}
+
+	/**Este método busca o email do usuaro.
+	 * @param carona objeto carona
+	 * @return retorna um email do usuario
+	 */
+	public String buscarEmailUsuario(Carona carona) {
+		logger.info("Iniciaindo método");
+		UsuarioDao usuarioDao = DAOFactory.getDaoFactory().getUsuarioDao();
+		return usuarioDao.buscarEmailUsuario(carona);
 	}
 
 }

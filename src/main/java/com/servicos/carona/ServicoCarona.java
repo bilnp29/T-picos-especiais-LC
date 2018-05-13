@@ -385,7 +385,9 @@ public class ServicoCarona {
 
 	/**
 	 * Verificar se a carona é valida
-	 * @param idcarona identificador de uma carona
+	 * 
+	 * @param idcarona
+	 *            identificador de uma carona
 	 */
 	private void validarTrajeto(int idcarona) {
 
@@ -401,7 +403,9 @@ public class ServicoCarona {
 
 	/**
 	 * Faz uma busca nas caronas cadastradas de acordo com o idSessao.
-	 * @param idSessao identificador de uma sessão
+	 * 
+	 * @param idSessao
+	 *            identificador de uma sessão
 	 * @return retorna os identificadores de todas as caronas cadastradas
 	 */
 	public String getTodasCaronasUsuario(String idSessao) {
@@ -410,8 +414,11 @@ public class ServicoCarona {
 
 	/**
 	 * Verificar se uma carona é do tipo municipal ou intermunicipal.
-	 * @param idCarona identificador de uma carona
-	 * @param atributo Valor a ser pesquisado
+	 * 
+	 * @param idCarona
+	 *            identificador de uma carona
+	 * @param atributo
+	 *            Valor a ser pesquisado
 	 * @return dado pesquisado
 	 */
 	public boolean getAtributoCaronaMunicipal(int idCarona, String atributo) {
@@ -436,7 +443,7 @@ public class ServicoCarona {
 	 *         a pesquisa.
 	 */
 	public String localizarCaronaMunicipal(String idSessao, String cidade, String origem, String destino) {
-	
+
 		if (cidade == null || cidade.equals("")) {
 			logger.info("Cidade inexistente");
 			throw new ErroException("Cidade inexistente");
@@ -444,7 +451,7 @@ public class ServicoCarona {
 
 		return sistemaDao.buscarCarona_Municipio_id(idSessao, cidade, origem, destino);
 	}
-	
+
 	/**
 	 * localizarCaronaMunicipal-> Este método faz um pesquisa no sistema com base no
 	 * parametro abaixo. Obs.: O paramentro <b>cidade</b> é obrigatorio. O mesmo irá
@@ -454,7 +461,7 @@ public class ServicoCarona {
 	 *            Identificador de uma sessão ativa de um usuário
 	 * @param cidade
 	 *            Local onde a carona vai acontecer <b>(parametro obrigatorio)</b>
-	 *            
+	 * 
 	 * @return O retorno será uma lista de caronas do tipo municipal cadastrada para
 	 *         a pesquisa.
 	 */
@@ -464,8 +471,51 @@ public class ServicoCarona {
 			logger.info("Cidade inexistente");
 			throw new ErroException("Cidade inexistente");
 		}
-		
+
 		return sistemaDao.buscarCaronaMunicipio(idSessao, cidade);
 	}
 
+	/**
+	 * Método verificar os atributos informados e chama o método de mesmo nome na
+	 * classe sistemaDao.
+	 * 
+	 * @param idSessao
+	 *            identificador de uma sessao
+	 * @param origem
+	 *            partida de uma carona
+	 * @param destino
+	 *            chegada da carona
+	 * @param data
+	 *            data de saída
+	 * @param horaInicio
+	 *            hora da saída
+	 * @param horaFim
+	 *            hora da chegada
+	 * @return retorna o identificador da carona interessada.
+	 * @see SistemaDao
+	 */
+	public int cadastrarInteresse(String idSessao, String origem, String destino, String data, String horaInicio,
+			String horaFim) {
+		logger.info("Iniciando o método");
+		verificar_Origem_Destino(origem, destino);
+		validaData(data);
+	
+		return sistemaDao.cadastrarInteresse(idSessao, origem, destino, data, horaInicio, horaFim);
+	}
+
+	/**
+	 * Caso a data informada seja nula lança um exceção.
+	 * 
+	 * @param data
+	 *            atributo informado pelo usuario
+	 */
+	private void validaData(String data) {
+		logger.info("Iniciando o método");
+		if (data == null) {
+			logger.info("Data invalida");
+			throw new ErroException("Data invalida");
+
+		}
+		logger.info("Fim do método");
+	}
 }
