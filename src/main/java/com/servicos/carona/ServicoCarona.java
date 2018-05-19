@@ -1,6 +1,6 @@
 package com.servicos.carona;
 
-import java.text.ParseException;
+import java.text.ParseException; 
 import java.text.SimpleDateFormat;
 import java.util.List;
 
@@ -18,7 +18,7 @@ import com.tratamento.erro.ErroException;
  * 
  * @author Bruno Miranda, Thassio Lucena.
  */
-public class ServicoCarona {
+public class ServicoCarona { 
 
 	final static Logger logger = Logger.getLogger(ServicoCarona.class);
 
@@ -80,20 +80,20 @@ public class ServicoCarona {
 	 * @throws Exception
 	 *             menssagem de erro Hora invalida
 	 */
-	private void horaValida(Carona carona) throws Exception {
+	public void horaValida(Carona carona) throws Exception {
 		String hora = carona.getHora();
 		SimpleDateFormat horaFormatada = new SimpleDateFormat("HH:mm");
 		horaFormatada.setLenient(false);
 
 		if (hora == null || hora.equals("")) {
 			logger.info("Hora invalida");
-			throw new Exception("Hora invalida");
+			throw new ErroException("Hora invalida");
 		} else {
 			try {
 				horaFormatada.parse(hora);
-			} catch (ParseException e) {
+			} catch (Exception e) {
 				logger.info("Hora invalida");
-				throw new Exception("Hora invalida");
+				throw new ErroException("Hora invalida");
 			}
 		}
 	}
@@ -109,16 +109,16 @@ public class ServicoCarona {
 	 * 
 	 * 
 	 */
-	private void vagasValidas(Carona carona) throws Exception {
+	public void vagasValidas(Carona carona) throws Exception {
 		if (carona.getVagas() == null) {
 			logger.info("Vaga invalida");
-			throw new Exception("Vaga invalida");
+			throw new ErroException("Vaga invalida");
 		} else {
 			try {
 				Integer.parseInt(carona.getVagas());
 			} catch (Exception e) {
 				logger.info("Vaga invalida");
-				throw new Exception("Vaga invalida");
+				throw new ErroException("Vaga invalida");
 			}
 		}
 
@@ -134,10 +134,10 @@ public class ServicoCarona {
 	 *             menssagem de erro Origem invalida
 	 * 
 	 */
-	private void validaCaronaOrigem(Carona carona) throws Exception {
+	public void validaCaronaOrigem(Carona carona) throws Exception {
 		if (carona.getOrigemCarona() == null || carona.getOrigemCarona().equals("")) {
 			logger.info("Origem invalida");
-			throw new Exception("Origem invalida");
+			throw new ErroException("Origem invalida");
 		}
 
 	}
@@ -151,10 +151,10 @@ public class ServicoCarona {
 	 *             menssagem de erro Destino invalido
 	 * 
 	 */
-	private void validaCaronaDestino(Carona carona) throws Exception {
+	public void validaCaronaDestino(Carona carona) throws Exception {
 		if (carona.getDestinoCarona() == null || carona.getDestinoCarona().equals("")) {
 			logger.info("Destino invalido");
-			throw new Exception("Destino invalido");
+			throw new ErroException("Destino invalido");
 		}
 
 	}
@@ -164,17 +164,18 @@ public class ServicoCarona {
 	 * 
 	 * @param idSessao
 	 *            identificador de uma sessao
+	 * @throws Exception 
 	 * 
 	 */
-	private void validarIdSessao(String idSessao) {
+	private void validarIdSessao(String idSessao) throws Exception {
 		String sessaoid = sistemaDao.buscarIdsessao(idSessao);
 		if (idSessao == null || idSessao.isEmpty()) {
 			logger.info("Sessao invalida");
-			throw new ErroException("Sessao invalida");
+			throw new Exception("Sessao invalida");
 		}
 		if (sessaoid.equals("")) {
-			logger.info("Sessao invalida");
-			throw new ErroException("Sessao inexistente");
+			logger.info("Sessao inexistente");
+			throw new Exception("Sessao inexistente");
 		}
 
 	}
@@ -207,7 +208,6 @@ public class ServicoCarona {
 
 		int idPerfil = sistemaDao.buscaIdPerfil(idSessao);
 		sistemaDao.salvarDadosCarona(carona, idPerfil);
-
 		idCarona = Integer.toString(carona.getIdCaronas());
 
 		return idCarona;
@@ -306,7 +306,7 @@ public class ServicoCarona {
 	 * @param destino
 	 *            local de desembarque da carona
 	 */
-	private void verificar_Origem_Destino(String origem, String destino) {
+	public void verificar_Origem_Destino(String origem, String destino) {
 		if (!origem.matches("^[ a-zA-Z ã á â é ê i í ó õ ô ú]*$")) {
 			logger.info("Origem invalida");
 			throw new ErroException("Origem invalida");
@@ -341,7 +341,7 @@ public class ServicoCarona {
 
 		if (idCarona == 0 || idCarona == -1) {
 			logger.info("Carona Invalido");
-			throw new ErroException("Carona Invalido");
+			throw new ErroException("Carona Invalida");
 		}
 		if (!sistemaDao.isIdCarona(idCarona)) {
 			logger.info("Carona Inexistente");
@@ -389,7 +389,7 @@ public class ServicoCarona {
 	 * @param idcarona
 	 *            identificador de uma carona
 	 */
-	private void validarTrajeto(int idcarona) {
+	public void validarTrajeto(int idcarona) {
 
 		if (idcarona == 0 || idcarona == -1) {
 			logger.info("Trajeto Invalido");
@@ -444,12 +444,22 @@ public class ServicoCarona {
 	 */
 	public String localizarCaronaMunicipal(String idSessao, String cidade, String origem, String destino) {
 
+		validarCidade(cidade);
+
+		return sistemaDao.buscarCarona_Municipio_id(idSessao, cidade, origem, destino);
+	}
+
+	/**
+	 * Verifica se o parametro é null ou vazio.
+	 * 
+	 * @param cidade
+	 *            nome da cidade
+	 */
+	public void validarCidade(String cidade) {
 		if (cidade == null || cidade.equals("")) {
 			logger.info("Cidade inexistente");
 			throw new ErroException("Cidade inexistente");
 		}
-
-		return sistemaDao.buscarCarona_Municipio_id(idSessao, cidade, origem, destino);
 	}
 
 	/**
@@ -467,10 +477,7 @@ public class ServicoCarona {
 	 */
 
 	public String localizarCaronaMunicipal(String idSessao, String cidade) {
-		if (cidade == null || cidade.equals("")) {
-			logger.info("Cidade inexistente");
-			throw new ErroException("Cidade inexistente");
-		}
+		validarCidade(cidade);
 
 		return sistemaDao.buscarCaronaMunicipio(idSessao, cidade);
 	}
@@ -499,7 +506,7 @@ public class ServicoCarona {
 		logger.info("Iniciando o método");
 		verificar_Origem_Destino(origem, destino);
 		validaData(data);
-	
+
 		return sistemaDao.cadastrarInteresse(idSessao, origem, destino, data, horaInicio, horaFim);
 	}
 

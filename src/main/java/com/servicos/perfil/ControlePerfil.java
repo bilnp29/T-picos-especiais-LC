@@ -1,5 +1,7 @@
 package com.servicos.perfil;
 
+import com.servicos.solicitacoes.ServicoSolicitacao;
+
 /**
  * Esta classe irá receber informações e repassa-las para a classe
  * serviçosPerfil.
@@ -10,9 +12,11 @@ package com.servicos.perfil;
 public class ControlePerfil {
 
 	private ServicosPerfil servicosPerfil;
+	private ServicoSolicitacao servicosSolicitacao;
 
 	public ControlePerfil() {
 		servicosPerfil = new ServicosPerfil();
+		servicosSolicitacao = new ServicoSolicitacao();
 	}
 
 	/**
@@ -59,6 +63,11 @@ public class ControlePerfil {
 	public String verificarMensagensPerfil(String idSessao) {
 
 		return servicosPerfil.verificarMensagensPerfil(idSessao);
+	}
+
+	public boolean enviarEmail(String idSessao, String destino, String message) {
+	
+		return servicosSolicitacao.enviarEmail(idSessao, destino, message) ;
 	}
 
 }
