@@ -16,16 +16,16 @@ public class ControleCarona {
 
 	public ControleCarona() {
 		servicosCarona = new ServicoCarona();
-	}
+	} 
 
 	/**
-	 * @param idSessao
-	 * @param origem
-	 * @param destino
-	 * @param data
-	 * @param hora
-	 * @param vagas
-	 * @return
+	 * @param idSessao identificador de uma sessao de usuario
+	 * @param origem Local da saída
+	 * @param destino Local destino
+	 * @param data dia da viajem
+	 * @param hora da viajem
+	 * @param vagas quantidade de vadas
+	 * @return retorna um identificador de uma carona.
 	 * @throws Exception
 	 */
 	public String cadastroCarona(String idSessao, String origem, String destino, String data, String hora, String vagas)
