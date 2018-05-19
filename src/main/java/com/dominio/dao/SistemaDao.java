@@ -227,14 +227,16 @@ public class SistemaDao {
 	 *            Este parametro fornece informações para realizar uma busca.
 	 * @return Retorna o atributo desejado.
 	 */
-	public String buscarAtributoCarona(int idcarona, String atributo) {
+	public String buscarAtributoCarona(int idcarona, String atributo) { 
 		logger.info("Inicializando o método");
 		String atributoCarona = "";
 		CaronaDao caronaDao = DAOFactory.getDaoFactory().getCaronaDao();
 		if ((atributo == null) || atributo.equals("")) {
+			logger.error("Atributo invalido");
 			throw new ErroException("Atributo invalido");
 		} else if ((!atributo.equals("origem")) && (!atributo.equals("destino")) && (!atributo.equals("vagas"))
 				&& (!atributo.equals("data"))) {
+			logger.error("Atributo inexistente");
 			throw new ErroException("Atributo inexistente");
 		} else {
 			try {
@@ -250,7 +252,7 @@ public class SistemaDao {
 				}
 
 			} catch (Exception e) {
-				logger.info("Atributo não encontrado", e);
+				logger.error("Atributo não encontrado", e);
 			}
 		}
 		logger.info("Fim do método");
@@ -279,7 +281,7 @@ public class SistemaDao {
 
 		logger.info("Fim do método");
 		return atributoCarona;
-	}
+	} 
 
 	/**
 	 * Buscar trajeto de uma carona
@@ -1107,9 +1109,20 @@ public class SistemaDao {
 	 * @return retorna um email do usuario
 	 */
 	public String buscarEmailUsuario(Carona carona) {
-		logger.info("Iniciaindo método");
+		logger.info("Iniciando método");
 		UsuarioDao usuarioDao = DAOFactory.getDaoFactory().getUsuarioDao();
 		return usuarioDao.buscarEmailUsuario(carona);
+	}
+
+	/**
+	 * buscar email do solicitante da carona.
+	 * @param idSolicitacao identificação de uma solicitacao para uma carona cadastrada
+	 * @return retorna o email do solicitante da carona.
+	 */
+	public String emailUsuario(int idSolicitacao) {
+		logger.info("Iniciando método");
+		UsuarioDao usuarioDao = DAOFactory.getDaoFactory().getUsuarioDao();
+		return usuarioDao.emailUsuario(idSolicitacao);
 	}
 
 }

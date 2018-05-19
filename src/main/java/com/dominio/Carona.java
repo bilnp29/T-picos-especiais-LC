@@ -43,7 +43,7 @@ public class Carona {
 	 *            O horario da carona
 	 * @param vagas
 	 *            Quantidade de pessoas que podem solicitar uma carona
-	 */
+	 */ 
 	public Carona(String idSessao, String origemCarona, String destinoCarona,String data, String hora,
 			String vagas) {
 		this.setOrigemCarona(origemCarona);

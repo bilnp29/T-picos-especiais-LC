@@ -8,12 +8,14 @@ import com.tratamento.erro.ErroException;
 public class ServicoSolicitacao {
 
 	private SistemaDao sistemaDao;
+
 	private final String ESTADO_SOLICITACAO;
 	private final String SITUACAO_SOLICITACAO_VAGA;
 	final static Logger logger = Logger.getLogger(ServicoSolicitacao.class);
 
 	public ServicoSolicitacao() {
 		sistemaDao = new SistemaDao();
+
 		ESTADO_SOLICITACAO = "YES";
 		SITUACAO_SOLICITACAO_VAGA = "PENDENTE";
 	}
@@ -158,6 +160,9 @@ public class ServicoSolicitacao {
 		String solicitante = sistemaDao.nomeSolicitante(idSessao);
 		idSolicitacaoVaga = sistemaDao.salva_Solicitacao_Vaga_Sem_Sugestao(idSessao, idCarona, solicitante,
 				SITUACAO_SOLICITACAO_VAGA);
+		String emialSolicitante = sistemaDao.emailUsuario(idSolicitacaoVaga);
+		String msg = "A solicitação foi recebida";
+		enviarEmail(idSessao, emialSolicitante, msg);
 		logger.info("fim do método");
 		return idSolicitacaoVaga;
 	}
@@ -178,7 +183,8 @@ public class ServicoSolicitacao {
 
 	/**
 	 * Aceita a solicitacao de vaga na carona <b> SEM </b> ponto de encontro
-	 * sugeriodo, a mesma só e aceita pelo motorista.
+	 * sugeriodo, a mesma só e aceita pelo motorista. Quando a mesma é aceita o
+	 * sistema envia uma msg para o solicitante
 	 * 
 	 * @param idSessao
 	 *            identificador de uma sessão de usuário
@@ -188,6 +194,8 @@ public class ServicoSolicitacao {
 	 */
 	public void aceitarSolicitacao_SemPontoEncontro(String idSessao, int idSolicitacao) {
 		logger.info("iniciado método");
+		String email = sistemaDao.emailUsuario(idSolicitacao);
+		String msg = "A carona foi confirmada";
 		String idSessaoDonoCarona = sistemaDao.buscaridSessaoDonoCarona(idSolicitacao);
 		if (!idSessaoDonoCarona.equals(idSessao)) {
 			logger.error("Solicitacao inexistente");
@@ -201,6 +209,7 @@ public class ServicoSolicitacao {
 				int idCarona = sistemaDao.capturardCarona(idSolicitacao);
 				sistemaDao.atualizarVagaCarona(idCarona);
 				sistemaDao.updateSituacao_SemPonto(idSolicitacao);
+				enviarEmail(idSessao, email, msg);
 			}
 		}
 		logger.info("fim do método");
@@ -218,6 +227,8 @@ public class ServicoSolicitacao {
 	public void rejeitarSolicitacao(String idSessao, int idSolicitacao) {
 		logger.info("iniciando método");
 		String idSessaoDonoCarona = sistemaDao.buscaridSessaoDonoCarona(idSolicitacao);
+		String email = sistemaDao.emailUsuario(idSolicitacao);
+		String msg = "A carona foi confirmada";
 		if (!idSessaoDonoCarona.equals(idSessao)) {
 			logger.error("Solicitacao inexistente");
 			throw new ErroException("Solicitacao inexistente");
@@ -228,6 +239,7 @@ public class ServicoSolicitacao {
 				throw new ErroException("Solicitacao inexistente");
 			} else {
 				sistemaDao.rejeita_Solicitacao(idSolicitacao);
+				enviarEmail(idSessao, email, msg);
 			}
 		}
 	}
@@ -334,6 +346,24 @@ public class ServicoSolicitacao {
 		}
 		logger.info("fim método");
 
+	}
+
+	/**
+	 * Será enviado uma msg nas seguintes situações: 1-Quando o caroneiro solicita
+	 * uma carona 2-Quando o motorista aceita uma carona 3-Quando o motorista
+	 * rejeita uma carona
+	 * 
+	 * @param idSessao
+	 *            identificador de uma sessão do usuário
+	 * @param destino
+	 *            conta de email do usuário
+	 * @param message
+	 *            descrição da message
+	 * @return retorna verdadeiro caso ela seja enviada.
+	 */
+	public boolean enviarEmail(String idSessao, String destino, String message) {
+
+		return true;
 	}
 
 }

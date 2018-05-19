@@ -1,4 +1,4 @@
-package com.testes;
+package com.testes.servicos.usuario;
 
 import static org.junit.Assert.*;
 
@@ -35,6 +35,7 @@ public class ServicosUsuarioTest {
 	private Usuario usuarioEmailDuplicado;
 
 	private SistemaDao sistemadao;
+	private Usuario usuarioLoginDuplicado;
 
 	@Before 
 	public void setUp() {
@@ -47,14 +48,25 @@ public class ServicosUsuarioTest {
 		usuarioEmailInvalido = new Usuario("login", "senha", "nome", "endereco", "", "telefone");
 		usuarioEmailNull = new Usuario("login", "senha", "nome", "endereco", null, "telefone");
 
-		usuarioLoginValido = new Usuario("bruno29", "1111", "bruno29", "projetada I", "bruno@gmail.com", "32329098");
-		usuarioEmailValido = new Usuario("xpto", "1111", "bruno29", "projetada I", "bruno@gmail.com", "32329098");
-		usuarioEmailDuplicado = new Usuario("antonio", "1111", "bruno29", "projetada I", "bruno@gmail.com", "32329098");
+		usuarioLoginValido = new Usuario("bruno29", "1111", "bruno", "projetada I", "bruno29@gmail.com", "32329098");
+		usuarioLoginDuplicado = new Usuario("bruno29", "111", "bruno292", "projetada I", "bruno293@gmail.com", "32329098");
+		usuarioEmailValido = new Usuario("Jose10", "11", "bruno293", "projetada I", "bruno@gmail.com", "32329098");
+		usuarioEmailDuplicado = new Usuario("antonio", "100", "bruno290", "projetada I", "bruno@gmail.com", "32329098");
 
 		controle = new ControleUsuario();
 		servicosUsuario = new ServicosUsuario();
 
 		sistemadao = new SistemaDao();
+	}
+	
+	@Test
+	public void testDeveZeraSistema() throws Exception {
+		servicosUsuario.deletarDados();
+	}
+
+	@Test
+	public void testDeveApagaBaseDados() throws Exception {
+		sistemadao.deletarArquivo();
 	}
 
 	/**
@@ -64,23 +76,24 @@ public class ServicosUsuarioTest {
 	 */
 	@Test
 	public void testDevePermitirCadastraUsuario() throws Exception {
-		controle.cadastraUsuario("bruno29", "1111", "bruno", "projetada I", "bruno@gmail.com", "32329098");
-
+		controle.cadastraUsuario("bruno1", "1", "bruno1", "projetada I", "bruno1@gmail.com", "32329098");
+		
 	}
 
 	@Test
 	public void testDevePesquisarAtributoUsuarioNome() throws Exception {
-		controle.cadastraUsuario("bruno29", "1111", "bruno", "projetada I", "bruno@gmail.com", "32329098");
-		controle.localizarUsuario("bruno29", "nome");
+		controle.cadastraUsuario("bruno2", "2", "bruno2", "projetada I", "bruno2@gmail.com", "32329098");
+		controle.localizarUsuario("bruno2", "nome");
 		assertEquals("bruno", "bruno");
-
+		
 	}
 
 	@Test
 	public void testDevePesquisaAtributoEndereco() throws Exception {
-		controle.cadastraUsuario("bruno29", "1111", "bruno", "projetada I", "bruno@gmail.com", "32329098");
-		controle.localizarUsuario("bruno29", "endereco");
+		controle.cadastraUsuario("bruno3", "3", "bruno3", "projetada I", "bruno3@gmail.com", "32329098");
+		controle.localizarUsuario("bruno3", "endereco");
 		assertEquals("projetada I", "projetada I");
+		
 	}
 
 	@Test
@@ -100,8 +113,8 @@ public class ServicosUsuarioTest {
 	public void testVerificarMenssagenErroLoginDuplicado() {
 
 		try {
-			servicosUsuario.verificaUsuario("bruno29", usuarioLoginValido);
-			servicosUsuario.verificaUsuario("bruno29", usuarioLoginValido);
+			servicosUsuario.adicionarUsuario("bruno29", usuarioLoginValido);
+			servicosUsuario.adicionarUsuario("bruno29", usuarioLoginDuplicado);
 			fail("Deve lanca exception-> Já existe um usuário com este login");
 		} catch (Exception e) {
 			String menssage = e.getMessage();
@@ -144,20 +157,20 @@ public class ServicosUsuarioTest {
 			String menssage = e.getMessage();
 			assertEquals("Email invalido", menssage);
 		}
-	}
+	} 
 
 	@Test
 	public void testDeveAbrirSessaoComDadosValidos() throws Exception {
-		controle.cadastraUsuario("bruno29", "1111", "bruno", "projetada I", "bruno@gmail.com", "32329098");
-		controle.entraSistema("bruno29", "1111");
+		controle.cadastraUsuario("bruno11", "51", "bruno5", "projetada I", "bruno5@gmail.com", "32329098");
+		controle.entraSistema("bruno11", "51");
 
 	}
 
 	@Test
-	public void testDeveVerificarMenssagemDeErroAoAbrirSessaoLoginIvalido() {
+	public void testDeveVerificarMenssagemDeErroAoAbrirSessaoLoginIvalido() throws Exception {
 
 		try {
-			controle.cadastraUsuario("bruno29", "1111", "bruno", "projetada I", "bruno@gmail.com", "32329098");
+			controle.cadastraUsuario("bruno5", "5", "bruno5", "projetada I", "bruno5@gmail.com", "32329098");
 			servicosUsuario.validarUsuario(null, "bruno29");
 			servicosUsuario.validarUsuario("","bruno29");
 			servicosUsuario.validarUsuario("bruno29", "teste");
@@ -167,26 +180,28 @@ public class ServicosUsuarioTest {
 			String message = e.getMessage();
 			assertEquals("Login invalido", message);
 		}
+		
 	}
 
 	@Test
-	public void testDeveVerificarMenssagemDeErroAbrirSessaoSenhaIncorreta() {
+	public void testDeveVerificarMenssagemDeErroAbrirSessaoSenhaIncorreta() throws Exception {
 
 		try {
-			controle.cadastraUsuario("bruno29", "1111", "bruno", "projetada I", "bruno@gmail.com", "32329098");
+			controle.cadastraUsuario("bruno4", "4", "bruno4", "projetada I", "bruno4@gmail.com", "32329098");
 			servicosUsuario.validarUsuario("mateus11", "2456");
 			fail("Deve lanca exception -> Usuario inexistente");
 		} catch (Exception e) {
 			String message = e.getMessage();
 			assertEquals("Usuario inexistente", message);
 		}
+		
 	}
 
 	@Test
-	public void testDeveVerificarMenssagemErroAtributoLogin() {
+	public void testDeveVerificarMenssagemErroAtributoLogin() throws Exception {
 
 		try {
-			controle.cadastraUsuario("bruno29", "1111", "bruno", "projetada I", "bruno@gmail.com", "32329098");
+			controle.cadastraUsuario("bruno7", "7", "bruno7", "projetada I", "bruno7@gmail.com", "32329098");
 			servicosUsuario.validarLogin(null);
 			servicosUsuario.validarLogin("");
 			fail("Deve lanca exception -> Login invalido");
@@ -194,25 +209,27 @@ public class ServicosUsuarioTest {
 			String message = e.getMessage();
 			assertEquals("Login invalido", message);
 		}
+		sistemadao.deletarArquivo();
 	}
 
 	@Test
-	public void testDeveVerificarMenssagemErroUsuarioInexistente() {
+	public void testDeveVerificarMenssagemErroUsuarioInexistente() throws Exception {
 		try {
-			controle.cadastraUsuario("bruno29", "1111", "bruno", "projetada I", "bruno@gmail.com", "32329098");
+			controle.cadastraUsuario("bruno6", "6", "bruno6", "projetada I", "bruno6@gmail.com", "32329098");
 			servicosUsuario.validarLogin("xpto");
 			fail("Deve lanca exception -> Usuario inexistente");
 		} catch (Exception e) {
 			String message = e.getMessage();
 			assertEquals("Usuario inexistente", message);
 		}
+		
 	}
 
 	@Test
-	public void testDeveVerificarMenssagemErroAtributoInvalido() {
+	public void testDeveVerificarMenssagemErroAtributoInvalido() throws Exception {
 
 		try {
-			controle.cadastraUsuario("maria", "1111", "bruno", "projetada I", "bruno@gmail.com", "32329098");
+			controle.cadastraUsuario("maria", "11", "maria", "projetada I", "maria@gmail.com", "32329098");
 			servicosUsuario.pesquisarUsuario("maria",null);
 			servicosUsuario.pesquisarUsuario("maria","");
 			fail("Deve lanca exception -> Atributo invalido");
@@ -220,10 +237,11 @@ public class ServicosUsuarioTest {
 			String message = e.getMessage();
 			assertEquals("Atributo invalido", message);
 		}
+		
 	}
-
+ 
 	@Test
-	public void testDeveVerificarMenssagemErroAtributoInexistente() {
+	public void testDeveVerificarMenssagemErroAtributoInexistente() throws Exception {
 
 		try {
 			controle.cadastraUsuario("sandro", "1111", "sandro", "projetada II", "sandro@gmail.com", "32329098");
@@ -233,22 +251,9 @@ public class ServicosUsuarioTest {
 			String message = e.getMessage();
 			assertEquals("Atributo inexistente", message);
 		}
+		
 	}
 
-	@Test
-	public void testDeveZeraSistema() throws Exception {
-		controle.cadastraUsuario("bruno29", "1111", "bruno", "projetada I", "bruno@gmail.com", "32329098");
-		servicosUsuario.deletarDados();
-	}
-
-	@Test
-	public void testDeveApagaBaseDados() throws Exception {
-		sistemadao.deletarArquivo();
-	}
-	@Test
-	public void testDeveEncerraSistema() throws Exception {
-		controle.cadastraUsuario("bruno29", "1111", "bruno", "projetada I", "bruno@gmail.com", "32329098");
-		controle.entraSistema("bruno29", "1111");
-		//assertFalse(servicosUsuario.finalizarSistema());
-	}
+	
+	
 }

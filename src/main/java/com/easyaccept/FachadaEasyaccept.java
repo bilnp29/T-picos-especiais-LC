@@ -11,7 +11,7 @@ import com.servicos.usuario.ControleUsuario;
  * 
  * @author Bruno Miranda, Thassio Lucena.
  *
- */
+ */ 
 public class FachadaEasyaccept {
 
 	private ControleUsuario controleUsuario;
@@ -159,6 +159,9 @@ public class FachadaEasyaccept {
 	}
 	public String verificarMensagensPerfil(String idSessao) {
 		return controlePerfil.verificarMensagensPerfil(idSessao);
+	}
+	public boolean enviarEmail(String idSessao, String destino, String message) {
+		return controlePerfil.enviarEmail(idSessao, destino, message);
 	}
 
 	public void encerrarSistema() {

@@ -515,7 +515,7 @@ public class JdbcCaronaDao implements CaronaDao {
 	public void atualizarVagas(int idCarona) {
 		logger.info("Inicializando o método: atualizarVagas(int idCarona)");
 		try {
-			String sql = String.format("update caronas set vagas = vagas - 1 where vagas != 0 and idCaronas = %d",
+			String sql = String.format("update caronas set vagas = vagas - 1 where vagas > 0 and idCaronas = %d",
 					idCarona);
 			PreparedStatement ps = this.connection.prepareStatement(sql);
 			ps.executeUpdate();

@@ -14,7 +14,7 @@ import com.tratamento.erro.ErroException;
  * @author Bruno Mirnada / Thassio Lucena
  *
  */
-public class ServicosPerfil {
+public class ServicosPerfil { 
 
 	private SistemaDao sistemaDao;
 	

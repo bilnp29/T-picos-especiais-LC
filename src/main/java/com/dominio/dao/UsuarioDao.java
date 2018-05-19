@@ -46,7 +46,19 @@ public interface UsuarioDao {
 	 */
 	public void deletarRegistro();
 
+	/**
+	 * buscar emial
+	 * @param carona Objeto da classe carona
+	 * @return retorna email de um usuário.
+	 */
 	public String buscarEmailUsuario(Carona carona);
+
+	/**
+	 * buscar email do solicitante.
+	 * @param idSolicitacao identificador de um solicitação para uma carona
+	 * @return retorna o emial do solicitante.
+	 */
+	public String emailUsuario(int idSolicitacao);
 
 	
 	

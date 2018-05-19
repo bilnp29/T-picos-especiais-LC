@@ -73,7 +73,7 @@ public class JdbcPerfilUsuarioDao implements PerfilUsuarioDao {
 	 */
 	@Override
 	public String buscarid(String idSessao) {
-		logger.info(MSG_INCIAL);
+		logger.info(MSG_INCIAL); 
 		String id_Sessao = "";
 		try {
 			String sql = String.format("select idSessao from perfil where idSessao = '%s'", idSessao);
@@ -84,7 +84,7 @@ public class JdbcPerfilUsuarioDao implements PerfilUsuarioDao {
 				id_Sessao = rs.getString(1);
 			}
 		} catch (SQLException e) {
-			logger.info("Erro ao verificar se existe sessao ativa", e);
+			logger.error("Erro ao verificar se existe sessao ativa", e);
 		}
 		return id_Sessao;
 	}

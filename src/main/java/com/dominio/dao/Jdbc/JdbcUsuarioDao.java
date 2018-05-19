@@ -171,18 +171,23 @@ public class JdbcUsuarioDao implements UsuarioDao {
 
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.dominio.dao.UsuarioDao#buscarEmailUsuario(com.dominio.Carona)
+	 */
 	@Override
 	public String buscarEmailUsuario(Carona carona) {
 		logger.info(MSG_INCIAL);
 		String email = "";
 		try {
-			String sql = String.format("(select email from usuario where idUsuario =\r\n" + 
-					"(select usuario_idUsuario from perfil where idPerfil =\r\n" + 
-					"(select perfil_idPerfil from caronas where idCaronas = %d)))", carona.getIdCaronas());
+			String sql = String.format("(select email from usuario where idUsuario =\r\n"
+					+ "(select usuario_idUsuario from perfil where idPerfil =\r\n"
+					+ "(select perfil_idPerfil from caronas where idCaronas = %d)))", carona.getIdCaronas());
 			PreparedStatement ps = this.connection.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();
-			
-			while(rs.next()) {
+
+			while (rs.next()) {
 				email = rs.getString(1);
 			}
 		} catch (SQLException e) {
@@ -195,6 +200,34 @@ public class JdbcUsuarioDao implements UsuarioDao {
 			}
 
 		}
+		return email;
+	}
+
+	@Override
+	public String emailUsuario(int idSolicitacao) {
+		logger.info(MSG_INCIAL);
+		String email = "";
+		try {
+			String sql = String.format("(select email from usuario where nome =\r\n"
+					+ "(select solicitante from solicitacao_vaga_sem_sugestao where idSolicitacao_Vaga_Vem_Sugestao = %d));",
+					idSolicitacao);
+			PreparedStatement ps = this.connection.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+
+			while (rs.next()) {
+				email = rs.getString(1);
+			}
+		} catch (SQLException e) {
+			logger.info("Erro ao captura o email", e);
+		} finally {
+			try {
+				this.connection.close();
+			} catch (SQLException e) {
+				logger.error("Erro ao encerra conexão", e);
+			}
+
+		}
+
 		return email;
 	}
 
