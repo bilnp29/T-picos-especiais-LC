@@ -52,7 +52,7 @@ public class ServicoSolicitacao {
 	}
 
 	/**
-	 * Deacordo com os atributos passados o método verificar se o ponto de partida é
+	 * De acordo com os atributos passados o método verificar se o ponto de partida é
 	 * válido; Captura o nome do socilitante com a chamada do método
 	 * <b>nomeSolicitante(idSessao)</b>; o método <b>salvaSolicitacaoVaga(idSessao,
 	 * idCarona, pontos, solicitante)</b> salva os dados na base de dados
