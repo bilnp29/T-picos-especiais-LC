@@ -1,0 +1,53 @@
+/* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
+
+.menu-button {
+	-fx-background-color:  #D8BFD8;
+	-fx-font-size: 16px;
+	-fx-font-family: "Georgia", serif;
+	-fx-font-style: italic;
+	-fx-font-weight: bold;
+	-fx-text-fill: black;
+	
+}
+
+
+.button{
+	-fx-background-color:  #D8BFD8;
+	-fx-font-size: 16px;
+	-fx-font-family: "Georgia", serif;
+	-fx-font-style: italic;
+	-fx-font-weight: bold;
+	-fx-text-fill: black;
+}
+
+#lblCaroneiro {
+	-fx-font-size: 30px;
+	-fx-font-family: "Georgia", serif;
+	-fx-font-style: italic;
+	-fx-font-weight: bold;
+	-fx-text-fill: white;
+}
+
+#lblBemVindo,#lbl_Bora_Vamo{
+	-fx-font-size: 30px;
+	-fx-font-family: "Georgia", serif;
+	-fx-font-style: italic;
+	-fx-font-weight: bold;
+	-fx-text-fill: black;
+}
+
+#lblCons_Usuario{
+	-fx-font-size: 24px;
+	-fx-font-family: "Georgia", serif;
+	-fx-font-style: italic;
+	-fx-font-weight: bold;
+	-fx-text-fill: black;
+}
+
+
+.label{
+	-fx-font-size: 12px;
+	-fx-font-family: "Georgia", serif;
+	-fx-text-fill: black;
+}
+
