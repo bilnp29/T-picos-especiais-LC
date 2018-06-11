@@ -1,5 +1,7 @@
 package com.dominio;
 
+import java.io.Serializable;
+
 /**
  * Classe Carona nela estão presentes os atributos e os métodos getts, setts. O
  * usuario só podera cadastra uma carona quando estive com um perfil ativo.
@@ -7,8 +9,12 @@ package com.dominio;
  * @author Bruno Miranda / Thassio Lucena.
  *
  */
-public class Carona {
+public class Carona implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3022498733541915215L;
 	private int idCaronas;
 	private String idSessao;
 	private String donoCarona;

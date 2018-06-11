@@ -11,6 +11,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
@@ -19,22 +20,29 @@ public class FXMLLoginCadastroController implements Initializable {
 
 	private ControleUsuario controleUsuario;
 
-	// Tela inicial bot�es login e cadastro, refere-se ao Login e Cadastre-se.
 	@FXML
-	private Button btnLogin, btnFazerCadastro, btnEntra;
+	private Button btnLogin, btnFazerCadastro, btnEntra, btnCadastra;
 
-	// Panes de ancoragem Panel Login e Panel Cadastre-se.
 	@FXML
 	private AnchorPane paneLogin, paneCadastro, apnGeral;
 
 	@FXML
-	private TextField txtLogin, txtPassoword;
+	private TextField txtLogin, txtNome, txt_LoginUsuario, txtEmail, txtEndereco;
+
+	@FXML
+	private PasswordField txtSenha, txtPassoword;
 
 	public FXMLLoginCadastroController() {
 		btnEntra = new Button();
+		btnCadastra = new Button();
 
 		txtLogin = new TextField();
-		txtPassoword = new TextField();
+		txtNome = new TextField();
+		txt_LoginUsuario = new TextField();
+		txtEmail = new TextField();
+
+		txtPassoword = new PasswordField();
+		txtSenha = new PasswordField();
 
 		controleUsuario = new ControleUsuario();
 
@@ -65,11 +73,55 @@ public class FXMLLoginCadastroController implements Initializable {
 		}
 	}
 
+	/**
+	 * Método é iniciado quando o usuario clica no botão <b>Cadastrar</b>. Serão
+	 * capturados os valores dos campos TextField() estes valores serão repassados
+	 * como parametro para o método <b>cadastraUsuario</b> Este método retorna uma
+	 * String, a mesma será recebida pela variavel result. Caso o valor dela seja
+	 * nulo o sistema irá informa um massagem de erro, caso contrario uma messagem
+	 * de sucesso.
+	 * 
+	 * @param event
+	 *            funciona como um ouvinte, quando clicadado ou precionado o mesmo
+	 *            irá realizar uma tarefa(Cadastrar usuário)
+	 */
 	@FXML
 	private void cadastraUsuario(ActionEvent event) {
+		if (event.getSource() == btnCadastra) {
+			try {
+				String nome = this.txtNome.getText();
+				String login = this.txt_LoginUsuario.getText();
+				String senha = this.txtSenha.getText();
+				String email = this.txtEmail.getText();
+				String endereco = this.txtEndereco.getText();
+				String result = controleUsuario.cadastraUsuario(login, senha, nome, endereco, email);
+				if (result != null) {
+					Alert dialogoConfimacao = new Alert(Alert.AlertType.CONFIRMATION);
+					dialogoConfimacao.setTitle("Diálogo de Confirmação");
+					dialogoConfimacao.setHeaderText("Cadastrando");
+					dialogoConfimacao.setContentText("Usuário " + nome + " cadastrado com sucesso.");
+					dialogoConfimacao.showAndWait();
+					limparCampos();
+				}
+
+			} catch (Exception e) {
+				Alert dialogoErro = new Alert(Alert.AlertType.ERROR);
+				dialogoErro.setTitle("Diálogo de Error");
+				dialogoErro.setHeaderText("Erro ao cadastra usuário");
+				dialogoErro.setContentText(e.getMessage());
+				dialogoErro.showAndWait();
+			}
+		}
 
 	}
 
+	/**
+	 * Abrir um sessão ativa (realizar login)
+	 * 
+	 * @param event
+	 *            funciona como um ouvinte, quando clicadado ou precionado o mesmo
+	 *            irá realizar uma tarefa(Fazer login)
+	 */
 	@FXML
 	private void perfilUsuario(ActionEvent event) {
 
@@ -83,6 +135,7 @@ public class FXMLLoginCadastroController implements Initializable {
 					Stage telaLogin = new Stage();
 					MainPerfilUsuario viewPerfil = new MainPerfilUsuario();
 					viewPerfil.start(telaLogin);
+					limparCampos();
 				}
 			} catch (Exception e) {
 				Alert dialogoErro = new Alert(Alert.AlertType.ERROR);
@@ -93,6 +146,19 @@ public class FXMLLoginCadastroController implements Initializable {
 
 			}
 		}
+	}
+
+	/**
+	 * Limpar os TextField().
+	 */
+	public void limparCampos() {
+		this.txtNome.clear();
+		this.txt_LoginUsuario.clear();
+		this.txtEndereco.clear();
+		this.txtEmail.clear();
+		this.txtSenha.clear();
+		this.txtPassoword.clear();
+		this.txtLogin.clear();
 	}
 
 	@Override

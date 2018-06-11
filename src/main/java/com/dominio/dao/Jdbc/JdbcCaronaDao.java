@@ -125,11 +125,11 @@ public class JdbcCaronaDao implements CaronaDao {
 	 * @see com.dominio.dao.CaronaDao#buscarCarona(int)
 	 */
 	@Override
-	public Carona buscarCarona(int idcarona) {
+	public Carona buscarCarona(String idcarona) {
 		logger.info("Inicializando o método -> Carona buscarCarona(int idcarona) ");
 		Carona carona = null;
 		try {
-			String sql = String.format("select * from caronas where idCaronas = %d ", idcarona);
+			String sql = String.format("select * from caronas where idCaronas = '%s' ", idcarona);
 			PreparedStatement ps = this.connection.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
@@ -144,8 +144,6 @@ public class JdbcCaronaDao implements CaronaDao {
 			}
 		} catch (SQLException e) {
 			logger.info("Erro ao busca dado da carona cadastrada, e");
-		} catch (Exception e) {
-			e.printStackTrace();
 		} finally {
 			try {
 				this.connection.close();
@@ -164,20 +162,17 @@ public class JdbcCaronaDao implements CaronaDao {
 	 * @see com.dominio.dao.CaronaDao#isCaronaId(int)
 	 */
 	@Override
-	public boolean isCaronaId(int idcarona) {
+	public boolean isCaronaId(String idcarona) {
 		logger.info("Inicializando o método: isCaronaId(int idcarona)");
-		int id = 0;
+		String id = "";
 		try {
-			String sql = String.format("select * from caronas where idCaronas = %d ", idcarona);
+			String sql = String.format("select * from caronas where idCaronas = '%s' ", idcarona);
 			PreparedStatement ps = this.connection.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
-				id = rs.getInt("idCaronas");
+				id = rs.getString("idCaronas");
 			}
-			if (id != idcarona) {
-				return false;
-			}
-
+			
 		} catch (SQLException e) {
 			logger.info("Erro ao perquisa carona cadastradas", e);
 
@@ -191,6 +186,11 @@ public class JdbcCaronaDao implements CaronaDao {
 				e.printStackTrace();
 			}
 		}
+		if (!idcarona.equals(id)) {
+			return false;
+		}
+
+		
 		logger.info("Fim do método");
 		return true;
 	}
@@ -208,7 +208,7 @@ public class JdbcCaronaDao implements CaronaDao {
 		int idSolicitacao = 0;
 		try {
 			String sql = String
-					.format("insert into solicitacoes (idSessao, idCarona, pontos, solicitante, perfil_idPerfil)"
+					.format("insert into sugestao_enconto (idSessao, idCarona, pontos, solicitante, perfil_idPerfil)"
 							+ "values('%s',%d,'%s','%s',%d)", idSessao, idCarona, pontos, solicitante, id_perfil);
 
 			PreparedStatement ps = this.connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
@@ -243,7 +243,7 @@ public class JdbcCaronaDao implements CaronaDao {
 	public void deletarRegistroSoliciatacao() {
 		logger.info("Inicializando o método: deletarRegistroSoliciatacao()");
 		try {
-			String sql = "delete from solicitacoes where idSugestao <> 0";
+			String sql = "delete from sugestao_enconto where idSugestao <> 0";
 			PreparedStatement ps = this.connection.prepareStatement(sql);
 			ps.executeUpdate();
 		} catch (SQLException e) {
@@ -1112,7 +1112,7 @@ public class JdbcCaronaDao implements CaronaDao {
 		String idSugestao_pontoEncontro = "[";
 
 		try {
-			String sql = String.format("select pontos from solicitacoes " + "where idSessao = '%s' and idCarona = %d",
+			String sql = String.format("select pontos from sugestao_enconto " + "where idSessao = '%s' and idCarona = %d",
 					idSessao, idCarona);
 			PreparedStatement ps = this.connection.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();

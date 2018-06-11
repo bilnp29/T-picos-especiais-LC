@@ -42,16 +42,16 @@ public interface CaronaDao {
 	 *            identificador de uma carona valida.
 	 * @return retorna um objeto de uma carona.
 	 */
-	public Carona buscarCarona(int idcarona);
+	public Carona buscarCarona(String idcarona);
 
 	/**
 	 * Verificar se existe carona cadastrada
 	 * 
-	 * @param idcarona
+	 * @param idCarona
 	 *            identificador de uma carona valida
 	 * @return retorna um valor booblean verdadeiro ou falso.
 	 */
-	public boolean isCaronaId(int idcarona);
+	public boolean isCaronaId(String idCarona);
 
 	/**
 	 * Excluir os dados cadastrados na base de dados caronas.

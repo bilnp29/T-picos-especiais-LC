@@ -3,6 +3,8 @@
  */
 package com.dominio;
 
+import java.io.Serializable;
+
 /**
  * Classe Usuario nela estão presentes os atributos e os métodos getts, setts.
  * 
@@ -10,7 +12,13 @@ package com.dominio;
  * 
  *
  */
-public class Usuario {
+public class Usuario implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5851746119591282333L;
+
 
 	/**
 	 * Método construtor da classe usuario recebe com parametro os atributos abaixo.
@@ -26,30 +34,27 @@ public class Usuario {
 	 *            Endereço do usuário
 	 * @param email
 	 *            Email do usuário
-	 * @param telefone
-	 *            Telefone do usuário.
 	 * 
 	 */
-	public Usuario(String login, String senha, String nome, String endereco, String email, String telefone) {
+	public Usuario(String login, String senha, String nome, String endereco, String email) {
 		this.login = login;
 		this.senha = senha;
 		this.nome = nome;
 		this.endereco = endereco;
 		this.email = email;
-		this.telefone = telefone;
 	}
 
 	public Usuario() {
 
 	}
-
+	
 	private int idUsuario;
 	private String login;
 	private String senha;
 	private String nome;
 	private String endereco;
 	private String email;
-	private String telefone;
+
 
 	public String getNome() {
 		return nome;
@@ -73,14 +78,6 @@ public class Usuario {
 
 	public String getSenha() {
 		return senha;
-	}
-
-	public String getTelefone() {
-		return telefone;
-	}
-
-	public void setTelefone(String telefone) {
-		this.telefone = telefone;
 	}
 
 	public String getEndereco() {

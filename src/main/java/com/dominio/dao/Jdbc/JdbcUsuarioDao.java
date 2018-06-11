@@ -46,10 +46,10 @@ public class JdbcUsuarioDao implements UsuarioDao {
 		logger.info(MSG_INCIAL);
 		try {
 			String sql = String.format(
-					"insert into usuario (nome,login,email,endereco,telefone,senha) "
-							+ "values ('%s','%s','%s','%s','%s','%s')",
+					"insert into usuario (nome,login,email,endereco,senha) "
+							+ "values ('%s','%s','%s','%s','%s')",
 					usuario.getNome(), usuario.getLogin(), usuario.getEmail(), usuario.getEndereco(),
-					usuario.getTelefone(), usuario.getSenha());
+					 usuario.getSenha());
 			PreparedStatement ps = this.connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 			ps.executeUpdate();
 

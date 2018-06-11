@@ -9,7 +9,7 @@ zerarSistema
 #A busca s� retorna caronas que ainda ir� acontecer.
 
 #Entradas V�lidas
-criarUsuario login="mark" senha="m@rk" nome="Mark Zuckerberg" endereco="Palo Alto, California" email="mark@facebook.com" telefone="98888-0000"
+criarUsuario login="mark" senha="m@rk" nome="Mark Zuckerberg" endereco="Palo Alto, California" email="mark@facebook.com"
 sessaoMark=abrirSessao login="mark" senha="m@rk"
 
 #Localizar carona, sem carona cadastrada.
@@ -78,18 +78,18 @@ expectError "Hora invalida" cadastrarCarona idSessao=${sessaoMark} origem="Patos
 expectError "Vaga invalida" cadastrarCarona idSessao=${sessaoMark} origem="Campina Grande" destino="Jo�o Pessoa" data="23/06/2013" hora="16:00" vagas=
 expectError "Vaga invalida" cadastrarCarona idSessao=${sessaoMark} origem="Patos" destino="Jo�o Pessoa" data="31/05/2013" hora="08:00" vagas="duas"
 
-expectError "Carona Invalida" getAtributoCarona idCarona=0 atributo="origem"
-expectError "Carona Invalida" getAtributoCarona idCarona=-1 atributo="origem"
-expectError "Carona Inexistente" getAtributoCarona idCarona=100 atributo="destino"
+expectError "Identificador do carona é inválido" getAtributoCarona idCarona= atributo="origem"
+expectError "Identificador do carona é inválido" getAtributoCarona idCarona="" atributo="origem"
+expectError "Item inexistente" getAtributoCarona idCarona="xpto" atributo="destino"
 expectError "Atributo invalido" getAtributoCarona idCarona=${carona3ID} atributo=
 expectError "Atributo invalido" getAtributoCarona idCarona=${carona2ID} atributo=""
 expectError "Atributo inexistente" getAtributoCarona idCarona=${carona1ID} atributo="xpto"
-expectError "Carona Invalida" getCarona idCarona=-1
-expectError "Carona Invalida" getCarona idCarona=0
-expectError "Carona Inexistente" getCarona idCarona=100
-expectError "Trajeto Invalido" getTrajeto idCarona=0
-expectError "Trajeto Invalido" getTrajeto idCarona=-1
-expectError "Trajeto Inexistente" getTrajeto idCarona=100
+expectError "Carona Inexistente" getCarona idCarona=""
+expectError "Carona Invalida" getCarona idCarona=
+expectError "Carona Inexistente" getCarona idCarona="xpto"
+expectError "Trajeto Inexistente" getTrajeto idCarona=""
+expectError "Trajeto Invalido" getTrajeto idCarona=
+expectError "Trajeto Inexistente" getTrajeto idCarona="xpto"
 
 #Localizar carona com entrada inv�lida
 expectError "Origem invalida" localizarCarona idSessao=${sessaoMark} origem="-" destino="João Pessoa"

@@ -329,20 +329,41 @@ public class ServicoCarona {
 	 * @see SistemaDao
 	 * @see buscarAtributoCarona
 	 */
-	public String pesquisaCarona(int idCarona, String atributo) {
+	public String pesquisaCarona(String idCarona, String atributo) {
 		String dado = "";
-		validarIdcarona(idCarona);
+		verificarId(idCarona);
 		dado = sistemaDao.buscarAtributoCarona(idCarona, atributo);
 		return dado;
 
 	}
+	
+	
 
-	private void validarIdcarona(int idCarona) {
-
-		if (idCarona == 0 || idCarona == -1) {
-			logger.info("Carona Invalido");
-			throw new ErroException("Carona Invalida");
+	private void verificarId(String idCarona) {
+		
+		if (idCarona == null || idCarona.equals("")) {
+			logger.info("Identificador do carona é inválido");
+			throw new ErroException("Identificador do carona é inválido");
 		}
+		if (!sistemaDao.isIdCarona(idCarona)) {
+			logger.info("Item inexistente");
+			throw new ErroException("Item inexistente");
+		}
+		
+	}
+
+	private void validarIdcarona(String idCarona) {
+		
+		if (idCarona == null) {
+			logger.info("Carona Inválido");
+			throw new ErroException("Carona Inválida");
+		}
+		
+		if (idCarona.equals("")) {
+			logger.info("Carona Inexistente");
+			throw new ErroException("Carona Inexistente");
+		}
+		
 		if (!sistemaDao.isIdCarona(idCarona)) {
 			logger.info("Carona Inexistente");
 			throw new ErroException("Carona Inexistente");
@@ -360,7 +381,7 @@ public class ServicoCarona {
 	 *         origem,destino,hora e vaga.
 	 * @see descricaoCarona
 	 */
-	public String buscaCaronaCadastrada(int idcarona) {
+	public String buscaCaronaCadastrada(String idcarona) {
 		String dado = "";
 		validarIdcarona(idcarona);
 		dado = sistemaDao.descricaoCarona(idcarona);
@@ -376,7 +397,7 @@ public class ServicoCarona {
 	 *            identifcador de uma carona
 	 * @return retorna dados de uma trajetoria de uma carona
 	 */
-	public String descreverTrajeto(int idcarona) {
+	public String descreverTrajeto(String idcarona) {
 		String dado = "";
 		validarTrajeto(idcarona);
 		dado = sistemaDao.descricaoTrajero(idcarona);
@@ -389,12 +410,18 @@ public class ServicoCarona {
 	 * @param idcarona
 	 *            identificador de uma carona
 	 */
-	public void validarTrajeto(int idcarona) {
+	public void validarTrajeto(String idcarona) {
 
-		if (idcarona == 0 || idcarona == -1) {
+		if (idcarona == null ) {
 			logger.info("Trajeto Invalido");
-			throw new ErroException("Trajeto Invalido");
+			throw new ErroException("Trajeto Inválido");
 		}
+		
+		if (idcarona.equals("")) {
+			logger.info("Trajeto Inexistente");
+			throw new ErroException("Trajeto Inexistente");
+		}
+		
 		if (!sistemaDao.isIdCarona(idcarona)) {
 			logger.info("Trajeto Inexistente");
 			throw new ErroException("Trajeto Inexistente");

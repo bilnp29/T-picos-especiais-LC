@@ -7,11 +7,11 @@
 zerarSistema
 
 #Criar usu�rio.
-criarUsuario login="zezyt0" senha="z3z1t0" nome="Jose de zito" endereco="Rua belarmina pereira 452, João Pessoa" email="zezyto@gmail.com" telefone="98888-0000"
-criarUsuario login="manelito" senha="w4n3l1t0" nome="Manel da Silva" endereco="Rua adamastor pitaco 24, João Pessoa" email="manel@yahoo.com.br" telefone="98888-0000"
-criarUsuario login="jucaPeroba" senha="juqinha" nome="Juca Peroba" endereco="Rua 13 de maio, Caruaru" email="jucaPeroba@gmail.com" telefone="98888-0000"
-criarUsuario login="mariano0ab" senha="mariozinho" nome="Mariano Silva" endereco="Rua 27 de maio, Campina Grande" email="marianoAdvogado@gmail.com" telefone="98888-0000"
-criarUsuario login="caba" senha="Marcin" nome="Marcio Sarvai" endereco="Rua 21 de maio, Campina Grande" email="marcioSarvai@gmail.com" telefone="98888-0000"
+criarUsuario login="zezyt0" senha="z3z1t0" nome="Jose de zito" endereco="Rua belarmina pereira 452, João Pessoa" email="zezyto@gmail.com"
+criarUsuario login="manelito" senha="w4n3l1t0" nome="Manel da Silva" endereco="Rua adamastor pitaco 24, João Pessoa" email="manel@yahoo.com.br"
+criarUsuario login="jucaPeroba" senha="juqinha" nome="Juca Peroba" endereco="Rua 13 de maio, Caruaru" email="jucaPeroba@gmail.com"
+criarUsuario login="mariano0ab" senha="mariozinho" nome="Mariano Silva" endereco="Rua 27 de maio, Campina Grande" email="marianoAdvogado@gmail.com"
+criarUsuario login="caba" senha="Marcin" nome="Marcio Sarvai" endereco="Rua 21 de maio, Campina Grande" email="marcioSarvai@gmail.com"
 
 #Iniciar sess�o.
 sessaoZezito=abrirSessao login="zezyt0" senha="z3z1t0"

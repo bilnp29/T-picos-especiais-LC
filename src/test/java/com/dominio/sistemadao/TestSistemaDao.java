@@ -18,7 +18,7 @@ public class TestSistemaDao {
 	private SistemaDao sistemadao;
 	private ServicoCarona servCarona;
 	private Carona carona_valida;
-	private int idCarona = 0;
+	private String idCarona = "";
 	private ControleUsuario controle;
 	private ServicosUsuario servUsuario;
 	
@@ -38,7 +38,7 @@ public class TestSistemaDao {
 
 	@Test
 	public void cadastraCarona() throws Exception {
-		controle.cadastraUsuario("jose1", "1", "jose", "projetada I", "jose1@gmail.com", "32329098");
+		controle.cadastraUsuario("jose1", "1", "jose", "projetada I", "jose1@gmail.com");
 		servUsuario.validarUsuario("jose1", "1");
 		
 	}
@@ -47,7 +47,7 @@ public class TestSistemaDao {
 	public void testMessagem_Erro_Atributo_Carona() throws NumberFormatException, Exception {
 		try {
 			carona_valida = new Carona("sessaoJose1", "João Pessoa", "Campina Grande", "12/12/2012", "10:00", "2");
-			idCarona = Integer.parseInt(servCarona.validaCarona("sessaoJose1", carona_valida));
+			idCarona = servCarona.validaCarona("sessaoJose1", carona_valida);
 			sistemadao.buscarAtributoCarona(idCarona, null);
 			sistemadao.buscarAtributoCarona(idCarona, "");
 			fail("Deve lanca msg erro -> Atributo invalido");
@@ -60,7 +60,7 @@ public class TestSistemaDao {
 	public void test_Messagem_Erro_Atributo_Carona_inexistente() throws NumberFormatException, Exception {
 		try {
 			carona_valida = new Carona("sessaoJose1", "João Pessoa", "Campina Grande", "12/12/2012", "10:00", "2");
-			idCarona = Integer.parseInt(servCarona.validaCarona("sessaoJose1", carona_valida));
+			idCarona = servCarona.validaCarona("sessaoJose1", carona_valida);
 			sistemadao.buscarAtributoCarona(idCarona,"nome");
 			fail("Deve lanca msg erro -> Atributo inexistente");
 		} catch (ErroException e) {
@@ -72,7 +72,7 @@ public class TestSistemaDao {
 	@Test
 	public void testBuscar_Atributo_Carona_Destino() throws NumberFormatException, Exception {
 		carona_valida = new Carona("sessaoJose1", "João Pessoa", "Campina Grande", "12/12/2012", "10:00", "2");
-		idCarona = Integer.parseInt(servCarona.validaCarona("sessaoJose1", carona_valida));
+		idCarona = servCarona.validaCarona("sessaoJose1", carona_valida);
 		String dado = sistemadao.buscarAtributoCarona(idCarona, "destino");
 		assertEquals("Campina Grande",dado);
 	}
@@ -80,7 +80,7 @@ public class TestSistemaDao {
 	@Test
 	public void testBuscar_Atributo_Carona_Data() throws NumberFormatException, Exception {
 		carona_valida = new Carona("sessaoJose1", "João Pessoa", "Campina Grande", "12/12/2012", "10:00", "2");
-		idCarona = Integer.parseInt(servCarona.validaCarona("sessaoJose1", carona_valida));
+		servCarona.validaCarona("sessaoJose1", carona_valida);
 		String dado = sistemadao.buscarAtributoCarona(idCarona, "data");
 		assertEquals("12/12/2012",dado);
 	}
@@ -88,7 +88,7 @@ public class TestSistemaDao {
 	@Test
 	public void testBuscar_Atributo_Carona_Vagas() throws NumberFormatException, Exception {
 		carona_valida = new Carona("sessaoJose1", "João Pessoa", "Campina Grande", "12/12/2012", "10:00", "2");
-		idCarona = Integer.parseInt(servCarona.validaCarona("sessaoJose1", carona_valida));
+		idCarona = servCarona.validaCarona("sessaoJose1", carona_valida);
 		String dado = sistemadao.buscarAtributoCarona(idCarona, "vagas");
 		assertEquals("2",dado);
 	}
@@ -96,7 +96,7 @@ public class TestSistemaDao {
 	@Test
 	public void testDescricaoCarona() throws NumberFormatException, Exception {
 		carona_valida = new Carona("sessaoJose1", "João Pessoa", "Campina Grande", "12/12/2012", "10:00", "2");
-		idCarona = Integer.parseInt(servCarona.validaCarona("sessaoJose1", carona_valida));
+		idCarona = servCarona.validaCarona("sessaoJose1", carona_valida);
 		String descricao = sistemadao.descricaoCarona(idCarona);
 		assertEquals("João Pessoa para Campina Grande, no dia 12/12/2012, as 10:00", descricao);
 	}
@@ -104,7 +104,7 @@ public class TestSistemaDao {
 	@Test
 	public void testDescricaoTrajeto() throws NumberFormatException, Exception {
 		carona_valida = new Carona("sessaoJose1", "João Pessoa", "Campina Grande", "12/12/2012", "10:00", "2");
-		idCarona = Integer.parseInt(servCarona.validaCarona("sessaoJose1", carona_valida));
+		idCarona = servCarona.validaCarona("sessaoJose1", carona_valida);
 		String descricao = sistemadao.descricaoTrajero(idCarona);
 		assertEquals("João Pessoa - Campina Grande", descricao);
 	}

@@ -50,7 +50,7 @@ public class ControleCarona {
 	 * @param atributo
 	 * @return
 	 */
-	public String localizarCarona(int idCarona, String atributo) {
+	public String localizarCarona(String idCarona, String atributo) {
 		return servicosCarona.pesquisaCarona(idCarona, atributo);
 	}
 
@@ -58,7 +58,7 @@ public class ControleCarona {
 	 * @param idcarona
 	 * @return
 	 */
-	public String getCarona(int idcarona) {
+	public String getCarona(String idcarona) {
 		return servicosCarona.buscaCaronaCadastrada(idcarona);
 	}
 
@@ -66,7 +66,7 @@ public class ControleCarona {
 	 * @param idcarona
 	 * @return
 	 */
-	public String getTrajeto(int idcarona) {
+	public String getTrajeto(String idcarona) {
 		return servicosCarona.descreverTrajeto(idcarona);
 	}
 

@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 
 import com.dominio.dao.CaronaDao;
+import com.dominio.dao.CaronaRelampagoDao;
 import com.dominio.dao.DAOFactory;
 import com.dominio.dao.PerfilUsuarioDao;
 import com.dominio.dao.UsuarioDao;
@@ -54,5 +55,11 @@ public class JdbcDAOFactory extends DAOFactory {
 	public CaronaDao getCaronaDao() {
 
 		return new JdbcCaronaDao(connection);
+	}
+
+	@Override
+	public CaronaRelampagoDao getCaronaRelampagoDao() {
+		
+		return new JdbcCaronaRelampago(connection);
 	}
 }

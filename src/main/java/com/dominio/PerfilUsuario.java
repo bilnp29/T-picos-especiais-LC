@@ -1,5 +1,7 @@
 package com.dominio;
 
+import java.io.Serializable;
+
 /**
  * Classe PerfilUsuario nela estão presentes os atributos e os métodos getts,
  * setts. Será requisitada toda vez que o usuario fizer login.
@@ -7,8 +9,12 @@ package com.dominio;
  * @author Bruno Miranda / Thassio Lucena.
  *
  */
-public class PerfilUsuario {
+public class PerfilUsuario implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1313350845830606773L;
 	private int idPerfil;
 	private String identificadorSessao;
 	private boolean estadoSessao;

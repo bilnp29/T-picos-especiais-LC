@@ -28,39 +28,39 @@
             <Font name="Georgia Bold Italic" size="16.0" />
          </font>
       </Button>
-      <AnchorPane fx:id="paneCadastro" layoutX="496.0" prefHeight="519.0" prefWidth="387.0" style="-fx-background-color: #ffff;">
+      <AnchorPane fx:id="paneCadastro" layoutX="496.0" prefHeight="519.0" prefWidth="387.0" style="-fx-background-color: #DCDCDC;">
          <children>
-            <TextField id="txtNome" layoutX="15.0" layoutY="78.0" prefHeight="41.0" prefWidth="357.0" promptText="Nome" styleClass="txtField">
+            <TextField id="txtNome" fx:id="txtNome" layoutX="15.0" layoutY="78.0" prefHeight="41.0" prefWidth="357.0" promptText="Nome" styleClass="txtField">
                <font>
                   <Font name="Georgia" size="12.0" />
                </font>
             </TextField>
-            <TextField id="txtLogin" layoutX="15.0" layoutY="134.0" prefHeight="41.0" prefWidth="357.0" promptText="Login" styleClass="txtField">
+            <TextField id="txtLogin" fx:id="txt_LoginUsuario" layoutX="15.0" layoutY="134.0" prefHeight="41.0" prefWidth="357.0" promptText="Login" styleClass="txtField">
                <font>
                   <Font name="Georgia" size="12.0" />
                </font>
             </TextField>
-            <TextField id="txtEmail" layoutX="15.0" layoutY="187.0" prefHeight="41.0" prefWidth="357.0" promptText="Email" styleClass="txtField">
+            <TextField id="txtEmail" fx:id="txtEmail" layoutX="15.0" layoutY="187.0" prefHeight="41.0" prefWidth="357.0" promptText="Email" styleClass="txtField">
                <font>
                   <Font name="Georgia" size="12.0" />
                </font>
             </TextField>
-            <PasswordField id="txtSenha" layoutX="15.0" layoutY="244.0" prefHeight="41.0" prefWidth="357.0" promptText="Senha" styleClass="txtPasswordField">
+            <PasswordField id="txtSenha" fx:id="txtSenha" layoutX="15.0" layoutY="244.0" prefHeight="41.0" prefWidth="357.0" promptText="Senha" styleClass="txtPasswordField">
                <font>
                   <Font name="Georgia" size="12.0" />
                </font>
             </PasswordField>
-            <TextField id="txtEndereco" layoutX="15.0" layoutY="296.0" prefHeight="41.0" prefWidth="357.0" promptText="Endereço" styleClass="txtField">
+            <TextField id="txtEndereco" fx:id="txtEndereco" layoutX="15.0" layoutY="296.0" prefHeight="41.0" prefWidth="357.0" promptText="Endereço" styleClass="txtField">
                <font>
                   <Font name="Georgia" size="12.0" />
                </font>
             </TextField>
-            <TextField id="txtTelefone" layoutX="15.0" layoutY="347.0" prefHeight="41.0" prefWidth="357.0" promptText="Telefone" styleClass="txtField">
+            <TextField id="txtTelefone" fx:id="txtTelefone" layoutX="15.0" layoutY="347.0" prefHeight="41.0" prefWidth="357.0" promptText="Telefone" styleClass="txtField">
                <font>
                   <Font name="Georgia" size="12.0" />
                </font>
             </TextField>
-            <Button fx:id="btnCadastra" layoutX="211.0" layoutY="410.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="157.0" style="-fx-background-color: #F0FFFF;" text="Cadastrar" textAlignment="JUSTIFY">
+            <Button fx:id="btnCadastra" layoutX="211.0" layoutY="410.0" mnemonicParsing="false" onAction="#cadastraUsuario" prefHeight="25.0" prefWidth="157.0" style="-fx-background-color: #D8BFD8;" text="Cadastrar" textAlignment="JUSTIFY">
                <font>
                   <Font name="Georgia Bold Italic" size="16.0" />
                </font>
@@ -74,7 +74,7 @@
       </AnchorPane>
       <AnchorPane fx:id="paneLogin" layoutX="494.0" layoutY="-2.0" prefHeight="519.0" prefWidth="387.0" style="-fx-background-color: #DCDCDC;">
          <children>
-            <TextField fx:id="txtLogin" id="txtLogin" layoutX="15.0" layoutY="170.0" prefHeight="41.0" prefWidth="357.0" promptText="Login" styleClass="txtField">
+            <TextField id="txtLogin" fx:id="txtLogin" layoutX="15.0" layoutY="170.0" prefHeight="41.0" prefWidth="357.0" promptText="Login" styleClass="txtField">
                <font>
                   <Font name="Georgia" size="12.0" />
                </font>

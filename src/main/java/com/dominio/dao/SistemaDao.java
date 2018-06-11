@@ -6,6 +6,7 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 
 import com.dominio.Carona;
+import com.dominio.CaronaRelampago;
 import com.dominio.InteresseCarona;
 import com.dominio.PerfilUsuario;
 import com.dominio.Usuario;
@@ -205,16 +206,16 @@ public class SistemaDao {
 	/**
 	 * Verificar se existe o id especificado.
 	 * 
-	 * @param idcarona
+	 * @param idCarona
 	 *            identificador de uma carona
 	 * @return retorna um valor booleano.
 	 * 
 	 */
-	public boolean isIdCarona(int idcarona) {
+	public boolean isIdCarona(String idCarona) {
 		logger.info("Inicializando o método");
 		CaronaDao caronaDao = DAOFactory.getDaoFactory().getCaronaDao();
 		logger.info("Fim do método");
-		return caronaDao.isCaronaId(idcarona);
+		return caronaDao.isCaronaId(idCarona);
 	}
 
 	/**
@@ -227,7 +228,7 @@ public class SistemaDao {
 	 *            Este parametro fornece informações para realizar uma busca.
 	 * @return Retorna o atributo desejado.
 	 */
-	public String buscarAtributoCarona(int idcarona, String atributo) { 
+	public String buscarAtributoCarona(String idcarona, String atributo) {
 		logger.info("Inicializando o método");
 		String atributoCarona = "";
 		CaronaDao caronaDao = DAOFactory.getDaoFactory().getCaronaDao();
@@ -266,7 +267,7 @@ public class SistemaDao {
 	 *            identificador de uma carona
 	 * @return retorna uma descrição de uma carona cadastrada.
 	 */
-	public String descricaoCarona(int idcarona) {
+	public String descricaoCarona(String idcarona) {
 		logger.info("Inicializando o método");
 		String atributoCarona = "";
 		try {
@@ -281,7 +282,7 @@ public class SistemaDao {
 
 		logger.info("Fim do método");
 		return atributoCarona;
-	} 
+	}
 
 	/**
 	 * Buscar trajeto de uma carona
@@ -290,7 +291,7 @@ public class SistemaDao {
 	 *            identificador de uma carona
 	 * @return Retorna um trajeto valido de acordo com o id da carona.
 	 */
-	public String descricaoTrajero(int idcarona) {
+	public String descricaoTrajero(String idcarona) {
 		logger.info("Inicializando o método");
 		String atributoCarona = "";
 		try {
@@ -1083,7 +1084,8 @@ public class SistemaDao {
 	}
 
 	/**
-	 * @param idSessao identificador de uma sessão
+	 * @param idSessao
+	 *            identificador de uma sessão
 	 * @return retorna um objeto da classe InteresseCarona
 	 */
 	public InteresseCarona buscarCaronasInteressadas(String idSessao) {
@@ -1095,7 +1097,9 @@ public class SistemaDao {
 	/**
 	 * 
 	 * Buscar informações de um carona
-	 * @param interesseCaronas objeto caronas interessadas
+	 * 
+	 * @param interesseCaronas
+	 *            objeto caronas interessadas
 	 * @return retorna o id de uma carona a data e hora da mesma.
 	 */
 	public Carona buscar_dadosCarona(InteresseCarona interesseCaronas) {
@@ -1104,8 +1108,11 @@ public class SistemaDao {
 		return caronaDao.buscar_dadosCarona(interesseCaronas);
 	}
 
-	/**Este método busca o email do usuaro.
-	 * @param carona objeto carona
+	/**
+	 * Este método busca o email do usuaro.
+	 * 
+	 * @param carona
+	 *            objeto carona
 	 * @return retorna um email do usuario
 	 */
 	public String buscarEmailUsuario(Carona carona) {
@@ -1116,13 +1123,114 @@ public class SistemaDao {
 
 	/**
 	 * buscar email do solicitante da carona.
-	 * @param idSolicitacao identificação de uma solicitacao para uma carona cadastrada
+	 * 
+	 * @param idSolicitacao
+	 *            identificação de uma solicitacao para uma carona cadastrada
 	 * @return retorna o email do solicitante da carona.
 	 */
 	public String emailUsuario(int idSolicitacao) {
 		logger.info("Iniciando método");
 		UsuarioDao usuarioDao = DAOFactory.getDaoFactory().getUsuarioDao();
 		return usuarioDao.emailUsuario(idSolicitacao);
+	}
+
+	/**
+	 * Verificar se existe idSessao em um carona cadastrada
+	 * 
+	 * @param idSessao
+	 * @return retora falso caso não encontrole o idSessao.
+	 */
+	public boolean is_IdSessao(String idSessao) {
+		logger.info("Iniciando método");
+		CaronaRelampagoDao caronaRelampagoDao = DAOFactory.getDaoFactory().getCaronaRelampagoDao();
+		return caronaRelampagoDao.is_IdSessao(idSessao);
+	}
+
+	/**
+	 * O método irá direcionar as informações para serem salvas.
+	 * 
+	 * @param caronaRelampago
+	 *            Objeto da classe CaronaRelampago
+	 * @param idPerfil
+	 *            identificaro do perfil usuário
+	 */
+	public void salvarCaronaRelampago(CaronaRelampago caronaRelampago, int idPerfil) {
+		logger.info("Iniciando método");
+		CaronaRelampagoDao caronaRelampagoDao = DAOFactory.getDaoFactory().getCaronaRelampagoDao();
+		caronaRelampagoDao.salvar(caronaRelampago, idPerfil);
+
+	}
+
+	public String getAtributoCaronaRelampago(String idCarona, String atributo) {
+		logger.info("Iniciando método");
+		String dados = "";
+		CaronaRelampagoDao caronaRelampagoDao = DAOFactory.getDaoFactory().getCaronaRelampagoDao();
+		if ((atributo == null) || atributo.equals("")) {
+			logger.error("Atributo inválido");
+			throw new ErroException("Atributo inválido");
+		} else if ((!atributo.equals("origem")) && (!atributo.equals("destino"))
+				&& (!atributo.equals("minimoCaroneiros")) && (!atributo.equals("dataIda") && (!atributo.equals("expired")))) {
+			logger.error("Atributo inexistente");
+			throw new ErroException("Atributo inexistente");
+		} else {
+			try {
+				CaronaRelampago caronaRelampago = caronaRelampagoDao.buscardadosCarona(idCarona);
+				if (atributo.equals("origem")) {
+					dados = caronaRelampago.getOrigem();
+				} else if (atributo.equals("destino")) {
+					dados = caronaRelampago.getDestino();
+				} else if (atributo.equals("minimoCaroneiros")) {
+					dados = caronaRelampago.getMinimoCaroneiro();
+				} else if(atributo.equals("dataIda")){
+					dados = caronaRelampago.getDataIda();
+				} else {
+					dados = "true";
+				}
+			} catch (Exception e) {
+				logger.error("Atributo não encontrado", e);
+			}
+		}
+		logger.info("Fim do método");
+
+		return dados;
+	}
+
+	/**
+	 * Método busca descrição de uma carona.
+	 * 
+	 * @param idCarona
+	 *            identificador de uma carona
+	 * @return retona uma descrição de uma carona
+	 */
+	public String descricaoCaronaRelampago(String idCarona) {
+		logger.info("Inicializando o método");
+		String atributoCarona = "";
+		try {
+			CaronaRelampagoDao caronaRelampagoDao = DAOFactory.getDaoFactory().getCaronaRelampagoDao();
+			CaronaRelampago caronaRelampago = caronaRelampagoDao.buscardadosCarona(idCarona);
+			atributoCarona = caronaRelampago.getOrigem() + " para " + caronaRelampago.getDestino() + ", no dia "
+					+ caronaRelampago.getDataIda() + ", as " + caronaRelampago.getHora();
+
+		} catch (Exception e) {
+			logger.info("Carona não localizada", e);
+		}
+
+		logger.info("Fim do método");
+		return atributoCarona;
+	}
+
+	/**
+	 * Método busca a quantidade minima de uma carona.
+	 * 
+	 * @param idCarona
+	 *            identificador de uma carona
+	 * @return retorna quantidade minima de uma carona relampago.
+	 */
+	public String getMinimoCaroneiros(String idCarona) {
+		logger.info("Inicializando o método");
+		CaronaRelampagoDao caronaRelampagoDao = DAOFactory.getDaoFactory().getCaronaRelampagoDao();
+		CaronaRelampago caronaRelampago = caronaRelampagoDao.buscardadosCarona(idCarona);
+		return caronaRelampago.getMinimoCaroneiro();
 	}
 
 }
