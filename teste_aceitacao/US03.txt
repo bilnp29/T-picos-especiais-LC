@@ -8,7 +8,7 @@
 zerarSistema
 
 #Criar usu�rio.
-criarUsuario login="mark" senha="m@rk" nome="Mark Zuckerberg" endereco="Palo Alto, California" email="mark@facebook.com" telefone="98888-0000"
+criarUsuario login="mark" senha="m@rk" nome="Mark Zuckerberg" endereco="Palo Alto, California" email="mark@facebook.com"
 
 #Iniciar sess�o.
 sessaoMark=abrirSessao login="mark" senha="m@rk"

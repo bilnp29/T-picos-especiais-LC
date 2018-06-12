@@ -1,12 +1,18 @@
 package com.dominio;
 
+import java.io.Serializable;
+
 /**
  * 
  * @author Bruno Mianda / Thassio Lucena
  *
  */
-public class InteresseCarona {
+public class InteresseCarona implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5815789995768632315L;
 	private String idSessao;
 	private String origem;
 	private String destino;

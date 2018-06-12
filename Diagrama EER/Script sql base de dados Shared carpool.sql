@@ -25,14 +25,13 @@ CREATE TABLE IF NOT EXISTS `shared_carpool`.`usuario` (
   `login` VARCHAR(45) NOT NULL,
   `email` VARCHAR(45) NOT NULL,
   `endereco` VARCHAR(45) NOT NULL,
-  `telefone` VARCHAR(45) NOT NULL,
   `senha` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`idUsuario`),
-  UNIQUE INDEX `idUsuario_UNIQUE` (`idUsuario` ASC),
   UNIQUE INDEX `nomeUsuario_UNIQUE` (`nome` ASC),
   UNIQUE INDEX `login_UNIQUE` (`login` ASC),
   UNIQUE INDEX `email_UNIQUE` (`email` ASC),
-  UNIQUE INDEX `senha_UNIQUE` (`senha` ASC))
+  UNIQUE INDEX `senha_UNIQUE` (`senha` ASC),
+  UNIQUE INDEX `idUsuario_UNIQUE` (`idUsuario` ASC))
 ENGINE = InnoDB
 AUTO_INCREMENT = 58
 DEFAULT CHARACTER SET = utf8;
@@ -186,21 +185,21 @@ DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
--- Table `shared_carpool`.`solicitacoes`
+-- Table `shared_carpool`.`sugestao_enconto`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `shared_carpool`.`solicitacoes` ;
+DROP TABLE IF EXISTS `shared_carpool`.`sugestao_enconto` ;
 
-CREATE TABLE IF NOT EXISTS `shared_carpool`.`solicitacoes` (
+CREATE TABLE IF NOT EXISTS `shared_carpool`.`sugestao_enconto` (
   `idSugestao` INT(11) NOT NULL AUTO_INCREMENT,
   `idSessao` VARCHAR(45) NOT NULL,
   `idCarona` VARCHAR(45) NOT NULL,
   `pontos` VARCHAR(45) NOT NULL,
   `solicitante` VARCHAR(45) NOT NULL,
-  `perfil_idPerfil` INT(11) NULL DEFAULT NULL,
+  `perfil_idPerfil` INT(11) NOT NULL,
   PRIMARY KEY (`idSugestao`),
   UNIQUE INDEX `idSugestao_UNIQUE` (`idSugestao` ASC),
-  INDEX `fk_solicitacoes_perfil1_idx` (`perfil_idPerfil` ASC),
-  CONSTRAINT `fk_solicitacoes_perfil1`
+  INDEX `fk_sugestao_enconto_perfil1_idx` (`perfil_idPerfil` ASC),
+  CONSTRAINT `fk_sugestao_enconto_perfil1`
     FOREIGN KEY (`perfil_idPerfil`)
     REFERENCES `shared_carpool`.`perfil` (`idPerfil`)
     ON DELETE NO ACTION
@@ -220,9 +219,36 @@ CREATE TABLE IF NOT EXISTS `shared_carpool`.`interessecaronas` (
   `destino` VARCHAR(45) NOT NULL,
   `data` VARCHAR(45) NULL DEFAULT NULL,
   `horaInicial` VARCHAR(45) NULL DEFAULT NULL,
-  `horaFinal` VARCHAR(45) NULL DEFAULT NULL)
+  `horaFinal` VARCHAR(45) NULL DEFAULT NULL,
+  `idInteresse` INT NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`idInteresse`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `shared_carpool`.`caronaRelampago`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `shared_carpool`.`caronaRelampago` ;
+
+CREATE TABLE IF NOT EXISTS `shared_carpool`.`caronaRelampago` (
+  `idcaronaRelampago` INT NOT NULL AUTO_INCREMENT,
+  `idSessao` VARCHAR(45) NOT NULL,
+  `origem` VARCHAR(45) NOT NULL,
+  `destino` VARCHAR(45) NOT NULL,
+  `dataIda` VARCHAR(45) NOT NULL,
+  `dataVolta` VARCHAR(45) NOT NULL,
+  `hora` VARCHAR(45) NOT NULL,
+  `minimoCaroneiros` VARCHAR(45) NOT NULL,
+  `perfil_idPerfil` INT(11) NOT NULL,
+  PRIMARY KEY (`idcaronaRelampago`),
+  INDEX `fk_caronaRelampago_perfil1_idx` (`perfil_idPerfil` ASC),
+  CONSTRAINT `fk_caronaRelampago_perfil1`
+    FOREIGN KEY (`perfil_idPerfil`)
+    REFERENCES `shared_carpool`.`perfil` (`idPerfil`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
 
 
 SET SQL_MODE=@OLD_SQL_MODE;

@@ -15,7 +15,7 @@ public class Main extends Application {
 			
 			Parent root = null;
 			try {
-				root = FXMLLoader.load(getClass().getResource("./FXMLtelaLogin.fxml"));
+				root = FXMLLoader.load(getClass().getResource("/fxml/FXMLtelaLogin.fxml"));
 			} catch (IOException e) {
 				e.getLocalizedMessage();
 				e.printStackTrace();

@@ -7,8 +7,8 @@
 zerarSistema
 
 #Criar usu�rio.
-criarUsuario login="mark" senha="m@rk" nome="Mark Zuckerberg" endereco="Palo Alto, California" email="mark@facebook.com" telefone="98888-0000"
-criarUsuario login="bill" senha="bilz@o" nome="Bill Clinton" endereco="Hollywood, California" email="bill@gmail.com" telefone="98888-0000"
+criarUsuario login="mark" senha="m@rk" nome="Mark Zuckerberg" endereco="Palo Alto, California" email="mark@facebook.com"
+criarUsuario login="bill" senha="bilz@o" nome="Bill Clinton" endereco="Hollywood, California" email="bill@gmail.com"
 #Iniciar sess�o.
 sessaoMark=abrirSessao login="mark" senha="m@rk"
 

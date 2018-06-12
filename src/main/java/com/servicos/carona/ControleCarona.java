@@ -50,7 +50,7 @@ public class ControleCarona {
 	 * @param atributo
 	 * @return
 	 */
-	public String localizarCarona(int idCarona, String atributo) {
+	public String localizarCarona(String idCarona, String atributo) {
 		return servicosCarona.pesquisaCarona(idCarona, atributo);
 	}
 
@@ -58,7 +58,7 @@ public class ControleCarona {
 	 * @param idcarona
 	 * @return
 	 */
-	public String getCarona(int idcarona) {
+	public String getCarona(String idcarona) {
 		return servicosCarona.buscaCaronaCadastrada(idcarona);
 	}
 
@@ -66,7 +66,7 @@ public class ControleCarona {
 	 * @param idcarona
 	 * @return
 	 */
-	public String getTrajeto(int idcarona) {
+	public String getTrajeto(String idcarona) {
 		return servicosCarona.descreverTrajeto(idcarona);
 	}
 
@@ -150,6 +150,35 @@ public class ControleCarona {
 			String horaFim) {
 		
 		return servicosCarona.cadastrarInteresse(idSessao, origem, destino, data, horaInicio, horaFim);
+	}
+
+	/**
+	 * Método defini uma carona preferencial
+	 * @param idCarona identificador de uma carona
+	 */
+	public void definirCaronaPreferencial(int idCarona) {
+		servicosCarona.definirCaronaPreferencial(idCarona);
+		
+	}
+
+	/**
+	 * metodo buscar carona preferencial
+	 * @param idCarona identificador de carona
+	 * @return retorna verdadeiro para caronas preferenciais
+	 */
+	public boolean isCaronaPreferencial(int idCarona) {
+		
+		return servicosCarona.isCaronaPreferencial(idCarona);
+	}
+
+	/**
+	 * 
+	 * @param idCarona idCarona identificador de carona
+	 * @return retorna usuarios preferencial
+	 */
+	public String getUsuariosPreferenciaisCarona(int idCarona) {
+		
+		return servicosCarona.getUsuariosPreferenciaisCarona(idCarona);
 	}
 
 }

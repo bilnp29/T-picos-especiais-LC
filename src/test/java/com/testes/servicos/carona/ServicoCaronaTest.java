@@ -78,13 +78,13 @@ public class ServicoCaronaTest {
 
 	@Test
 	public void testDeveCadastraCarona() throws Exception {
-		controle.cadastraUsuario("jose1", "1", "jose", "projetada I", "jose1@gmail.com", "32329098");
+		controle.cadastraUsuario("jose1", "1", "jose", "projetada I", "jose1@gmail.com");
 		servUsuario.validarUsuario("jose1", "1");
 		servCarona.validaCarona("sessaoJose1", carona_valida);
 	}
 	@Test
 	public void testDeveCadastraCaronaMunicipal() throws Exception {
-		controle.cadastraUsuario("Joao1", "11", "Joao","Projetada 8" , "joao@gamil.com", "32329098");
+		controle.cadastraUsuario("Joao1", "11", "Joao","Projetada 8" , "joao@gamil.com");
 		servUsuario.validarUsuario("Joao1", "11");
 		servCarona.validaCaronaMunicipal("sessaoJoao1", carona_valida_municipal);
 	}
@@ -196,20 +196,20 @@ public class ServicoCaronaTest {
 	@Test
 	public void testPesquisarCaronaMenssagemErro() {
 		try {
-			servCarona.pesquisaCarona(0, "nome");
-			servCarona.pesquisaCarona(-1, "endereço");
+			servCarona.pesquisaCarona(null, "nome");
+			servCarona.pesquisaCarona("", "endereço");
 			fail("Deve lanca exception-> Carona Invalida");
 			
 		} catch (ErroException e) {
 			String msg = e.getMessage();
-			assertEquals("Carona Invalida", msg);
+			assertEquals("Identificador do carona é inválido", msg);
 		}
 	}
 	@Test
 	public void testValidarTrajetoMessagemErro() {
 		try {
-			servCarona.validarTrajeto(0);
-			servCarona.validarTrajeto(-1);
+			servCarona.validarTrajeto(null);
+			servCarona.validarTrajeto("");
 			fail("Deve lanca exception-> Trajeto Invalido");
 		} catch (ErroException e) {
 			String msg = e.getMessage();
@@ -219,7 +219,7 @@ public class ServicoCaronaTest {
 	@Test
 	public void testValidarTrajetoMessagemErroTrajetoInexistente() {
 		try {
-			servCarona.validarTrajeto(18);
+			servCarona.validarTrajeto("xpto");
 			
 			fail("Deve lanca exception-> Trajeto Inexistente");
 		} catch (ErroException e) {

@@ -1,6 +1,7 @@
 package com.easyaccept;
 
 import com.servicos.carona.ControleCarona;
+import com.servicos.carona.ControleCaronaRelampago;
 import com.servicos.perfil.ControlePerfil;
 import com.servicos.resposta.solicitacao.carona.ControleResposta;
 import com.servicos.solicitacoes.ControleSolicitacao;
@@ -19,18 +20,20 @@ public class FachadaEasyaccept {
 	private ControleSolicitacao controleSolicitacoes;
 	private ControleResposta respostaSolicitacoes;
 	private ControlePerfil controlePerfil;
-
+	private ControleCaronaRelampago controleCaronaRelampago;
+	
 	public FachadaEasyaccept() {
 		controleUsuario = new ControleUsuario();
 		controleCarona = new ControleCarona();
 		controleSolicitacoes = new ControleSolicitacao();
 		respostaSolicitacoes = new ControleResposta();
 		controlePerfil = new ControlePerfil();
+		controleCaronaRelampago = new ControleCaronaRelampago();
 	}
 
-	public String criarUsuario(String login, String senha, String nome, String endereco, String email, String telefone)
+	public String criarUsuario(String login, String senha, String nome, String endereco, String email)
 			throws Exception {
-		return controleUsuario.cadastraUsuario(login, senha, nome, endereco, email, telefone);
+		return controleUsuario.cadastraUsuario(login, senha, nome, endereco, email);
 	}
 
 	public String abrirSessao(String login, String senha) throws Exception {
@@ -45,6 +48,26 @@ public class FachadaEasyaccept {
 			String vagas) throws Exception {
 		return controleCarona.cadastraCaronaMunicipal(idSessao, origem, destino,cidade ,data, hora, vagas);
 	}
+	
+	public String cadastrarCaronaRelampago(String idSessao, String origem, String destino, String dataIda,
+			String dataVolta,String hora,String minimoCaroneiro) {
+		return controleCaronaRelampago.cadastraCaronaRelampago(idSessao,origem,destino,dataIda,dataVolta,hora,minimoCaroneiro);
+	}
+	public String getAtributoCaronaRelampago(String idCarona, String atributo) {
+		return controleCaronaRelampago.getAtributoCaronaRelampago(idCarona,atributo);
+	}
+	public String getCaronaRelampago(String idCarona) {
+		return controleCaronaRelampago.getCaronaRelampago(idCarona);
+	}
+	public String getMinimoCaroneiros(String idCarona) {
+		return controleCaronaRelampago.getMinimoCaroneiros(idCarona);
+	}
+	public String setCaronaRelampagoExpired(String idCarona) {
+		return controleCaronaRelampago.setCaronaRelampagoExpired(idCarona);
+	}
+	public String getAtributoExpired(String expiredID, String atributo) {
+		return controleCaronaRelampago.getAtributoExpired(expiredID, atributo);
+	}
 
 	public String localizarCarona(String idSessao, String origem, String destino) throws Exception {
 		return controleCarona.pesquisaCarona(idSessao, origem, destino);
@@ -56,7 +79,7 @@ public class FachadaEasyaccept {
 		return controleUsuario.localizarUsuario(login, atributo);
 	}
 
-	public String getAtributoCarona(int idCarona, String atributo) {
+	public String getAtributoCarona(String idCarona, String atributo) {
 		return controleCarona.localizarCarona(idCarona, atributo);
 	}
 	public boolean getAtributoCaronaMunicipal(int idCarona, String atributo) {
@@ -71,11 +94,11 @@ public class FachadaEasyaccept {
 		
 	}
 
-	public String getCarona(int idcarona) {
+	public String getCarona(String idcarona) {
 		return controleCarona.getCarona(idcarona);
 	}
 
-	public String getTrajeto(int idcarona) {
+	public String getTrajeto(String idcarona) {
 		return controleCarona.getTrajeto(idcarona);
 	}
 
@@ -163,7 +186,15 @@ public class FachadaEasyaccept {
 	public boolean enviarEmail(String idSessao, String destino, String message) {
 		return controlePerfil.enviarEmail(idSessao, destino, message);
 	}
-
+	public void definirCaronaPreferencial(int idCarona) {
+		controleCarona.definirCaronaPreferencial(idCarona);
+	}
+	public boolean isCaronaPreferencial(int idCarona) {
+		return controleCarona.isCaronaPreferencial(idCarona);
+	}
+	public String getUsuariosPreferenciaisCarona(int idCarona) {
+		return controleCarona.getUsuariosPreferenciaisCarona(idCarona);
+	}
 	public void encerrarSistema() {
 		controleUsuario.fechaSistema();
 
