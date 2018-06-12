@@ -11,7 +11,7 @@ import com.tratamento.erro.ErroException;
  * @author Bruno Miranda / Thassio Lucena
  *
  */
-public class ServicoResposta {
+public class ServicoResposta { 
 	private SistemaDao sistemaDao;
 	final static Logger logger = Logger.getLogger(ServicoResposta.class);
 
