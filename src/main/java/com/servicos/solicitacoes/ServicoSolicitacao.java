@@ -158,8 +158,18 @@ public class ServicoSolicitacao {
 		logger.info("iniciando método");
 		int idSolicitacaoVaga = 0;
 		String solicitante = sistemaDao.nomeSolicitante(idSessao);
-		idSolicitacaoVaga = sistemaDao.salva_Solicitacao_Vaga_Sem_Sugestao(idSessao, idCarona, solicitante,
-				SITUACAO_SOLICITACAO_VAGA);
+		if(sistemaDao.isCaronaPreferencial(idCarona)) {
+			if(sistemaDao.verificarIdSessao(idSessao)) {
+				idSolicitacaoVaga = sistemaDao.salva_Solicitacao_Vaga_Sem_Sugestao(idSessao, idCarona, solicitante,
+						SITUACAO_SOLICITACAO_VAGA);
+			}else {
+				logger.warn("Usuário não está na lista preferencial da carona");
+				throw new ErroException("Usuário não está na lista preferencial da carona");
+			}
+		}else {
+			idSolicitacaoVaga = sistemaDao.salva_Solicitacao_Vaga_Sem_Sugestao(idSessao, idCarona, solicitante,
+					SITUACAO_SOLICITACAO_VAGA);
+		}
 		String emialSolicitante = sistemaDao.emailUsuario(idSolicitacaoVaga);
 		String msg = "A solicitação foi recebida";
 		enviarEmail(idSessao, emialSolicitante, msg);
@@ -340,6 +350,7 @@ public class ServicoSolicitacao {
 		} else {
 			if (review.equals("segura e tranquila")) {
 				sistemaDao.review_Motorista(idSessao, carona, review);
+				sistemaDao.cadastraUsuarioPreferencial(idSessao,carona);
 			} else if (review.equals("não funcionou")) {
 				sistemaDao.review_Motorista(idSessao, carona, review);
 			}

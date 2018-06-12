@@ -172,7 +172,7 @@ public class JdbcCaronaDao implements CaronaDao {
 			while (rs.next()) {
 				id = rs.getString("idCaronas");
 			}
-			
+
 		} catch (SQLException e) {
 			logger.info("Erro ao perquisa carona cadastradas", e);
 
@@ -190,7 +190,6 @@ public class JdbcCaronaDao implements CaronaDao {
 			return false;
 		}
 
-		
 		logger.info("Fim do método");
 		return true;
 	}
@@ -1112,8 +1111,9 @@ public class JdbcCaronaDao implements CaronaDao {
 		String idSugestao_pontoEncontro = "[";
 
 		try {
-			String sql = String.format("select pontos from sugestao_enconto " + "where idSessao = '%s' and idCarona = %d",
-					idSessao, idCarona);
+			String sql = String.format(
+					"select pontos from sugestao_enconto " + "where idSessao = '%s' and idCarona = %d", idSessao,
+					idCarona);
 			PreparedStatement ps = this.connection.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();
 
@@ -1354,7 +1354,7 @@ public class JdbcCaronaDao implements CaronaDao {
 			SimpleDateFormat df;
 			df = new SimpleDateFormat("dd/MM/yyyy");
 			data = df.format(hoje);
-			
+
 			try {
 				String sql = String.format(
 						"select idCaronas, data, hora, localOrigem, localDestino from caronas where caronas.localOrigem = '%s' "
@@ -1414,6 +1414,112 @@ public class JdbcCaronaDao implements CaronaDao {
 
 		logger.info("Fim do método");
 		return carona;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.dominio.dao.CaronaDao#definirCaronaPreferencial(int)
+	 */
+	@Override
+	public void definirCaronaPreferencial(int idCarona) {
+		try {
+			String sql = String.format("update caronas set preferencial = true " + "where idCaronas = %d", idCarona);
+			PreparedStatement ps = this.connection.prepareStatement(sql);
+			ps.executeUpdate();
+		} catch (SQLException e) {
+			logger.info("Erro em definir carona preferencial", e);
+		} finally {
+			try {
+				this.connection.close();
+			} catch (SQLException e) {
+				logger.info("Erro ao fechar connection", e);
+			}
+			logger.info("Fim do método");
+		}
+
+	}
+
+	@Override
+	public boolean isCaronaPreferencial(int idCarona) {
+		logger.info("Inicializando método");
+		boolean valor = false;
+		try {
+			String sql = String.format("select preferencial from caronas where idCaronas = %d", idCarona);
+			PreparedStatement ps = this.connection.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()) {
+				valor= rs.getBoolean(1);
+			}
+		} catch (SQLException e) {
+			logger.info("Erro ao buscar valor do atributo preferencial na tabela carona", e);
+		} finally {
+			try {
+				this.connection.close();
+			} catch (SQLException e) {
+				logger.info("Erro ao fechar connection", e);
+			}
+			logger.info("Fim do método");
+		}
+
+		return valor;
+	}
+
+	@Override
+	public String getUsuariosPreferenciaisCarona(int idCarona) {
+		logger.info("Inicializando método");
+		String caroneiro = "[";
+		try {
+			String sql = String.format("(select idSessao from usuariopreferencial where donoCarona =\r\n" + 
+					"(select nome from usuario where idUsuario =\r\n" + 
+					"(select usuario_idUsuario from perfil where idSessao =\r\n" + 
+					"(select idSessao from caronas where idCaronas = %d))))", idCarona);
+			PreparedStatement ps = this.connection.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()) {
+				caroneiro += rs.getString(1) + ",";
+			}
+		} catch (SQLException e) {
+			logger.info("Erro ao buscar caroneiros preferenciais.", e);
+		} finally {
+			try {
+				this.connection.close();
+			} catch (SQLException e) {
+				logger.info("Erro ao fechar connection", e);
+			}
+		}
+		if (!caroneiro.equals("[")) {
+			caroneiro = caroneiro.substring(0, caroneiro.length() - 1);
+		}
+		caroneiro += "]";
+		logger.info("Fim do método");
+		return caroneiro;
+	}
+
+	@Override
+	public boolean verificarIdSessao(String idSessao) {
+		logger.info("Inicializando método");
+		String sessao = "";
+		try {
+			String sql = String.format("select idSessao from usuariopreferencial where idSessao = '%s' limit 1", idSessao);
+			PreparedStatement ps = this.connection.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()) {
+				sessao = rs.getString(1);
+			}
+		} catch (SQLException e) {
+			logger.info("Erro ao selecionar idSessao", e);
+		} finally {
+			try {
+				this.connection.close();
+			} catch (SQLException e) {
+				logger.info("Erro ao fechar connection", e);
+			}
+			if(idSessao.equals(sessao)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 }

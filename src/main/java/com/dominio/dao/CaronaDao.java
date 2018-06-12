@@ -469,4 +469,29 @@ public interface CaronaDao {
 	 */
 	public Carona buscar_dadosCarona(InteresseCarona interesseCaronas);
 
+	/**
+	 * Defini um carona prerencial
+	 * @param idCarona identificador de uma carona
+	 */
+	public void definirCaronaPreferencial(int idCarona);
+
+	/**
+	 * metodo buscar carona preferencial
+	 * @param idCarona identificador de carona
+	 * @return retorna verdadeiro para caronas preferenciais
+	 */
+	public boolean isCaronaPreferencial(int idCarona);
+
+	/**
+	 * @param idCarona identificador carona
+	 * @return retorna usuarios com preferencia
+	 */
+	public String getUsuariosPreferenciaisCarona(int idCarona);
+
+	/**
+	 * @param idSessao identificador dq sessão do usuario
+	 * @return retorna verdade caso o usuario esteja presente na lista de usuários preferenciais
+	 */
+	public boolean verificarIdSessao(String idSessao);
+
 }

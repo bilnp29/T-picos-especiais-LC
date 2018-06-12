@@ -73,7 +73,7 @@ public class JdbcPerfilUsuarioDao implements PerfilUsuarioDao {
 	 */
 	@Override
 	public String buscarid(String idSessao) {
-		logger.info(MSG_INCIAL); 
+		logger.info(MSG_INCIAL);
 		String id_Sessao = "";
 		try {
 			String sql = String.format("select idSessao from perfil where idSessao = '%s'", idSessao);
@@ -607,20 +607,20 @@ public class JdbcPerfilUsuarioDao implements PerfilUsuarioDao {
 	@Override
 	public InteresseCarona buscarIntersseCarona(String idSessao) {
 		logger.info(MSG_INCIAL);
-		InteresseCarona informacao = null; 
+		InteresseCarona informacao = null;
 		try {
-			String sql =  String.format("select * from interessecaronas where idSessao = '%s'", idSessao);
+			String sql = String.format("select * from interessecaronas where idSessao = '%s'", idSessao);
 			PreparedStatement ps = this.connection.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
 				informacao = new InteresseCarona();
-				
+
 				informacao.setOrigem(rs.getString("origem"));
 				informacao.setDestino(rs.getString("destino"));
 				informacao.setData(rs.getString("data"));
 			}
-			
-		}catch (SQLException e) {
+
+		} catch (SQLException e) {
 			logger.info("Erro ao recuperar dados de Interesse em caronas", e);
 		} finally {
 			try {
@@ -630,5 +630,49 @@ public class JdbcPerfilUsuarioDao implements PerfilUsuarioDao {
 			}
 		}
 		return informacao;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.dominio.dao.PerfilUsuarioDao#nomeMotorista(int)
+	 */
+	@Override
+	public String nomeMotorista(int carona) {
+		String nome = "";
+		logger.info(MSG_INCIAL);
+		try {
+			String sql = String.format("(select nome from usuario where idUsuario =\r\n"
+					+ "(select usuario_idUsuario from perfil where idPerfil =\r\n"
+					+ "(select perfil_idPerfil from caronas where idCaronas = %d)));", carona);
+			PreparedStatement ps = this.connection.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				nome = rs.getString("nome");
+			}
+		} catch (SQLException e) {
+			logger.info("Erro ao buscacr o nome");
+		}
+		return nome;
+	}
+
+	@Override
+	public void cadastraUsuarioPreferencial(String idSessao, int carona, String nome, String nomeMotorista) {
+		logger.info(MSG_INCIAL);
+		try {
+			String sql = String.format("insert into usuarioPreferencial (caroneiro,idcarona,donoCarona, idSessao) "
+					+ "values ('%s','%s', '%s', '%s')", nome, carona, nomeMotorista, idSessao);
+			PreparedStatement ps = this.connection.prepareStatement(sql);
+			ps.executeUpdate();
+
+		} catch (SQLException e) {
+			logger.info("Erro ao cadastra Usuario Preferencial", e);
+		} finally {
+			try {
+				this.connection.close();
+			} catch (SQLException e) {
+				logger.error("Erro ao encerra conexão", e);
+			}
+		}
 	}
 }

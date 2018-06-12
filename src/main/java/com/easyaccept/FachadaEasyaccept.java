@@ -186,7 +186,15 @@ public class FachadaEasyaccept {
 	public boolean enviarEmail(String idSessao, String destino, String message) {
 		return controlePerfil.enviarEmail(idSessao, destino, message);
 	}
-
+	public void definirCaronaPreferencial(int idCarona) {
+		controleCarona.definirCaronaPreferencial(idCarona);
+	}
+	public boolean isCaronaPreferencial(int idCarona) {
+		return controleCarona.isCaronaPreferencial(idCarona);
+	}
+	public String getUsuariosPreferenciaisCarona(int idCarona) {
+		return controleCarona.getUsuariosPreferenciaisCarona(idCarona);
+	}
 	public void encerrarSistema() {
 		controleUsuario.fechaSistema();
 

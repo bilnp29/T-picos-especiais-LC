@@ -60,6 +60,11 @@ public interface UsuarioDao {
 	 */
 	public String emailUsuario(int idSolicitacao);
 
+	/**
+	 * Apaga os registro da tabela usuário preferencial
+	 */
+	public void deletarUsuarioPreferencial();
+
 	
 	
 }

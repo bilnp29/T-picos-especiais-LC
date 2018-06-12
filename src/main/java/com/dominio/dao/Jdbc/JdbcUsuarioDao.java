@@ -231,4 +231,17 @@ public class JdbcUsuarioDao implements UsuarioDao {
 		return email;
 	}
 
+	@Override
+	public void deletarUsuarioPreferencial() {
+		logger.info(MSG_INCIAL);
+		try {
+			String sql = "delete from usuariopreferencial where idusuarioPreferencial <> 0";
+			PreparedStatement ps = this.connection.prepareStatement(sql);
+			ps.executeUpdate();
+		} catch (SQLException e) {
+			logger.info("Erro ao excluir usuario", e);
+		}
+
+	}
+
 }

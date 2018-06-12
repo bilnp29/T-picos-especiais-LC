@@ -163,7 +163,9 @@ public class SistemaDao {
 		caronaDao.deletarRegistroSolicitacaoSemSugestao();
 
 		caronaDao.deletarReview();
-
+			
+		usuarioDao.deletarUsuarioPreferencial();
+		
 		caronaDao.deletarCaronas();
 
 		perfilDao.deletarReviewMotorista();
@@ -1169,7 +1171,8 @@ public class SistemaDao {
 			logger.error("Atributo inválido");
 			throw new ErroException("Atributo inválido");
 		} else if ((!atributo.equals("origem")) && (!atributo.equals("destino"))
-				&& (!atributo.equals("minimoCaroneiros")) && (!atributo.equals("dataIda") && (!atributo.equals("expired")))) {
+				&& (!atributo.equals("minimoCaroneiros"))
+				&& (!atributo.equals("dataIda") && (!atributo.equals("expired")))) {
 			logger.error("Atributo inexistente");
 			throw new ErroException("Atributo inexistente");
 		} else {
@@ -1181,7 +1184,7 @@ public class SistemaDao {
 					dados = caronaRelampago.getDestino();
 				} else if (atributo.equals("minimoCaroneiros")) {
 					dados = caronaRelampago.getMinimoCaroneiro();
-				} else if(atributo.equals("dataIda")){
+				} else if (atributo.equals("dataIda")) {
 					dados = caronaRelampago.getDataIda();
 				} else {
 					dados = "true";
@@ -1231,6 +1234,55 @@ public class SistemaDao {
 		CaronaRelampagoDao caronaRelampagoDao = DAOFactory.getDaoFactory().getCaronaRelampagoDao();
 		CaronaRelampago caronaRelampago = caronaRelampagoDao.buscardadosCarona(idCarona);
 		return caronaRelampago.getMinimoCaroneiro();
+	}
+
+	/**
+	 * Caso um caroneiro informe que uma carona foi segura e tranquila ele será
+	 * encaminhado para uma lista de caroneiros preferenciais.
+	 * 
+	 * @param idSessao
+	 *            identificador da sessao do usuário
+	 * @param carona
+	 *            identificador de uma carona.
+	 */
+	public void cadastraUsuarioPreferencial(String idSessao, int carona) {
+		logger.info("Inicializando o método");
+		PerfilUsuarioDao perfilDao = DAOFactory.getDaoFactory().getPerfilUsuario();
+		String nome = nomeSolicitante(idSessao);
+		String nomeMotorista = perfilDao.nomeMotorista(carona);
+		perfilDao.cadastraUsuarioPreferencial(idSessao, carona, nome, nomeMotorista);
+	}
+
+	/**
+	 * @param idCarona identificador de uma carona
+	 */
+	public void definirCaronaPreferencial(int idCarona) {
+		logger.info("Inicializando o método");
+		CaronaDao caronaDao = DAOFactory.getDaoFactory().getCaronaDao();
+		caronaDao.definirCaronaPreferencial(idCarona);
+	}
+
+	/**
+	 * metodo buscar carona preferencial
+	 * @param idCarona identificador de carona
+	 * @return retorna verdadeiro para caronas preferenciais
+	 */
+	public boolean isCaronaPreferencial(int idCarona) {
+		logger.info("Inicializando o método");
+		CaronaDao caronaDao = DAOFactory.getDaoFactory().getCaronaDao();
+		return caronaDao.isCaronaPreferencial(idCarona);
+	}
+
+	public String getUsuariosPreferenciaisCarona(int idCarona) {
+		logger.info("Inicializando o método");
+		CaronaDao caronaDao = DAOFactory.getDaoFactory().getCaronaDao();
+		return caronaDao.getUsuariosPreferenciaisCarona(idCarona);
+	}
+
+	public boolean verificarIdSessao(String idSessao) {
+		logger.info("Inicializando o método");
+		CaronaDao caronaDao = DAOFactory.getDaoFactory().getCaronaDao();
+		return caronaDao.verificarIdSessao(idSessao);
 	}
 
 }

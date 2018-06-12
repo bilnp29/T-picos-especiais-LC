@@ -1,6 +1,6 @@
 package com.servicos.carona;
 
-import java.text.ParseException; 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
@@ -18,7 +18,7 @@ import com.tratamento.erro.ErroException;
  * 
  * @author Bruno Miranda, Thassio Lucena.
  */
-public class ServicoCarona { 
+public class ServicoCarona {
 
 	final static Logger logger = Logger.getLogger(ServicoCarona.class);
 
@@ -164,7 +164,7 @@ public class ServicoCarona {
 	 * 
 	 * @param idSessao
 	 *            identificador de uma sessao
-	 * @throws Exception 
+	 * @throws Exception
 	 * 
 	 */
 	private void validarIdSessao(String idSessao) throws Exception {
@@ -336,11 +336,9 @@ public class ServicoCarona {
 		return dado;
 
 	}
-	
-	
 
 	private void verificarId(String idCarona) {
-		
+
 		if (idCarona == null || idCarona.equals("")) {
 			logger.info("Identificador do carona é inválido");
 			throw new ErroException("Identificador do carona é inválido");
@@ -349,21 +347,21 @@ public class ServicoCarona {
 			logger.info("Item inexistente");
 			throw new ErroException("Item inexistente");
 		}
-		
+
 	}
 
 	private void validarIdcarona(String idCarona) {
-		
+
 		if (idCarona == null) {
 			logger.info("Carona Inválido");
 			throw new ErroException("Carona Inválida");
 		}
-		
+
 		if (idCarona.equals("")) {
 			logger.info("Carona Inexistente");
 			throw new ErroException("Carona Inexistente");
 		}
-		
+
 		if (!sistemaDao.isIdCarona(idCarona)) {
 			logger.info("Carona Inexistente");
 			throw new ErroException("Carona Inexistente");
@@ -412,16 +410,16 @@ public class ServicoCarona {
 	 */
 	public void validarTrajeto(String idcarona) {
 
-		if (idcarona == null ) {
+		if (idcarona == null) {
 			logger.info("Trajeto Invalido");
 			throw new ErroException("Trajeto Inválido");
 		}
-		
+
 		if (idcarona.equals("")) {
 			logger.info("Trajeto Inexistente");
 			throw new ErroException("Trajeto Inexistente");
 		}
-		
+
 		if (!sistemaDao.isIdCarona(idcarona)) {
 			logger.info("Trajeto Inexistente");
 			throw new ErroException("Trajeto Inexistente");
@@ -551,5 +549,36 @@ public class ServicoCarona {
 
 		}
 		logger.info("Fim do método");
+	}
+
+	/**
+	 * @param idCarona
+	 *            identificador de uma carona
+	 */
+	public void definirCaronaPreferencial(int idCarona) {
+		logger.info("Iniciando o método");
+		sistemaDao.definirCaronaPreferencial(idCarona);
+
+	}
+
+	/**
+	 * metodo buscar carona preferencial
+	 * 
+	 * @param idCarona
+	 *            identificador de carona
+	 * @return retorna verdadeiro para caronas preferenciais
+	 */
+	public boolean isCaronaPreferencial(int idCarona) {
+
+		return sistemaDao.isCaronaPreferencial(idCarona);
+	}
+
+	public String getUsuariosPreferenciaisCarona(int idCarona) {
+		logger.info("Inicializando o método");
+		String caroneiros = "";
+		if (isCaronaPreferencial(idCarona)) {
+			caroneiros = sistemaDao.getUsuariosPreferenciaisCarona(idCarona);
+		}
+		return caroneiros;
 	}
 }
