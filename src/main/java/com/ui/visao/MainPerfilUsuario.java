@@ -16,9 +16,9 @@ public class MainPerfilUsuario extends Application {
 	public void start(Stage stage) {
 		telaLogin = stage;
 		try {
-			Parent root = FXMLLoader.load(getClass().getResource("./FXMLperfilUsuario.fxml"));
+			Parent root = FXMLLoader.load(getClass().getResource("/fxml/FXMLperfilUsuario.fxml"));
 			Scene scene = new Scene(root,875,512);
-			scene.getStylesheets().add("com/ui/visao/application.css");
+			scene.getStylesheets().add("/css/application.css");
 			telaLogin.setTitle("Perfil");
 			telaLogin.setScene(scene);
 			telaLogin.show();

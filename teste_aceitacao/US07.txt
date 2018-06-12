@@ -15,8 +15,8 @@
 zerarSistema
 
 #Criar usu�rio.
-criarUsuario login="mark" senha="m@rk" nome="Mark Zuckerberg" endereco="Palo Alto, California" email="mark@facebook.com" telefone="98888-0000"
-criarUsuario login="steve" senha="5t3v3" nome="Steve Paul Jobs" endereco="Palo Alto, California" email="jobs@apple.com" telefone="98888-0000"
+criarUsuario login="mark" senha="m@rk" nome="Mark Zuckerberg" endereco="Palo Alto, California" email="mark@facebook.com"
+criarUsuario login="steve" senha="5t3v3" nome="Steve Paul Jobs" endereco="Palo Alto, California" email="jobs@apple.com"
 
 #Iniciar sess�o.
 sessaoSteve=abrirSessao login="steve" senha="5t3v3"

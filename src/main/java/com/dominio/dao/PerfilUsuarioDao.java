@@ -206,4 +206,19 @@ public interface PerfilUsuarioDao {
 	 */
 	public InteresseCarona buscarIntersseCarona(String idSessao);
 
+	/**
+	 * buscar nome do motorista.
+	 * @param carona identificador de uma carona
+	 * @return retora o nome do motorista
+	 */
+	public String nomeMotorista(int carona);
+
+	/**
+	 * @param idSessao
+	 * @param carona
+	 * @param nome
+	 * @param nomeMotorista
+	 */
+	public void cadastraUsuarioPreferencial(String idSessao, int carona, String nome, String nomeMotorista);
+
 }

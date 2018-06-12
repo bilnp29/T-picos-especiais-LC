@@ -39,4 +39,10 @@ public abstract class DAOFactory {
 	 * @return retorna uma conexão de uma carona.
 	 */
 	public abstract CaronaDao getCaronaDao();
+	
+	/**
+	 * O método irá recuperar dados de uma carona relampago
+	 * @return retorna uma conexão de uma carona
+	 */
+	public abstract CaronaRelampagoDao getCaronaRelampagoDao();
 }

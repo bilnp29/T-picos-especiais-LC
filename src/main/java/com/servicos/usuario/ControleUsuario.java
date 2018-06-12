@@ -43,12 +43,12 @@ public class ControleUsuario {
 	 * @return retorna o id cadastrado do usuário
 	 * @throws Exception
 	 */
-	public String cadastraUsuario(String login, String senha, String nome, String endereco, String email,
+	public String cadastraUsuario(String login, String senha, String nome, String endereco, String email
 
-			String telefone) throws Exception {
+			) throws Exception {
 
 		try {
-			usuario = new Usuario(login, senha, nome, endereco, email, telefone);
+			usuario = new Usuario(login, senha, nome, endereco, email);
 		} catch (Exception e) {
 			e.getMessage();
 			e.printStackTrace();
