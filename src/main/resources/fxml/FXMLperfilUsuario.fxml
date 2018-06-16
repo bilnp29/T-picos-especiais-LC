@@ -5,8 +5,10 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -24,7 +26,7 @@
 								<Label id="lblBemVindo" layoutX="215.0" layoutY="63.0" prefHeight="35.0" prefWidth="280.0" text="Seja Bem Vindo." />
 								<ImageView id="imgView" fitHeight="150.0" fitWidth="200.0" layoutX="7.0" layoutY="-3.0" pickOnBounds="true" preserveRatio="true">
 									<image>
-										<Image url="@imagens/icon_cadastro.png" />
+										<Image url="@../imagens/icon_cadastro.png" />
 									</image>
 								</ImageView>
 							</children>
@@ -34,98 +36,103 @@
 								<Label id="lbl_Bora_Vamo" layoutX="278.0" layoutY="54.0" prefHeight="35.0" prefWidth="280.0" text="Bora? ou Vamo?" />
 								<ImageView id="imgView" fitHeight="160.0" fitWidth="251.0" pickOnBounds="true" preserveRatio="true">
 									<image>
-										<Image url="@imagens/carona.jpg" />
+										<Image url="@../imagens/carona.jpg" />
 									</image>
 								</ImageView>
 							</children>
 						</Pane>
-						<Pane fx:id="pnEditar" layoutY="143.0" prefHeight="333.0" prefWidth="606.0" visible="false">
+						<Pane fx:id="pnEditar" layoutX="1.0" layoutY="144.0" prefHeight="333.0" prefWidth="606.0" visible="false">
 							<children>
 								<Label layoutX="16.0" layoutY="170.0" text="Login:" />
 								<Label layoutX="16.0" layoutY="70.0" text="Endereço:" />
 								<Label layoutX="16.0" layoutY="120.0" text="Email:" />
-								<Label layoutX="16.0" layoutY="220.0" text="Telefone:" />
+								<Label layoutX="16.0" layoutY="220.0" text="Senha:" />
 								<Label layoutX="16.0" layoutY="20.0" text="Nome:" />
-								<TextField layoutX="82.0" layoutY="20.0" prefHeight="26.0" prefWidth="512.0" />
-								<TextField layoutX="82.0" layoutY="70.0" prefHeight="26.0" prefWidth="512.0" />
-								<TextField layoutX="82.0" layoutY="120.0" prefHeight="26.0" prefWidth="512.0" />
-								<TextField layoutX="82.0" layoutY="170.0" prefHeight="26.0" prefWidth="512.0" />
-								<TextField layoutX="82.0" layoutY="220.0" prefHeight="26.0" prefWidth="512.0" />
-								<Button layoutX="500.0" layoutY="276.0" mnemonicParsing="false" text="Salvar" />
+								<TextField fx:id="txtNome" layoutX="82.0" layoutY="20.0" prefHeight="26.0" prefWidth="512.0" />
+								<TextField fx:id="txtEndereco" layoutX="82.0" layoutY="70.0" prefHeight="26.0" prefWidth="512.0" />
+								<TextField fx:id="txtEmail" layoutX="82.0" layoutY="120.0" prefHeight="26.0" prefWidth="512.0" />
+								<TextField fx:id="txtLogin" layoutX="82.0" layoutY="170.0" prefHeight="26.0" prefWidth="512.0" />
+								<PasswordField fx:id="txtSenha" layoutX="82.0" layoutY="220.0" prefHeight="26.0" prefWidth="512.0" />
+								<Button fx:id="btnSalvarEdicao" layoutX="500.0" layoutY="276.0" mnemonicParsing="false" onAction="#funcaoSalvaEdicao" text="Salvar" />
 							</children>
 						</Pane>
 						<Pane fx:id="pnConsultaPerfil" layoutY="143.0" prefHeight="334.0" prefWidth="607.0" visible="false">
 							<children>
 
-								<RadioButton layoutX="15.0" layoutY="62.0" mnemonicParsing="false" text="Nome" />
-								<RadioButton layoutX="258.0" layoutY="62.0" mnemonicParsing="false" text="Endereço" />
-								<RadioButton layoutX="511.0" layoutY="62.0" mnemonicParsing="false" text="Email" />
-								<RadioButton layoutX="15.0" layoutY="203.0" mnemonicParsing="false" text="Historico de caronas" />
-								<RadioButton layoutX="15.0" layoutY="113.0" mnemonicParsing="false" text="Historico de vagas em caronas" />
-								<RadioButton layoutX="381.0" layoutY="113.0" mnemonicParsing="false" text="Caronas seguras e tranquilas" />
-								<RadioButton layoutX="15.0" layoutY="159.0" mnemonicParsing="false" text="Caronas que não funcionaram" />
-								<RadioButton layoutX="381.0" layoutY="159.0" mnemonicParsing="false" text="Faltas em caronas" />
-								<RadioButton layoutX="381.0" layoutY="203.0" mnemonicParsing="false" text="Presença em caronas" />
-								<TextField editable="false" layoutX="87.0" layoutY="283.0" prefHeight="26.0" prefWidth="326.0" />
+								<RadioButton layoutX="15.0" layoutY="62.0" mnemonicParsing="false" selected="true" text="Nome">
+                           <toggleGroup>
+                              <ToggleGroup fx:id="consultPerfil" />
+                           </toggleGroup></RadioButton>
+								<RadioButton layoutX="258.0" layoutY="62.0" mnemonicParsing="false" text="Endereco" toggleGroup="$consultPerfil" />
+								<RadioButton layoutX="511.0" layoutY="62.0" mnemonicParsing="false" text="Email" toggleGroup="$consultPerfil" />
+								<RadioButton layoutX="15.0" layoutY="203.0" mnemonicParsing="false" text="Historico de caronas" toggleGroup="$consultPerfil" />
+								<RadioButton layoutX="15.0" layoutY="113.0" mnemonicParsing="false" text="Historico de vagas em caronas" toggleGroup="$consultPerfil" />
+								<RadioButton layoutX="381.0" layoutY="113.0" mnemonicParsing="false" text="Caronas seguras e tranquilas" toggleGroup="$consultPerfil" />
+								<RadioButton layoutX="15.0" layoutY="159.0" mnemonicParsing="false" text="Caronas que não funcionaram" toggleGroup="$consultPerfil" />
+								<RadioButton layoutX="381.0" layoutY="159.0" mnemonicParsing="false" text="Faltas em vagas de caronas" toggleGroup="$consultPerfil" />
+								<RadioButton layoutX="381.0" layoutY="203.0" mnemonicParsing="false" text="Presença em vagas de caronas" toggleGroup="$consultPerfil" />
+								<TextField fx:id="txtRespostaPerfil" editable="false" layoutX="87.0" layoutY="283.0" prefHeight="26.0" prefWidth="326.0" />
 								<Label layoutX="15.0" layoutY="283.0" text="Resposta:" />
-                        <Button layoutX="428.0" layoutY="283.0" mnemonicParsing="false" text="Consultar" />
+                        <Button fx:id="btnConsulta" layoutX="428.0" layoutY="283.0" mnemonicParsing="false" onAction="#funcaoPesquisaPerfil" text="Consultar" />
 							</children>
 						</Pane>
 						<Pane fx:id="pnCons_Usuario" layoutY="143.0" prefHeight="334.0" prefWidth="607.0" visible="false">
 							<children>
-								<RadioButton layoutX="78.0" layoutY="142.0" mnemonicParsing="false" text="Nome" />
-								<RadioButton layoutX="458.0" layoutY="142.0" mnemonicParsing="false" text="Endereço" />
+								<RadioButton layoutX="78.0" layoutY="142.0" mnemonicParsing="false" selected="true" text="Nome">
+                           <toggleGroup>
+                              <ToggleGroup fx:id="consultUsuario" />
+                           </toggleGroup></RadioButton>
+								<RadioButton layoutX="458.0" layoutY="142.0" mnemonicParsing="false" text="Endereco" toggleGroup="$consultUsuario" />
 								<Label id="lblResposta" layoutX="14.0" layoutY="240.0" text="Resposta:" />
-								<TextField layoutX="78.0" layoutY="240.0" prefHeight="26.0" prefWidth="415.0" />
-								<Button layoutX="507.0" layoutY="240.0" mnemonicParsing="false" text="Pesquisar" textAlignment="JUSTIFY" />
+								<TextField fx:id="txtRespostaConsulta" editable="false" layoutX="78.0" layoutY="240.0" prefHeight="26.0" prefWidth="389.0" />
+								<Button fx:id="btn_Pesquisar" layoutX="483.0" layoutY="241.0" mnemonicParsing="false" onAction="#funcaoConsultaUsuario" text="Pesquisar" textAlignment="JUSTIFY" />
 							</children>
 						</Pane>
-						<Pane fx:id="pnCadastraCaronaMunicipal" layoutY="143.0" prefHeight="334.0" prefWidth="607.0" visible="false">
+						<Pane fx:id="pnCadastraCaronaMunicipal" layoutX="1.0" layoutY="143.0" prefHeight="334.0" prefWidth="607.0" visible="false">
 							<children>
-								<Label layoutX="11.0" layoutY="34.0" text="Identificador Sessão:" />
 								<Label layoutX="16.0" layoutY="69.0" text="Origem da Carona:" />
 								<Label layoutX="15.0" layoutY="110.0" text="Destino da Carona:" />
 								<Label layoutX="44.0" layoutY="156.0" text="Cidade:" />
 								<Label layoutX="50.0" layoutY="198.0" text="Data:" />
 								<Label layoutX="370.0" layoutY="198.0" text="Hora:" />
 								<Label layoutX="19.0" layoutY="243.0" text="Vaga em carona:" />
-								<TextField fx:id="txtSessao" layoutX="130.0" layoutY="30.0" prefHeight="25.0" prefWidth="460.0" />
 								<TextField fx:id="txtOrigem" layoutX="130.0" layoutY="65.0" prefHeight="25.0" prefWidth="460.0" />
 								<TextField fx:id="txtDestino" layoutX="130.0" layoutY="106.0" prefHeight="25.0" prefWidth="460.0" />
 								<TextField fx:id="txtCidade" layoutX="130.0" layoutY="152.0" prefHeight="25.0" prefWidth="460.0" />
-								<TextField fx:id="txtData" layoutX="130.0" layoutY="194.0" prefHeight="25.0" prefWidth="203.0" />
 								<TextField fx:id="txtHora" layoutX="409.0" layoutY="194.0" prefHeight="25.0" prefWidth="181.0" />
 								<TextField fx:id="txtVaga" layoutX="130.0" layoutY="239.0" prefHeight="25.0" prefWidth="460.0" />
-								<Button fx:id="btnCadastraCarona" layoutX="474.0" layoutY="285.0" mnemonicParsing="false" text="Cadastrar" />
+								<Button fx:id="btnCadastraCarona" layoutX="474.0" layoutY="285.0" mnemonicParsing="false" onAction="#CadastraCaronaMunicipal" text="Cadastrar" />
+                        <TextField fx:id="txtDataMuni" layoutX="130.0" layoutY="194.0" />
 							</children>
 						</Pane>
                   <Pane fx:id="pnCadastraCaronaIntermunicipal" layoutY="143.0" prefHeight="334.0" prefWidth="607.0" visible="false">
                      <children>
-                        <Label layoutX="12.0" layoutY="31.0" text="Identificador Sessão:" />
                         <Label layoutX="17.0" layoutY="66.0" text="Origem da Carona:" />
                         <Label layoutX="16.0" layoutY="107.0" text="Destino da Carona:" />
                         <Label layoutX="49.0" layoutY="146.0" text="Data:" />
                         <Label layoutX="369.0" layoutY="146.0" text="Hora:" />
                         <Label layoutX="18.0" layoutY="191.0" text="Vaga em carona:" />
-                        <TextField fx:id="txtSessao1" layoutX="131.0" layoutY="27.0" prefHeight="25.0" prefWidth="460.0" />
-                        <TextField fx:id="txtOrigem1" layoutX="131.0" layoutY="62.0" prefHeight="25.0" prefWidth="460.0" />
-                        <TextField fx:id="txtDestino1" layoutX="131.0" layoutY="103.0" prefHeight="25.0" prefWidth="460.0" />
-                        <TextField fx:id="txtData1" layoutX="129.0" layoutY="142.0" prefHeight="25.0" prefWidth="203.0" />
-                        <TextField fx:id="txtHora1" layoutX="408.0" layoutY="142.0" prefHeight="25.0" prefWidth="181.0" />
-                        <TextField fx:id="txtVaga1" layoutX="129.0" layoutY="187.0" prefHeight="25.0" prefWidth="460.0" />
-                        <Button fx:id="btnCadastraCarona1" layoutX="473.0" layoutY="233.0" mnemonicParsing="false" text="Cadastrar" />
+                        <TextField fx:id="txtOrigemInter" layoutX="131.0" layoutY="62.0" prefHeight="25.0" prefWidth="460.0" />
+                        <TextField fx:id="txtDestinoInter" layoutX="131.0" layoutY="103.0" prefHeight="25.0" prefWidth="460.0" />
+                        <TextField fx:id="txtHoraiInter" layoutX="408.0" layoutY="142.0" prefHeight="25.0" prefWidth="181.0" />
+                        <TextField fx:id="txtVagaInter" layoutX="129.0" layoutY="187.0" prefHeight="25.0" prefWidth="460.0" />
+                        <Button fx:id="btnCadastraCaronaIntermuniciapl" layoutX="473.0" layoutY="233.0" mnemonicParsing="false" onAction="#cadastraCaronaIntermunicipal" text="Cadastrar" />
+                        <TextField fx:id="txtDataInt" layoutX="129.0" layoutY="142.0" prefHeight="25.0" prefWidth="181.0" />
                      </children>
                   </Pane>
 						<Pane fx:id="pnConsultCarona" layoutY="143.0" prefHeight="334.0" prefWidth="607.0" visible="false">
 							<children>
 								<Label layoutX="39.0" layoutY="69.0" text="Identificador Carona:" />
-								<ChoiceBox layoutX="154.0" layoutY="69.0" prefHeight="25.0" prefWidth="242.0" />
-								<RadioButton layoutX="59.0" layoutY="138.0" mnemonicParsing="false" text="Origem" />
-								<RadioButton layoutX="155.0" layoutY="138.0" mnemonicParsing="false" text="Destino" />
-								<RadioButton layoutX="252.0" layoutY="138.0" mnemonicParsing="false" text="Vagas" />
-								<RadioButton layoutX="350.0" layoutY="138.0" mnemonicParsing="false" text="Data" />
+								<ChoiceBox fx:id="chBoxIdCarona" layoutX="154.0" layoutY="69.0" prefHeight="25.0" prefWidth="242.0" />
+								<RadioButton layoutX="59.0" layoutY="138.0" mnemonicParsing="false" selected="true" text="Origem">
+                           <toggleGroup>
+                              <ToggleGroup fx:id="consultCarona" />
+                           </toggleGroup></RadioButton>
+								<RadioButton layoutX="155.0" layoutY="138.0" mnemonicParsing="false" text="Destino" toggleGroup="$consultCarona" />
+								<RadioButton layoutX="252.0" layoutY="138.0" mnemonicParsing="false" text="Vagas" toggleGroup="$consultCarona" />
+								<RadioButton layoutX="350.0" layoutY="138.0" mnemonicParsing="false" text="Data" toggleGroup="$consultCarona" />
 								<Label layoutX="39.0" layoutY="216.0" text="Resposta:" />
-								<TextField fx:id="txtRespostaConstCarona" layoutX="100.0" layoutY="216.0" prefHeight="25.0" prefWidth="297.0" />
+								<TextField fx:id="txtRespostaConstCarona" editable="false" layoutX="100.0" layoutY="216.0" prefHeight="25.0" prefWidth="297.0" />
 								<Button fx:id="bntConsutCarona" layoutX="445.0" layoutY="69.0" mnemonicParsing="false" text="Consultar" />
 							</children>
 						</Pane>
@@ -158,13 +165,11 @@
 						</Pane>
 						<Pane fx:id="pnSolicitarCarona" layoutY="143.0" prefHeight="334.0" prefWidth="607.0" visible="false">
 							<children>
-								<Label layoutX="14.0" layoutY="66.0" text="Idetificador Sessão:" />
-								<TextField fx:id="txt_idSessao" layoutX="144.0" layoutY="66.0" prefHeight="25.0" prefWidth="420.0" />
-								<Label layoutX="14.0" layoutY="113.0" text="Identificador Carona:" />
-								<ChoiceBox fx:id="chbox_IdCarona" layoutX="144.0" layoutY="113.0" prefHeight="25.0" prefWidth="420.0" />
-								<Button fx:id="btn_Solicitar" layoutX="416.0" layoutY="241.0" mnemonicParsing="false" text="Solicitar" />
-								<Label layoutX="14.0" layoutY="167.0" text="Ponto de Encontro" />
-								<TextField fx:id="txt_pontoEncontro" layoutX="144.0" layoutY="167.0" prefHeight="25.0" prefWidth="420.0" />
+								<Label layoutX="14.0" layoutY="14.0" text="Identificador Carona:" />
+								<ChoiceBox fx:id="chbox_IdCarona" layoutX="132.0" layoutY="10.0" prefHeight="25.0" prefWidth="440.0" />
+								<Button fx:id="btn_Solicitar" layoutX="493.0" layoutY="278.0" mnemonicParsing="false" text="Solicitar" />
+								<Label layoutX="14.0" layoutY="50.0" text="Ponto de Encontro" />
+								<TextField fx:id="txt_pontoEncontro" layoutX="132.0" layoutY="46.0" prefHeight="25.0" prefWidth="440.0" />
 							</children>
 						</Pane>
 						<Pane fx:id="pnAceitarCarona_ComPonto" layoutY="143.0" prefHeight="334.0" prefWidth="607.0" visible="false">
@@ -237,7 +242,7 @@
 					<children>
 						<ImageView id="imgFecha" fx:id="imgFecha" fitHeight="21.0" fitWidth="26.0" layoutX="842.0" layoutY="8.0" onMouseClicked="#funcaoFecharSessao" pickOnBounds="true" preserveRatio="true">
 							<image>
-								<Image url="@imagens/proibida-mark_318-85768.jpg" />
+								<Image url="@../imagens/proibida-mark_318-85768.jpg" />
 							</image>
 						</ImageView>
 					</children>

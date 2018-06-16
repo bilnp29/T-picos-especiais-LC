@@ -65,6 +65,19 @@ public interface UsuarioDao {
 	 */
 	public void deletarUsuarioPreferencial();
 
+	/**
+	 * @param sessao identificador de uma sessao de usuairo valida
+	 * @return retorna um objeto do tipo usuario
+	 */
+	public Usuario buscarUsuario(String sessao);
+
+	
+	/**
+	 * @param id identificador de uma pessoa
+	 * @param pessoa objeto do tipo usuario.
+	 */
+	public void editarUsuario(int id, String nome, String login, String email, String endereco, String senha);
+
 	
 	
 }

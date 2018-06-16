@@ -138,4 +138,25 @@ public class ControleUsuario {
 
 	}
 
+	/**
+	 * @param sessao
+	 * @return
+	 */
+	public Usuario buscarUsuario(String sessao) {
+		
+		return servicosUsuario.buscarUsuario(sessao);
+	}
+
+	/**
+	 * @param nome
+	 * @param login
+	 * @param email
+	 * @param endereco
+	 * @param senha
+	 */
+	public void editarUsuario(int id,String nome, String login, String email, String endereco, String senha) {
+		servicosUsuario.editarUsuario(id,nome,login,email,endereco,senha);
+	}
+
+
 }

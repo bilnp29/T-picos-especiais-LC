@@ -1273,16 +1273,52 @@ public class SistemaDao {
 		return caronaDao.isCaronaPreferencial(idCarona);
 	}
 
+	/**
+	 * @param idCarona
+	 * @return
+	 */
 	public String getUsuariosPreferenciaisCarona(int idCarona) {
 		logger.info("Inicializando o método");
 		CaronaDao caronaDao = DAOFactory.getDaoFactory().getCaronaDao();
 		return caronaDao.getUsuariosPreferenciaisCarona(idCarona);
 	}
 
+	/**
+	 * @param idSessao
+	 * @return
+	 */
 	public boolean verificarIdSessao(String idSessao) {
 		logger.info("Inicializando o método");
 		CaronaDao caronaDao = DAOFactory.getDaoFactory().getCaronaDao();
 		return caronaDao.verificarIdSessao(idSessao);
 	}
+
+	/**
+	 * @param sessao
+	 * @return
+	 */
+	public Usuario buscarUsuario(String sessao) {
+		logger.info("Inicializando o método");
+		UsuarioDao usuarioDao = DAOFactory.getDaoFactory().getUsuarioDao();
+		return usuarioDao.buscarUsuario(sessao);
+	}
+
+
+	/**
+	 * @param id
+	 * @param pessoa
+	 */
+	public void EditarUsuario(int id, String nome, String login, String email, String endereco, String senha) {
+		logger.info("Inicializando o método");
+		UsuarioDao usuarioDao = DAOFactory.getDaoFactory().getUsuarioDao();
+		usuarioDao.editarUsuario(id,nome,login,email,endereco,senha);
+	}
+
+	public Carona buscarTodas() {
+		CaronaDao caronaDao = DAOFactory.getDaoFactory().getCaronaDao();
+		
+		return (Carona) caronaDao.buscartodas();
+	} 
+
 
 }

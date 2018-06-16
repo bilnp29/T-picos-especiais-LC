@@ -205,7 +205,7 @@ public class ServicosUsuario {
 	}
 
 	/**
-	 * Realizar uma pesquisa deacordo com o parametro atributo passado podendo ser o
+	 * Realizar uma pesquisa de acordo com o parametro atributo passado podendo ser o
 	 * nome do usuario ou seu endereço.
 	 * 
 	 * @param login
@@ -284,5 +284,24 @@ public class ServicosUsuario {
 		sistemaDao.reiniciarSistema();
 
 	}
+
+	public Usuario buscarUsuario(String sessao) {
+		logger.info("Iniciadndo método");
+		return sistemaDao.buscarUsuario(sessao);
+	}
+
+	/**
+	 * Atualizar dados do usuario
+	 * @param nome Nome do usuário
+	 * @param login login para acessaoa contra
+	 * @param email Email do usuario
+	 * @param endereco do usasuário
+	 * @param senha senha para entra no sistema
+	 */
+	public void editarUsuario(int id,String nome, String login, String email, String endereco, String senha) {
+		logger.info("Iniciadndo método");	
+		sistemaDao.EditarUsuario(id,nome,login,email,endereco,senha);
+	}
+
 
 }

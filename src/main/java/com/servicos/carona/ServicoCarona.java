@@ -581,4 +581,9 @@ public class ServicoCarona {
 		}
 		return caroneiros;
 	}
+
+	public Carona buscatodas() {
+		logger.info("Inicializando o método");
+		return sistemaDao.buscarTodas();
+	}
 }
