@@ -271,7 +271,7 @@ public class ServicoCaronaRelampago {
 	/**
 	 * @param expiredID
 	 * @param atributo
-	 * @return
+	 * @return 
 	 */
 	public String getAtributoExpired(String expiredID, String atributo) {
 		if (atributo.equals("emailTo")) 
