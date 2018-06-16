@@ -46,10 +46,9 @@ public class JdbcUsuarioDao implements UsuarioDao {
 		logger.info(MSG_INCIAL);
 		try {
 			String sql = String.format(
-					"insert into usuario (nome,login,email,endereco,senha) "
-							+ "values ('%s','%s','%s','%s','%s')",
+					"insert into usuario (nome,login,email,endereco,senha) " + "values ('%s','%s','%s','%s','%s')",
 					usuario.getNome(), usuario.getLogin(), usuario.getEmail(), usuario.getEndereco(),
-					 usuario.getSenha());
+					usuario.getSenha());
 			PreparedStatement ps = this.connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 			ps.executeUpdate();
 
@@ -242,6 +241,63 @@ public class JdbcUsuarioDao implements UsuarioDao {
 			logger.info("Erro ao excluir usuario", e);
 		}
 
+	}
+
+	@Override
+	public Usuario buscarUsuario(String sessao) {
+		logger.info(MSG_INCIAL);
+		Usuario usuario = null;
+		try {
+			String sql = String.format("(select * from usuario where idUsuario =\r\n"
+					+ "(select usuario_idUsuario from perfil where idSessao = '%s')) ", sessao);
+			PreparedStatement ps = this.connection.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				usuario = new Usuario();
+				usuario.setIdUsuario(rs.getInt("idUsuario"));
+				usuario.setNome(rs.getString("nome"));
+				usuario.setEmail(rs.getString("email"));
+				usuario.setLogin(rs.getString("login"));
+				usuario.setSenha(rs.getString("senha"));
+				usuario.setEndereco(rs.getString("endereco"));
+			}
+		} catch (SQLException e) {
+			logger.info("Erro ao buscar usuario", e);
+		} finally {
+			try {
+				this.connection.close();
+			} catch (SQLException e) {
+				logger.error("Erro ao encerra conexão", e);
+			}
+		}
+
+		return usuario;
+	}
+
+
+	@Override
+	public void editarUsuario(int id, String nome, String login, String email, String endereco, String senha) {
+		logger.info(MSG_INCIAL);
+		try {
+			String sql = "UPDATE usuario set nome = ?, login = ?, email = ?, endereco = ?, senha = ? where idUsuario = ?";
+			PreparedStatement ps = this.connection.prepareStatement(sql);
+			ps.setString(1, nome);
+			ps.setString(2, login);
+			ps.setString(3, email);
+			ps.setString(4, endereco);
+			ps.setString(5, senha);
+			ps.setInt(6, id);
+			ps.executeUpdate();
+			ps.close();
+		} catch (SQLException e) {
+			logger.info("Erro ao editar usuario", e);
+		} finally {
+			try {
+				this.connection.close();
+			} catch (SQLException e) {
+				logger.error("Erro ao encerra conexão", e);
+			}
+		}
 	}
 
 }

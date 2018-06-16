@@ -68,7 +68,7 @@ public class ServicosPerfil {
 		} else if (!atributo.equals("nome") && !atributo.equals("endereco") && !atributo.equals("email")
 				&& !atributo.equals("historico de caronas") && !atributo.equals("historico de vagas em caronas")
 				&& !atributo.equals("caronas seguras e tranquilas") && !atributo.equals("caronas que não funcionaram")
-				&& !atributo.equals("faltas em vagas de caronas") && !atributo.equals("faltas em vagas de caronas")
+				&& !atributo.equals("faltas em vagas de caronas")
 				&& !atributo.equals("presença em vagas de caronas")) {
 			logger.error("Atributo invalido");
 			throw new ErroException("Atributo inexistente");

@@ -18,6 +18,8 @@ import javafx.stage.Stage;
 
 public class FXMLLoginCadastroController implements Initializable {
 
+	private static String SESSAO_ID;
+	
 	private ControleUsuario controleUsuario;
 
 	@FXML
@@ -129,9 +131,8 @@ public class FXMLLoginCadastroController implements Initializable {
 			try {
 				String login = this.txtLogin.getText();
 				String senha = this.txtPassoword.getText();
-				String result = controleUsuario.entraSistema(login, senha);
-				if (result != null) {
-					System.out.println(result);
+				SESSAO_ID = controleUsuario.entraSistema(login, senha);
+				if (SESSAO_ID != null) {
 					Stage telaLogin = new Stage();
 					MainPerfilUsuario viewPerfil = new MainPerfilUsuario();
 					viewPerfil.start(telaLogin);
@@ -165,6 +166,10 @@ public class FXMLLoginCadastroController implements Initializable {
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// TODO Auto-generated method stub
 
+	}
+
+	public static String getSESSAO_ID() {
+		return SESSAO_ID;
 	}
 
 }
